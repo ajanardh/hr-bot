@@ -1,0 +1,681 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \{\
+  "metadata": \{\
+    "company": "Innovatech Solutions",\
+    "version": "1.0",\
+    "last_updated": "2023-10-26",\
+    "description": "Mock healthcare plan data and employee benefit elections for agentic AI system testing.",\
+    "plan_year": 2024,\
+    "as_of_date": "2023-10-26"\
+  \},\
+  "medical_plans": [\
+    \{\
+      "plan_id": "PPO_GOLD",\
+      "plan_name": "PPO Gold",\
+      "plan_type": "PPO",\
+      "carrier": "WellnessCorp",\
+      "network": "National PPO",\
+      "hsa_eligible": false,\
+      "referral_required": false,\
+      "out_of_network_coverage": true,\
+      "premiums_monthly": \{\
+        "employee_only": 120,\
+        "employee_spouse": 320,\
+        "employee_children": 280,\
+        "family": 450\
+      \},\
+      "deductible_individual": 500,\
+      "deductible_family": 1000,\
+      "oop_max_individual": 3000,\
+      "oop_max_family": 6000,\
+      "primary_care_copay": 20,\
+      "specialist_copay": 40,\
+      "emergency_room_copay": 250,\
+      "urgent_care_copay": 40,\
+      "preventive_care_coverage": "100%",\
+      "mental_health_copay": 20\
+    \},\
+    \{\
+      "plan_id": "PPO_SILVER",\
+      "plan_name": "PPO Silver",\
+      "plan_type": "PPO",\
+      "carrier": "WellnessCorp",\
+      "network": "National PPO",\
+      "hsa_eligible": false,\
+      "referral_required": false,\
+      "out_of_network_coverage": true,\
+      "premiums_monthly": \{\
+        "employee_only": 85,\
+        "employee_spouse": 240,\
+        "employee_children": 210,\
+        "family": 340\
+      \},\
+      "deductible_individual": 1000,\
+      "deductible_family": 2000,\
+      "oop_max_individual": 4500,\
+      "oop_max_family": 9000,\
+      "primary_care_copay": 30,\
+      "specialist_copay": 50,\
+      "emergency_room_copay": 350,\
+      "urgent_care_copay": 50,\
+      "preventive_care_coverage": "100%",\
+      "mental_health_copay": 30\
+    \},\
+    \{\
+      "plan_id": "HMO_STANDARD",\
+      "plan_name": "HMO Standard",\
+      "plan_type": "HMO",\
+      "carrier": "WellnessCorp",\
+      "network": "Regional HMO",\
+      "hsa_eligible": false,\
+      "referral_required": true,\
+      "out_of_network_coverage": false,\
+      "premiums_monthly": \{\
+        "employee_only": 60,\
+        "employee_spouse": 180,\
+        "employee_children": 150,\
+        "family": 260\
+      \},\
+      "deductible_individual": 500,\
+      "deductible_family": 1000,\
+      "oop_max_individual": 3000,\
+      "oop_max_family": 6000,\
+      "primary_care_copay": 15,\
+      "specialist_copay": 30,\
+      "emergency_room_copay": 300,\
+      "urgent_care_copay": 40,\
+      "preventive_care_coverage": "100%",\
+      "mental_health_copay": 15\
+    \},\
+    \{\
+      "plan_id": "HDHP",\
+      "plan_name": "HDHP (High Deductible Health Plan)",\
+      "plan_type": "HDHP",\
+      "carrier": "WellnessCorp",\
+      "network": "National PPO",\
+      "hsa_eligible": true,\
+      "referral_required": false,\
+      "out_of_network_coverage": true,\
+      "premiums_monthly": \{\
+        "employee_only": 40,\
+        "employee_spouse": 120,\
+        "employee_children": 100,\
+        "family": 180\
+      \},\
+      "deductible_individual": 3000,\
+      "deductible_family": 6000,\
+      "oop_max_individual": 6000,\
+      "oop_max_family": 12000,\
+      "primary_care_copay": "Deductible, then 20%",\
+      "specialist_copay": "Deductible, then 20%",\
+      "emergency_room_copay": "Deductible, then 20%",\
+      "urgent_care_copay": "Deductible, then 20%",\
+      "preventive_care_coverage": "100%",\
+      "mental_health_copay": "Deductible, then 20%"\
+    \}\
+  ],\
+  "dental_plan": \{\
+    "plan_id": "DENTAL_STANDARD",\
+    "plan_name": "SmileCare Dental",\
+    "carrier": "SmileCare Dental",\
+    "premiums_monthly": \{\
+      "employee_only": 15,\
+      "employee_spouse": 35,\
+      "employee_children": 30,\
+      "family": 50\
+    \},\
+    "annual_maximum": 2000,\
+    "deductible_individual": 50,\
+    "deductible_family": 150,\
+    "preventive_coverage": "100% (2 cleanings/year)",\
+    "basic_coverage": "80% after deductible",\
+    "major_coverage": "50% after deductible",\
+    "orthodontia_coverage": "50% up to $2,000 lifetime max (children under 18)",\
+    "waiting_period_major": "6 months if no prior coverage"\
+  \},\
+  "vision_plan": \{\
+    "plan_id": "VISION_STANDARD",\
+    "plan_name": "ClearSight Vision",\
+    "carrier": "ClearSight Vision",\
+    "premiums_monthly": \{\
+      "employee_only": 8,\
+      "employee_spouse": 18,\
+      "employee_children": 15,\
+      "family": 25\
+    \},\
+    "exam_copay": 10,\
+    "frame_allowance": 150,\
+    "lens_coverage": "100% (standard)",\
+    "contact_lens_allowance": 150,\
+    "frequency": "12 months"\
+  \},\
+  "prescription_drug_tiers": \{\
+    "tier_1_generic": \{\
+      "ppo_gold_copay": 10,\
+      "ppo_silver_copay": 15,\
+      "hmo_standard_copay": 10,\
+      "hdhp_copay": "Deductible, then $10"\
+    \},\
+    "tier_2_preferred_brand": \{\
+      "ppo_gold_copay": 30,\
+      "ppo_silver_copay": 40,\
+      "hmo_standard_copay": 30,\
+      "hdhp_copay": "Deductible, then $30"\
+    \},\
+    "tier_3_non_preferred_brand": \{\
+      "ppo_gold_copay": 60,\
+      "ppo_silver_copay": 75,\
+      "hmo_standard_copay": 60,\
+      "hdhp_copay": "Deductible, then $60"\
+    \},\
+    "tier_4_specialty": \{\
+      "ppo_gold_coinsurance": "20% (max $200)",\
+      "ppo_silver_coinsurance": "30% (max $250)",\
+      "hmo_standard_coinsurance": "20% (max $200)",\
+      "hdhp_coinsurance": "Deductible, then 20% (max $200)"\
+    \}\
+  \},\
+  "employee_benefit_elections": [\
+    \{\
+      "employee_id": "101",\
+      "full_name": "Alice Johnson",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2021-04-15",\
+      "medical_plan": "PPO_GOLD",\
+      "medical_plan_name": "PPO Gold",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": true,\
+      "fsa_type": "Healthcare FSA",\
+      "fsa_annual_election": 1500,\
+      "dependents_enrolled": [],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 150\
+    \},\
+    \{\
+      "employee_id": "102",\
+      "full_name": "Bob Williams",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2020-08-01",\
+      "medical_plan": "PPO_SILVER",\
+      "medical_plan_name": "PPO Silver",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": false,\
+      "fsa_type": null,\
+      "fsa_annual_election": 0,\
+      "dependents_enrolled": [\
+        \{ "name": "Sarah Williams", "relationship": "Spouse", "age": 34 \},\
+        \{ "name": "Tommy Williams", "relationship": "Child", "age": 8 \}\
+      ],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 200\
+    \},\
+    \{\
+      "employee_id": "103",\
+      "full_name": "Charlie Brown",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2022-02-10",\
+      "medical_plan": "HMO_STANDARD",\
+      "medical_plan_name": "HMO Standard",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": true,\
+      "fsa_type": "Dependent Care FSA",\
+      "fsa_annual_election": 3000,\
+      "dependents_enrolled": [\
+        \{ "name": "Lisa Brown", "relationship": "Spouse", "age": 32 \},\
+        \{ "name": "Emma Brown", "relationship": "Child", "age": 4 \}\
+      ],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": true,\
+      "wellness_stipend_used_ytd": 100\
+    \},\
+    \{\
+      "employee_id": "104",\
+      "full_name": "Diana Garcia",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2019-06-20",\
+      "medical_plan": "PPO_GOLD",\
+      "medical_plan_name": "PPO Gold",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": true,\
+      "fsa_type": "Healthcare FSA",\
+      "fsa_annual_election": 2000,\
+      "dependents_enrolled": [],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 300\
+    \},\
+    \{\
+      "employee_id": "105",\
+      "full_name": "Ethan Jones",\
+      "employment_type": "Part-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2023-04-01",\
+      "medical_plan": "HMO_STANDARD",\
+      "medical_plan_name": "HMO Standard",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": false,\
+      "fsa_type": null,\
+      "fsa_annual_election": 0,\
+      "dependents_enrolled": [],\
+      "life_insurance": false,\
+      "short_term_disability": false,\
+      "long_term_disability": false,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 0\
+    \},\
+    \{\
+      "employee_id": "106",\
+      "full_name": "Fiona Miller",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2021-12-05",\
+      "medical_plan": "PPO_GOLD",\
+      "medical_plan_name": "PPO Gold",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": true,\
+      "fsa_type": "Healthcare FSA",\
+      "fsa_annual_election": 1200,\
+      "dependents_enrolled": [],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 50\
+    \},\
+    \{\
+      "employee_id": "107",\
+      "full_name": "George Harris",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2023-09-01",\
+      "medical_plan": "HDHP",\
+      "medical_plan_name": "HDHP (High Deductible Health Plan)",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": true,\
+      "hsa_company_contribution": 500,\
+      "hsa_employee_contribution_annual": 2000,\
+      "fsa_enrolled": false,\
+      "fsa_type": null,\
+      "fsa_annual_election": 0,\
+      "dependents_enrolled": [],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 0\
+    \},\
+    \{\
+      "employee_id": "108",\
+      "full_name": "Hannah Lee",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2022-07-15",\
+      "medical_plan": "PPO_SILVER",\
+      "medical_plan_name": "PPO Silver",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": true,\
+      "fsa_type": "Healthcare FSA",\
+      "fsa_annual_election": 1800,\
+      "dependents_enrolled": [\
+        \{ "name": "David Lee", "relationship": "Spouse", "age": 35 \}\
+      ],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": true,\
+      "wellness_stipend_used_ytd": 250\
+    \},\
+    \{\
+      "employee_id": "109",\
+      "full_name": "Ian Chen",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2020-02-10",\
+      "medical_plan": "PPO_GOLD",\
+      "medical_plan_name": "PPO Gold",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": false,\
+      "fsa_type": null,\
+      "fsa_annual_election": 0,\
+      "dependents_enrolled": [\
+        \{ "name": "Mei Chen", "relationship": "Spouse", "age": 33 \},\
+        \{ "name": "Lily Chen", "relationship": "Child", "age": 5 \}\
+      ],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 400\
+    \},\
+    \{\
+      "employee_id": "110",\
+      "full_name": "Julia Kim",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2021-10-01",\
+      "medical_plan": "PPO_GOLD",\
+      "medical_plan_name": "PPO Gold",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": true,\
+      "fsa_type": "Dependent Care FSA",\
+      "fsa_annual_election": 4000,\
+      "dependents_enrolled": [\
+        \{ "name": "James Kim", "relationship": "Spouse", "age": 36 \},\
+        \{ "name": "Sophie Kim", "relationship": "Child", "age": 3 \}\
+      ],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 100\
+    \},\
+    \{\
+      "employee_id": "111",\
+      "full_name": "Kevin Patel",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2022-04-01",\
+      "medical_plan": "HMO_STANDARD",\
+      "medical_plan_name": "HMO Standard",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": false,\
+      "fsa_type": null,\
+      "fsa_annual_election": 0,\
+      "dependents_enrolled": [],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 50\
+    \},\
+    \{\
+      "employee_id": "112",\
+      "full_name": "Laura Martinez",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2018-12-15",\
+      "medical_plan": "PPO_GOLD",\
+      "medical_plan_name": "PPO Gold",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": true,\
+      "fsa_type": "Healthcare FSA",\
+      "fsa_annual_election": 2500,\
+      "dependents_enrolled": [\
+        \{ "name": "Carlos Martinez", "relationship": "Spouse", "age": 40 \},\
+        \{ "name": "Sofia Martinez", "relationship": "Child", "age": 10 \},\
+        \{ "name": "Diego Martinez", "relationship": "Child", "age": 7 \}\
+      ],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 300\
+    \},\
+    \{\
+      "employee_id": "113",\
+      "full_name": "Marcus Thompson",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2020-06-20",\
+      "medical_plan": "PPO_SILVER",\
+      "medical_plan_name": "PPO Silver",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": false,\
+      "fsa_type": null,\
+      "fsa_annual_election": 0,\
+      "dependents_enrolled": [\
+        \{ "name": "Aisha Thompson", "relationship": "Spouse", "age": 31 \}\
+      ],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 150\
+    \},\
+    \{\
+      "employee_id": "114",\
+      "full_name": "Nina Rodriguez",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2021-08-01",\
+      "medical_plan": "PPO_GOLD",\
+      "medical_plan_name": "PPO Gold",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": true,\
+      "fsa_type": "Healthcare FSA",\
+      "fsa_annual_election": 1000,\
+      "dependents_enrolled": [],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 100\
+    \},\
+    \{\
+      "employee_id": "115",\
+      "full_name": "Oliver Scott",\
+      "employment_type": "Temporary",\
+      "benefits_eligible": false,\
+      "benefits_effective_date": null,\
+      "medical_plan": "None",\
+      "medical_plan_name": "Not Eligible",\
+      "dental_enrolled": false,\
+      "vision_enrolled": false,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": false,\
+      "fsa_type": null,\
+      "fsa_annual_election": 0,\
+      "dependents_enrolled": [],\
+      "life_insurance": false,\
+      "short_term_disability": false,\
+      "long_term_disability": false,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 0\
+    \},\
+    \{\
+      "employee_id": "116",\
+      "full_name": "Priya Sharma",\
+      "employment_type": "Part-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2022-10-01",\
+      "medical_plan": "HMO_STANDARD",\
+      "medical_plan_name": "HMO Standard",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": false,\
+      "fsa_type": null,\
+      "fsa_annual_election": 0,\
+      "dependents_enrolled": [],\
+      "life_insurance": false,\
+      "short_term_disability": false,\
+      "long_term_disability": false,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 0\
+    \},\
+    \{\
+      "employee_id": "117",\
+      "full_name": "Quentin Adams",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2019-09-15",\
+      "medical_plan": "PPO_GOLD",\
+      "medical_plan_name": "PPO Gold",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": true,\
+      "fsa_type": "Healthcare FSA",\
+      "fsa_annual_election": 1500,\
+      "dependents_enrolled": [],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 200\
+    \},\
+    \{\
+      "employee_id": "118",\
+      "full_name": "Rachel Green",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2017-05-01",\
+      "medical_plan": "PPO_GOLD",\
+      "medical_plan_name": "PPO Gold",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": true,\
+      "fsa_type": "Dependent Care FSA",\
+      "fsa_annual_election": 5000,\
+      "dependents_enrolled": [\
+        \{ "name": "Ross Geller", "relationship": "Spouse", "age": 40 \},\
+        \{ "name": "Emma Green", "relationship": "Child", "age": 6 \}\
+      ],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 350\
+    \},\
+    \{\
+      "employee_id": "119",\
+      "full_name": "Sam Wilson",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2021-02-15",\
+      "medical_plan": "PPO_SILVER",\
+      "medical_plan_name": "PPO Silver",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": false,\
+      "fsa_type": null,\
+      "fsa_annual_election": 0,\
+      "dependents_enrolled": [],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 100\
+    \},\
+    \{\
+      "employee_id": "120",\
+      "full_name": "Tina Turner",\
+      "employment_type": "Full-Time",\
+      "benefits_eligible": true,\
+      "benefits_effective_date": "2018-03-01",\
+      "medical_plan": "PPO_GOLD",\
+      "medical_plan_name": "PPO Gold",\
+      "dental_enrolled": true,\
+      "vision_enrolled": true,\
+      "hsa_enrolled": false,\
+      "fsa_enrolled": true,\
+      "fsa_type": "Healthcare FSA",\
+      "fsa_annual_election": 2000,\
+      "dependents_enrolled": [],\
+      "life_insurance": true,\
+      "short_term_disability": true,\
+      "long_term_disability": true,\
+      "eap_enrolled": false,\
+      "wellness_stipend_used_ytd": 200\
+    \}\
+  ],\
+  "qualifying_life_events": [\
+    \{\
+      "event_type": "Marriage",\
+      "allowed_changes": ["Add spouse to medical/dental/vision", "Change plan", "Add/change FSA"],\
+      "documentation_required": "Marriage certificate",\
+      "deadline_days": 30\
+    \},\
+    \{\
+      "event_type": "Divorce",\
+      "allowed_changes": ["Remove spouse from coverage", "Change plan"],\
+      "documentation_required": "Divorce decree",\
+      "deadline_days": 30\
+    \},\
+    \{\
+      "event_type": "Birth",\
+      "allowed_changes": ["Add child to medical/dental/vision", "Change plan", "Add/change FSA"],\
+      "documentation_required": "Birth certificate or hospital record",\
+      "deadline_days": 30\
+    \},\
+    \{\
+      "event_type": "Adoption",\
+      "allowed_changes": ["Add child to medical/dental/vision", "Change plan", "Add/change FSA"],\
+      "documentation_required": "Adoption decree or placement agreement",\
+      "deadline_days": 30\
+    \},\
+    \{\
+      "event_type": "Loss of Other Coverage",\
+      "allowed_changes": ["Enroll in Innovatech plans", "Change plan"],\
+      "documentation_required": "Letter from previous carrier confirming termination",\
+      "deadline_days": 30\
+    \},\
+    \{\
+      "event_type": "Change in Employment Status",\
+      "allowed_changes": ["Change plan", "Add/remove dependents"],\
+      "documentation_required": "Letter from employer or pay stub",\
+      "deadline_days": 30\
+    \},\
+    \{\
+      "event_type": "Change in Residence",\
+      "allowed_changes": ["Change plan if HMO no longer available"],\
+      "documentation_required": "New lease or utility bill",\
+      "deadline_days": 30\
+    \},\
+    \{\
+      "event_type": "Medicare Eligibility",\
+      "allowed_changes": ["Change plan", "Remove dependents"],\
+      "documentation_required": "Medicare card",\
+      "deadline_days": 30\
+    \}\
+  ]\
+\}}

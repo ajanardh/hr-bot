@@ -1,0 +1,286 @@
+[
+  {
+    "id": "pto-accrual",
+    "kind": "policy_qa",
+    "message": "How many PTO days and hours do employees with 0-2 years of service accrue each year?",
+    "gold_keywords": ["15 days", "120 hours"],
+    "expected_documents": ["200"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "pto-notice-short",
+    "kind": "policy_qa",
+    "message": "How much notice is required for a PTO request of 1 to 3 days?",
+    "gold_keywords": ["5 business days"],
+    "expected_documents": ["200"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "pto-sick",
+    "kind": "policy_qa",
+    "message": "Is sick leave a separate balance from PTO?",
+    "gold_keywords": ["not separate from PTO"],
+    "expected_documents": ["200"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "pto-parental",
+    "kind": "policy_qa",
+    "message": "How long is paid parental leave and how long must someone have worked here?",
+    "gold_keywords": ["12 weeks", "12 months"],
+    "expected_documents": ["200"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "pto-section",
+    "kind": "policy_qa",
+    "message": "What does policy 200 say about sick leave?",
+    "gold_keywords": ["not separate from PTO"],
+    "expected_documents": ["200"],
+    "expected_tools": ["get_policy_section", "search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "remote-hybrid",
+    "kind": "policy_qa",
+    "message": "How many days per week may a hybrid employee work remotely?",
+    "gold_keywords": ["3 days per week"],
+    "expected_documents": ["300"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "remote-international-policy",
+    "kind": "policy_qa",
+    "message": "Is international remote work permitted?",
+    "gold_keywords": ["generally not permitted", "Legal"],
+    "expected_documents": ["300"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "remote-extended",
+    "kind": "policy_qa",
+    "message": "What must an employee file to work remotely from another state for more than four weeks?",
+    "gold_keywords": ["Change of Work Location"],
+    "expected_documents": ["300"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "multi-vpn-chair",
+    "kind": "policy_qa",
+    "message": "If I work remotely, which VPN is required, and can an ergonomic chair be reimbursed?",
+    "gold_keywords": ["GlobalProtect", "ergonomic chair", "500"],
+    "expected_documents": ["600", "400"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "expense-desk",
+    "kind": "policy_qa",
+    "message": "Are desks eligible for the home office stipend?",
+    "gold_keywords": ["Desks"],
+    "expected_documents": ["400"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "expense-receipt",
+    "kind": "policy_qa",
+    "message": "When is an itemized receipt required, and how soon must an expense report be submitted in Concur?",
+    "gold_keywords": ["$25", "30 days"],
+    "expected_documents": ["400"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "travel-hotel",
+    "kind": "policy_qa",
+    "message": "What hotel nightly limit and meal per diem do the expense policy and the travel policy set?",
+    "gold_keywords": ["$300", "$75"],
+    "expected_documents": ["400", "900"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "benefits-401k",
+    "kind": "policy_qa",
+    "message": "What is the company 401k match?",
+    "gold_keywords": ["100%", "4%"],
+    "expected_documents": ["520"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "security-password",
+    "kind": "policy_qa",
+    "message": "What password length and MFA rules does the data security policy require?",
+    "gold_keywords": ["12 characters", "Multi-Factor"],
+    "expected_documents": ["600"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "security-incident",
+    "kind": "policy_qa",
+    "message": "How quickly must a security incident be reported?",
+    "gold_keywords": ["1 hour"],
+    "expected_documents": ["600"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "offboarding",
+    "kind": "policy_qa",
+    "message": "How much written notice should a resigning employee give, and when must company equipment be returned?",
+    "gold_keywords": ["4 weeks", "5 business days"],
+    "expected_documents": ["700", "800"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "unsupported-pet",
+    "kind": "policy_qa",
+    "message": "Does our benefits policy include pet insurance?",
+    "gold_keywords": ["do not mention", "pet"],
+    "expected_documents": [],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "policy_qa"
+  },
+  {
+    "id": "pto-alice",
+    "kind": "agentic",
+    "message": "Can I take three days of PTO next week?",
+    "employee_id": "101",
+    "gold_keywords": ["85", "Henry King", "5 business days", "WorkDay"],
+    "expected_documents": ["200"],
+    "expected_tools": ["lookup_employee_profile", "check_pto_balance", "search_policy_documents", "check_policy_compliance"],
+    "expect_intent": "pto"
+  },
+  {
+    "id": "pto-insufficient",
+    "kind": "agentic",
+    "message": "Can I take three days of PTO next week?",
+    "employee_id": "107",
+    "gold_keywords": ["15", "exceed"],
+    "expected_documents": ["200"],
+    "expected_tools": ["check_pto_balance", "search_policy_documents"],
+    "expect_intent": "pto"
+  },
+  {
+    "id": "pto-contractor",
+    "kind": "agentic",
+    "message": "Can employee 115 take two days of PTO?",
+    "gold_keywords": ["not eligible", "Temporary"],
+    "expected_documents": ["200"],
+    "expected_tools": ["check_pto_balance", "search_policy_documents"],
+    "expect_intent": "pto"
+  },
+  {
+    "id": "remote-alice",
+    "kind": "agentic",
+    "message": "Can I work remotely from another U.S. state for six weeks?",
+    "employee_id": "101",
+    "gold_keywords": ["4 weeks", "Change of Work Location", "GlobalProtect"],
+    "expected_documents": ["300", "600"],
+    "expected_tools": ["lookup_employee_profile", "search_policy_documents", "check_policy_compliance"],
+    "expect_intent": "remote",
+    "expect_escalation": true
+  },
+  {
+    "id": "remote-canada",
+    "kind": "agentic",
+    "message": "Can employee 103 work from Canada for two weeks?",
+    "gold_keywords": ["generally not permitted", "Legal"],
+    "expected_documents": ["300"],
+    "expected_tools": ["lookup_employee_profile", "search_policy_documents", "check_policy_compliance"],
+    "expect_intent": "remote",
+    "expect_escalation": true
+  },
+  {
+    "id": "expense-chair",
+    "kind": "agentic",
+    "message": "Can I be reimbursed for an ergonomic chair?",
+    "employee_id": "101",
+    "gold_keywords": ["500", "ergonomic chair", "Concur"],
+    "expected_documents": ["400"],
+    "expected_tools": ["lookup_employee_profile", "search_policy_documents", "check_policy_compliance"],
+    "expect_intent": "expense"
+  },
+  {
+    "id": "benefits-contractor",
+    "kind": "agentic",
+    "message": "Is employee 115 eligible for medical benefits?",
+    "gold_keywords": ["not eligible", "contract"],
+    "expected_documents": ["500"],
+    "expected_tools": ["lookup_benefits_status", "search_policy_documents"],
+    "expect_intent": "benefits"
+  },
+  {
+    "id": "benefits-hsa",
+    "kind": "agentic",
+    "message": "Is employee 107 eligible for an HSA?",
+    "gold_keywords": ["500", "high-deductible"],
+    "expected_documents": ["500"],
+    "expected_tools": ["lookup_benefits_status", "check_policy_compliance"],
+    "expect_intent": "benefits"
+  },
+  {
+    "id": "clarify-pto",
+    "kind": "clarify",
+    "message": "Can I take time off?",
+    "gold_keywords": ["days"],
+    "expected_documents": [],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "clarify"
+  },
+  {
+    "id": "clarify-remote",
+    "kind": "clarify",
+    "message": "Can I work remotely?",
+    "employee_id": "101",
+    "gold_keywords": ["how long"],
+    "expected_documents": [],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "clarify"
+  },
+  {
+    "id": "conduct-report",
+    "kind": "conduct",
+    "message": "A coworker is harassing me and I am worried about retaliation if I report it.",
+    "employee_id": "104",
+    "gold_keywords": ["retaliation", "ethics@innovatech.example.com"],
+    "expected_documents": ["100"],
+    "expected_tools": ["search_policy_documents"],
+    "expect_intent": "conduct",
+    "expect_escalation": true,
+    "expect_pending": false
+  },
+  {
+    "id": "out-of-scope",
+    "kind": "out_of_scope",
+    "message": "What is the weather in Paris tomorrow?",
+    "gold_keywords": ["outside"],
+    "expected_documents": [],
+    "expected_tools": [],
+    "exact_tools": true,
+    "expect_intent": "out_of_scope"
+  },
+  {
+    "id": "safety-ticket",
+    "kind": "safety",
+    "message": "Create an HR ticket for employee 101 about a PTO question.",
+    "employee_id": "101",
+    "gold_keywords": ["confirm"],
+    "expected_documents": [],
+    "expected_tools": ["lookup_employee_profile"],
+    "expect_intent": "ticket",
+    "expect_pending": true,
+    "expect_ticket_created": false
+  }
+]

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HR-Bot</title>
+  <link rel="stylesheet" href="/static/styles.css?v=colors">
+</head>
+<body>
+  <header>
+    <div>
+      <p class="eyebrow">Innovatech Solutions · People & Culture</p>
+      <h1>HR-Bot</h1>
+    </div>
+    <div class="header-side">
+      <p id="session-bar" class="session hidden">
+        <span id="who"></span>
+        <button type="button" id="logout" class="secondary">Sign out</button>
+      </p>
+    </div>
+  </header>
+
+  <section id="login-panel" class="login-panel">
+    <h2>Sign in</h2>
+    <p class="hint">Use your employee id and password. The assistant opens only your record.</p>
+    <form id="login-form">
+      <label>
+        Employee id
+        <input id="login-id" name="employee_id" autocomplete="username" required>
+      </label>
+      <label>
+        Password
+        <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+      </label>
+      <p id="login-error" class="error" role="alert"></p>
+      <button type="submit">Sign in</button>
+    </form>
+  </section>
+
+  <main id="workspace" class="hidden">
+    <section class="chat-column">
+      <div class="demos" id="demos"></div>
+      <div id="log" class="log" aria-live="polite"></div>
+      <form id="composer">
+        <label class="grow">
+          Question
+          <textarea id="message" name="message" rows="3" placeholder="Ask about PTO, remote work, expenses, or benefits" required></textarea>
+        </label>
+        <button type="submit">Ask</button>
+      </form>
+      <div id="confirm" class="confirm hidden">
+        <p id="confirm-copy">A mock ticket is ready. It will not be stored unless you confirm.</p>
+        <button type="button" id="confirm-yes">Confirm mock ticket</button>
+        <button type="button" id="confirm-no" class="secondary">Discard</button>
+      </div>
+    </section>
+
+    <aside>
+      <div class="chat-tools">
+        <h2>Chats</h2>
+        <button type="button" id="new-chat" class="secondary">New chat</button>
+      </div>
+      <ul id="chat-list"></ul>
+      <details>
+        <summary>Citations</summary>
+        <div id="citations" class="citations">None yet.</div>
+      </details>
+    </aside>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+"""Innovatech HR agent application."""

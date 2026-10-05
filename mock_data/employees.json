@@ -1,0 +1,2938 @@
+{
+  "metadata": {
+    "company": "Innovatech Solutions",
+    "version": "1.0",
+    "last_updated": "2023-10-26",
+    "description": "Mock employee records plus healthcare plan data (document 510 / 1200) and 401k plan data (document 520 / 1300). Healthcare and 401k elections are a seeded random selection from those plan options.",
+    "as_of_date": "2023-10-26"
+  },
+  "employees": [
+    {
+      "employee_id": "101",
+      "full_name": "Alice Johnson",
+      "email": "alice.johnson@innovatech.example.com",
+      "role": "Software Engineer",
+      "department": "Engineering",
+      "manager_id": "201",
+      "manager_name": "Henry King",
+      "employment_type": "Full-Time",
+      "hire_date": "2021-03-15",
+      "office_location": "San Francisco, CA",
+      "work_location": "San Francisco, CA",
+      "state_of_residence": "CA",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 45,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 5.0,
+        "annual_accrual_hours": 120,
+        "accrued_ytd_hours": 100,
+        "used_ytd_hours": 35,
+        "available_hours": 85,
+        "carryover_limit_hours": 180,
+        "carryover_from_last_year_hours": 20
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2021-04-15",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Gold",
+        "dental": true,
+        "vision": true,
+        "401k_contribution_percent": 5,
+        "hsa_enrolled": false,
+        "fsa_enrolled": true,
+        "fsa_type": "Healthcare FSA",
+        "life_insurance": true,
+        "short_term_disability": false,
+        "long_term_disability": true,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 150,
+        "medical_plan_id": "PPO_GOLD",
+        "coverage_tier": "employee_spouse",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 3000,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Pre-Tax",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_FREEDOM_2055",
+            "percent": 100
+          }
+        ],
+        "401k_beneficiary_designated": true
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-101",
+          "type": "Laptop",
+          "model": "MacBook Pro 16",
+          "issued_date": "2021-03-15"
+        },
+        {
+          "asset_id": "MON-101",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 27",
+          "issued_date": "2021-03-20"
+        },
+        {
+          "asset_id": "KB-101",
+          "type": "Keyboard",
+          "model": "Logitech MX Keys",
+          "issued_date": "2021-03-20"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "102",
+      "full_name": "Bob Williams",
+      "email": "bob.williams@innovatech.example.com",
+      "role": "Product Manager",
+      "department": "Product",
+      "manager_id": "201",
+      "manager_name": "Henry King",
+      "employment_type": "Full-Time",
+      "hire_date": "2020-07-01",
+      "office_location": "New York, NY",
+      "work_location": "New York, NY",
+      "state_of_residence": "NY",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 60,
+      "temporary_remote_days_used_ytd": 10,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 6.67,
+        "annual_accrual_hours": 160,
+        "accrued_ytd_hours": 133.4,
+        "used_ytd_hours": 120,
+        "available_hours": 42,
+        "carryover_limit_hours": 240,
+        "carryover_from_last_year_hours": 28.6
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2020-08-01",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Silver",
+        "dental": false,
+        "vision": true,
+        "401k_contribution_percent": 4,
+        "hsa_enrolled": false,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": true,
+        "short_term_disability": false,
+        "long_term_disability": false,
+        "eap_enrolled": false,
+        "wellness_stipend_used_ytd": 200,
+        "medical_plan_id": "PPO_SILVER",
+        "coverage_tier": "family",
+        "dental_plan": null,
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Pre-Tax",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_TOTAL_MARKET",
+            "percent": 100
+          }
+        ],
+        "401k_beneficiary_designated": true
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-102",
+          "type": "Laptop",
+          "model": "MacBook Pro 14",
+          "issued_date": "2020-07-01"
+        },
+        {
+          "asset_id": "MON-102",
+          "type": "Monitor",
+          "model": "LG 27UK850",
+          "issued_date": "2020-07-15"
+        }
+      ],
+      "home_office_stipend": {
+        "used": true,
+        "amount_used": 480,
+        "date_used": "2021-02-10"
+      },
+      "prior_hr_cases": 1,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "103",
+      "full_name": "Charlie Brown",
+      "email": "charlie.brown@innovatech.example.com",
+      "role": "Marketing Specialist",
+      "department": "Marketing",
+      "manager_id": "202",
+      "manager_name": "Ivy Lopez",
+      "employment_type": "Full-Time",
+      "hire_date": "2022-01-10",
+      "office_location": "Austin, TX",
+      "work_location": "Austin, TX",
+      "state_of_residence": "TX",
+      "remote_work_status": "Fully Remote",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 180,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 5.0,
+        "annual_accrual_hours": 120,
+        "accrued_ytd_hours": 100,
+        "used_ytd_hours": 10,
+        "available_hours": 110,
+        "carryover_limit_hours": 180,
+        "carryover_from_last_year_hours": 20
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2022-02-10",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Gold",
+        "dental": false,
+        "vision": false,
+        "401k_contribution_percent": 2,
+        "hsa_enrolled": false,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": true,
+        "short_term_disability": false,
+        "long_term_disability": true,
+        "eap_enrolled": false,
+        "wellness_stipend_used_ytd": 100,
+        "medical_plan_id": "PPO_GOLD",
+        "coverage_tier": "employee_children",
+        "dental_plan": null,
+        "vision_plan": null,
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Pre-Tax",
+        "401k_company_match_percent": 2,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_500_INDEX",
+            "percent": 25
+          },
+          {
+            "fund_id": "FID_TOTAL_MARKET",
+            "percent": 66
+          },
+          {
+            "fund_id": "FID_MANAGED_INCOME",
+            "percent": 9
+          }
+        ],
+        "401k_beneficiary_designated": true
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-103",
+          "type": "Laptop",
+          "model": "Dell XPS 13",
+          "issued_date": "2022-01-10"
+        },
+        {
+          "asset_id": "HS-103",
+          "type": "Headset",
+          "model": "Jabra Evolve2 65",
+          "issued_date": "2022-01-10"
+        }
+      ],
+      "home_office_stipend": {
+        "used": true,
+        "amount_used": 500,
+        "date_used": "2022-02-15"
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "104",
+      "full_name": "Diana Garcia",
+      "email": "diana.garcia@innovatech.example.com",
+      "role": "Senior Designer",
+      "department": "Design",
+      "manager_id": "201",
+      "manager_name": "Henry King",
+      "employment_type": "Full-Time",
+      "hire_date": "2019-05-20",
+      "office_location": "Chicago, IL",
+      "work_location": "Chicago, IL",
+      "state_of_residence": "IL",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 50,
+      "temporary_remote_days_used_ytd": 5,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 6.67,
+        "annual_accrual_hours": 160,
+        "accrued_ytd_hours": 133.4,
+        "used_ytd_hours": 53.4,
+        "available_hours": 160,
+        "carryover_limit_hours": 240,
+        "carryover_from_last_year_hours": 80
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2019-06-20",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Gold",
+        "dental": true,
+        "vision": true,
+        "401k_contribution_percent": 5,
+        "hsa_enrolled": false,
+        "fsa_enrolled": true,
+        "fsa_type": "Dependent Care FSA",
+        "life_insurance": false,
+        "short_term_disability": false,
+        "long_term_disability": true,
+        "eap_enrolled": false,
+        "wellness_stipend_used_ytd": 300,
+        "medical_plan_id": "PPO_GOLD",
+        "coverage_tier": "employee_only",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 1500,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_500_INDEX",
+            "percent": 100
+          }
+        ],
+        "401k_beneficiary_designated": true
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-104",
+          "type": "Laptop",
+          "model": "MacBook Pro 16",
+          "issued_date": "2019-05-20"
+        },
+        {
+          "asset_id": "MON-104",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 32",
+          "issued_date": "2019-06-01"
+        },
+        {
+          "asset_id": "TAB-104",
+          "type": "Drawing Tablet",
+          "model": "Wacom Cintiq 16",
+          "issued_date": "2020-01-15"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "105",
+      "full_name": "Ethan Jones",
+      "email": "ethan.jones@innovatech.example.com",
+      "role": "Data Analyst",
+      "department": "Engineering",
+      "manager_id": "201",
+      "manager_name": "Henry King",
+      "employment_type": "Part-Time",
+      "hire_date": "2023-02-01",
+      "office_location": "Seattle, WA",
+      "work_location": "Seattle, WA",
+      "state_of_residence": "WA",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 30,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 2.5,
+        "annual_accrual_hours": 60,
+        "accrued_ytd_hours": 45,
+        "used_ytd_hours": 15,
+        "available_hours": 30,
+        "carryover_limit_hours": 90,
+        "carryover_from_last_year_hours": 0
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2023-04-01",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Silver",
+        "dental": false,
+        "vision": false,
+        "401k_contribution_percent": 3,
+        "hsa_enrolled": false,
+        "fsa_enrolled": true,
+        "fsa_type": "Healthcare FSA",
+        "life_insurance": false,
+        "short_term_disability": true,
+        "long_term_disability": true,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 0,
+        "medical_plan_id": "PPO_SILVER",
+        "coverage_tier": "family",
+        "dental_plan": null,
+        "vision_plan": null,
+        "fsa_annual_election": 3000,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 3,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_500_INDEX",
+            "percent": 28
+          },
+          {
+            "fund_id": "FID_FREEDOM_2035",
+            "percent": 72
+          }
+        ],
+        "401k_beneficiary_designated": false
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-105",
+          "type": "Laptop",
+          "model": "Dell Latitude 5540",
+          "issued_date": "2023-02-01"
+        },
+        {
+          "asset_id": "MON-105",
+          "type": "Monitor",
+          "model": "HP 24mh",
+          "issued_date": "2023-02-15"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "106",
+      "full_name": "Fiona Miller",
+      "email": "fiona.miller@innovatech.example.com",
+      "role": "HR Generalist",
+      "department": "People & Culture",
+      "manager_id": "203",
+      "manager_name": "Jack Nelson",
+      "employment_type": "Full-Time",
+      "hire_date": "2021-11-05",
+      "office_location": "Miami, FL",
+      "work_location": "Miami, FL",
+      "state_of_residence": "FL",
+      "remote_work_status": "Fully Remote",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 180,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 5.0,
+        "annual_accrual_hours": 120,
+        "accrued_ytd_hours": 100,
+        "used_ytd_hours": 60,
+        "available_hours": 60,
+        "carryover_limit_hours": 180,
+        "carryover_from_last_year_hours": 20
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2021-12-05",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Silver",
+        "dental": true,
+        "vision": false,
+        "401k_contribution_percent": 8,
+        "hsa_enrolled": false,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": true,
+        "short_term_disability": true,
+        "long_term_disability": false,
+        "eap_enrolled": false,
+        "wellness_stipend_used_ytd": 50,
+        "medical_plan_id": "PPO_SILVER",
+        "coverage_tier": "family",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": null,
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_FREEDOM_2055",
+            "percent": 66
+          },
+          {
+            "fund_id": "FID_FREEDOM_2045",
+            "percent": 34
+          }
+        ],
+        "401k_beneficiary_designated": false
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-106",
+          "type": "Laptop",
+          "model": "MacBook Air M2",
+          "issued_date": "2021-11-05"
+        },
+        {
+          "asset_id": "HS-106",
+          "type": "Headset",
+          "model": "Poly Voyager 4320",
+          "issued_date": "2021-11-05"
+        }
+      ],
+      "home_office_stipend": {
+        "used": true,
+        "amount_used": 500,
+        "date_used": "2021-12-01"
+      },
+      "prior_hr_cases": 2,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "107",
+      "full_name": "George Harris",
+      "email": "george.harris@innovatech.example.com",
+      "role": "Junior Engineer",
+      "department": "Engineering",
+      "manager_id": "201",
+      "manager_name": "Henry King",
+      "employment_type": "Full-Time",
+      "hire_date": "2023-08-01",
+      "office_location": "Denver, CO",
+      "work_location": "Denver, CO",
+      "state_of_residence": "CO",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 15,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 5.0,
+        "annual_accrual_hours": 120,
+        "accrued_ytd_hours": 30,
+        "used_ytd_hours": 15,
+        "available_hours": 15,
+        "carryover_limit_hours": 180,
+        "carryover_from_last_year_hours": 0
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2023-09-01",
+        "benefits_enrolled": true,
+        "medical_plan": "HDHP (High Deductible Health Plan)",
+        "dental": true,
+        "vision": false,
+        "401k_contribution_percent": 2,
+        "hsa_enrolled": true,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": false,
+        "short_term_disability": false,
+        "long_term_disability": false,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 0,
+        "medical_plan_id": "HDHP",
+        "coverage_tier": "employee_spouse",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": null,
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Pre-Tax",
+        "401k_company_match_percent": 2,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_MANAGED_INCOME",
+            "percent": 44
+          },
+          {
+            "fund_id": "FID_500_INDEX",
+            "percent": 39
+          },
+          {
+            "fund_id": "FID_INTL_INDEX",
+            "percent": 17
+          }
+        ],
+        "401k_beneficiary_designated": true
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-107",
+          "type": "Laptop",
+          "model": "Dell XPS 15",
+          "issued_date": "2023-08-01"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "108",
+      "full_name": "Hannah Lee",
+      "email": "hannah.lee@innovatech.example.com",
+      "role": "Content Strategist",
+      "department": "Marketing",
+      "manager_id": "202",
+      "manager_name": "Ivy Lopez",
+      "employment_type": "Full-Time",
+      "hire_date": "2022-06-15",
+      "office_location": "New York, NY",
+      "work_location": "New York, NY",
+      "state_of_residence": "NY",
+      "remote_work_status": "Fully Remote",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 180,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 5.0,
+        "annual_accrual_hours": 120,
+        "accrued_ytd_hours": 100,
+        "used_ytd_hours": 25,
+        "available_hours": 95,
+        "carryover_limit_hours": 180,
+        "carryover_from_last_year_hours": 20
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2022-07-15",
+        "benefits_enrolled": true,
+        "medical_plan": "HMO Standard",
+        "dental": true,
+        "vision": false,
+        "401k_contribution_percent": 3,
+        "hsa_enrolled": false,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": true,
+        "short_term_disability": true,
+        "long_term_disability": false,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 250,
+        "medical_plan_id": "HMO_STANDARD",
+        "coverage_tier": "family",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": null,
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Pre-Tax",
+        "401k_company_match_percent": 3,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_FREEDOM_2045",
+            "percent": 77
+          },
+          {
+            "fund_id": "FID_FREEDOM_2025",
+            "percent": 23
+          }
+        ],
+        "401k_beneficiary_designated": false
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-108",
+          "type": "Laptop",
+          "model": "MacBook Pro 14",
+          "issued_date": "2022-06-15"
+        },
+        {
+          "asset_id": "MON-108",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 27",
+          "issued_date": "2022-07-01"
+        }
+      ],
+      "home_office_stipend": {
+        "used": true,
+        "amount_used": 300,
+        "date_used": "2022-08-01"
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "109",
+      "full_name": "Ian Chen",
+      "email": "ian.chen@innovatech.example.com",
+      "role": "DevOps Engineer",
+      "department": "Engineering",
+      "manager_id": "201",
+      "manager_name": "Henry King",
+      "employment_type": "Full-Time",
+      "hire_date": "2020-01-10",
+      "office_location": "San Francisco, CA",
+      "work_location": "San Francisco, CA",
+      "state_of_residence": "CA",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 55,
+      "temporary_remote_days_used_ytd": 15,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 6.67,
+        "annual_accrual_hours": 160,
+        "accrued_ytd_hours": 133.4,
+        "used_ytd_hours": 43.4,
+        "available_hours": 130,
+        "carryover_limit_hours": 240,
+        "carryover_from_last_year_hours": 40
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2020-02-10",
+        "benefits_enrolled": true,
+        "medical_plan": "HDHP (High Deductible Health Plan)",
+        "dental": false,
+        "vision": true,
+        "401k_contribution_percent": 2,
+        "hsa_enrolled": true,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": true,
+        "short_term_disability": true,
+        "long_term_disability": true,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 400,
+        "medical_plan_id": "HDHP",
+        "coverage_tier": "employee_children",
+        "dental_plan": null,
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 2,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_MANAGED_INCOME",
+            "percent": 100
+          }
+        ],
+        "401k_beneficiary_designated": true
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-109",
+          "type": "Laptop",
+          "model": "MacBook Pro 16",
+          "issued_date": "2020-01-10"
+        },
+        {
+          "asset_id": "MON-109",
+          "type": "Monitor",
+          "model": "LG 34WN80C",
+          "issued_date": "2020-01-20"
+        },
+        {
+          "asset_id": "KB-109",
+          "type": "Keyboard",
+          "model": "Keychron K2",
+          "issued_date": "2020-01-20"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "110",
+      "full_name": "Julia Kim",
+      "email": "julia.kim@innovatech.example.com",
+      "role": "UX Researcher",
+      "department": "Design",
+      "manager_id": "201",
+      "manager_name": "Henry King",
+      "employment_type": "Full-Time",
+      "hire_date": "2021-09-01",
+      "office_location": "Los Angeles, CA",
+      "work_location": "Los Angeles, CA",
+      "state_of_residence": "CA",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 40,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 5.0,
+        "annual_accrual_hours": 120,
+        "accrued_ytd_hours": 100,
+        "used_ytd_hours": 50,
+        "available_hours": 70,
+        "carryover_limit_hours": 180,
+        "carryover_from_last_year_hours": 20
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2021-10-01",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Silver",
+        "dental": false,
+        "vision": true,
+        "401k_contribution_percent": 3,
+        "hsa_enrolled": false,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": true,
+        "short_term_disability": false,
+        "long_term_disability": false,
+        "eap_enrolled": false,
+        "wellness_stipend_used_ytd": 100,
+        "medical_plan_id": "PPO_SILVER",
+        "coverage_tier": "employee_children",
+        "dental_plan": null,
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 3,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_BOND_INDEX",
+            "percent": 9
+          },
+          {
+            "fund_id": "FID_FREEDOM_2035",
+            "percent": 20
+          },
+          {
+            "fund_id": "FID_MANAGED_INCOME",
+            "percent": 71
+          }
+        ],
+        "401k_beneficiary_designated": false
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-110",
+          "type": "Laptop",
+          "model": "MacBook Pro 14",
+          "issued_date": "2021-09-01"
+        },
+        {
+          "asset_id": "MON-110",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 27",
+          "issued_date": "2021-09-15"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "111",
+      "full_name": "Kevin Patel",
+      "email": "kevin.patel@innovatech.example.com",
+      "role": "Sales Representative",
+      "department": "Sales",
+      "manager_id": "206",
+      "manager_name": "Sarah Davis",
+      "employment_type": "Full-Time",
+      "hire_date": "2022-03-01",
+      "office_location": "Chicago, IL",
+      "work_location": "Chicago, IL",
+      "state_of_residence": "IL",
+      "remote_work_status": "On-Site",
+      "remote_work_eligibility": false,
+      "remote_work_days_used_ytd": 0,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 0,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 5.0,
+        "annual_accrual_hours": 120,
+        "accrued_ytd_hours": 100,
+        "used_ytd_hours": 32,
+        "available_hours": 88,
+        "carryover_limit_hours": 180,
+        "carryover_from_last_year_hours": 20
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2022-04-01",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Gold",
+        "dental": true,
+        "vision": true,
+        "401k_contribution_percent": 4,
+        "hsa_enrolled": false,
+        "fsa_enrolled": true,
+        "fsa_type": "Healthcare FSA",
+        "life_insurance": true,
+        "short_term_disability": false,
+        "long_term_disability": true,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 50,
+        "medical_plan_id": "PPO_GOLD",
+        "coverage_tier": "employee_only",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 500,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_BOND_INDEX",
+            "percent": 17
+          },
+          {
+            "fund_id": "FID_FREEDOM_2055",
+            "percent": 76
+          },
+          {
+            "fund_id": "FID_500_INDEX",
+            "percent": 7
+          }
+        ],
+        "401k_beneficiary_designated": false
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-111",
+          "type": "Laptop",
+          "model": "Dell Latitude 5540",
+          "issued_date": "2022-03-01"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 1,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "112",
+      "full_name": "Laura Martinez",
+      "email": "laura.martinez@innovatech.example.com",
+      "role": "Financial Analyst",
+      "department": "Finance",
+      "manager_id": "205",
+      "manager_name": "David Brown",
+      "employment_type": "Full-Time",
+      "hire_date": "2018-11-15",
+      "office_location": "New York, NY",
+      "work_location": "New York, NY",
+      "state_of_residence": "NY",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 48,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 6.67,
+        "annual_accrual_hours": 160,
+        "accrued_ytd_hours": 133.4,
+        "used_ytd_hours": 48.4,
+        "available_hours": 145,
+        "carryover_limit_hours": 240,
+        "carryover_from_last_year_hours": 60
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2018-12-15",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Silver",
+        "dental": true,
+        "vision": true,
+        "401k_contribution_percent": 8,
+        "hsa_enrolled": false,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": false,
+        "short_term_disability": false,
+        "long_term_disability": false,
+        "eap_enrolled": false,
+        "wellness_stipend_used_ytd": 300,
+        "medical_plan_id": "PPO_SILVER",
+        "coverage_tier": "employee_spouse",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_FREEDOM_2025",
+            "percent": 52
+          },
+          {
+            "fund_id": "FID_FREEDOM_2035",
+            "percent": 42
+          },
+          {
+            "fund_id": "FID_MANAGED_INCOME",
+            "percent": 6
+          }
+        ],
+        "401k_beneficiary_designated": false
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-112",
+          "type": "Laptop",
+          "model": "MacBook Pro 16",
+          "issued_date": "2018-11-15"
+        },
+        {
+          "asset_id": "MON-112",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 27",
+          "issued_date": "2018-11-20"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "113",
+      "full_name": "Marcus Thompson",
+      "email": "marcus.thompson@innovatech.example.com",
+      "role": "Customer Success Manager",
+      "department": "Operations",
+      "manager_id": "204",
+      "manager_name": "Karen Owens",
+      "employment_type": "Full-Time",
+      "hire_date": "2020-05-20",
+      "office_location": "Austin, TX",
+      "work_location": "Austin, TX",
+      "state_of_residence": "TX",
+      "remote_work_status": "Fully Remote",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 180,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 6.67,
+        "annual_accrual_hours": 160,
+        "accrued_ytd_hours": 133.4,
+        "used_ytd_hours": 53.4,
+        "available_hours": 120,
+        "carryover_limit_hours": 240,
+        "carryover_from_last_year_hours": 40
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2020-06-20",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Gold",
+        "dental": false,
+        "vision": true,
+        "401k_contribution_percent": 4,
+        "hsa_enrolled": false,
+        "fsa_enrolled": true,
+        "fsa_type": "Dependent Care FSA",
+        "life_insurance": false,
+        "short_term_disability": false,
+        "long_term_disability": true,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 150,
+        "medical_plan_id": "PPO_GOLD",
+        "coverage_tier": "employee_spouse",
+        "dental_plan": null,
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 1000,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_FREEDOM_2035",
+            "percent": 2
+          },
+          {
+            "fund_id": "FID_FREEDOM_2025",
+            "percent": 68
+          },
+          {
+            "fund_id": "FID_TOTAL_MARKET",
+            "percent": 30
+          }
+        ],
+        "401k_beneficiary_designated": true
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-113",
+          "type": "Laptop",
+          "model": "MacBook Air M2",
+          "issued_date": "2020-05-20"
+        },
+        {
+          "asset_id": "HS-113",
+          "type": "Headset",
+          "model": "Jabra Evolve2 65",
+          "issued_date": "2020-05-20"
+        }
+      ],
+      "home_office_stipend": {
+        "used": true,
+        "amount_used": 450,
+        "date_used": "2020-07-01"
+      },
+      "prior_hr_cases": 1,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "114",
+      "full_name": "Nina Rodriguez",
+      "email": "nina.rodriguez@innovatech.example.com",
+      "role": "Recruiter",
+      "department": "People & Culture",
+      "manager_id": "203",
+      "manager_name": "Jack Nelson",
+      "employment_type": "Full-Time",
+      "hire_date": "2021-07-01",
+      "office_location": "Miami, FL",
+      "work_location": "Miami, FL",
+      "state_of_residence": "FL",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 42,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 5.0,
+        "annual_accrual_hours": 120,
+        "accrued_ytd_hours": 100,
+        "used_ytd_hours": 42,
+        "available_hours": 78,
+        "carryover_limit_hours": 180,
+        "carryover_from_last_year_hours": 20
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2021-08-01",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Silver",
+        "dental": false,
+        "vision": true,
+        "401k_contribution_percent": 8,
+        "hsa_enrolled": false,
+        "fsa_enrolled": true,
+        "fsa_type": "Dependent Care FSA",
+        "life_insurance": true,
+        "short_term_disability": false,
+        "long_term_disability": true,
+        "eap_enrolled": false,
+        "wellness_stipend_used_ytd": 100,
+        "medical_plan_id": "PPO_SILVER",
+        "coverage_tier": "family",
+        "dental_plan": null,
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 500,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_500_INDEX",
+            "percent": 90
+          },
+          {
+            "fund_id": "FID_INTL_INDEX",
+            "percent": 10
+          }
+        ],
+        "401k_beneficiary_designated": false
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-114",
+          "type": "Laptop",
+          "model": "MacBook Pro 14",
+          "issued_date": "2021-07-01"
+        },
+        {
+          "asset_id": "MON-114",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 27",
+          "issued_date": "2021-07-15"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 1,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "115",
+      "full_name": "Oliver Scott",
+      "email": "oliver.scott@innovatech.example.com",
+      "role": "Contract Developer",
+      "department": "Engineering",
+      "manager_id": "201",
+      "manager_name": "Henry King",
+      "employment_type": "Temporary",
+      "hire_date": "2023-06-01",
+      "office_location": "Remote",
+      "work_location": "Remote",
+      "state_of_residence": "TX",
+      "remote_work_status": "Fully Remote",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 100,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 0,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 0,
+        "annual_accrual_hours": 0,
+        "accrued_ytd_hours": 0,
+        "used_ytd_hours": 0,
+        "available_hours": 0,
+        "carryover_limit_hours": 0,
+        "carryover_from_last_year_hours": 0
+      },
+      "benefits_elections": {
+        "benefits_eligible": false,
+        "benefits_effective_date": null,
+        "benefits_enrolled": false,
+        "medical_plan": "None",
+        "dental": false,
+        "vision": false,
+        "401k_contribution_percent": 0,
+        "hsa_enrolled": false,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": false,
+        "short_term_disability": false,
+        "long_term_disability": false,
+        "eap_enrolled": false,
+        "wellness_stipend_used_ytd": 0,
+        "medical_plan_id": null,
+        "coverage_tier": null,
+        "dental_plan": null,
+        "vision_plan": null,
+        "fsa_annual_election": 0,
+        "401k_enrolled": false,
+        "401k_contribution_type": null,
+        "401k_company_match_percent": 0,
+        "401k_investment_allocation": [],
+        "401k_beneficiary_designated": false
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-115",
+          "type": "Laptop",
+          "model": "Dell Latitude 5540",
+          "issued_date": "2023-06-01"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "116",
+      "full_name": "Priya Sharma",
+      "email": "priya.sharma@innovatech.example.com",
+      "role": "Product Designer",
+      "department": "Design",
+      "manager_id": "201",
+      "manager_name": "Henry King",
+      "employment_type": "Part-Time",
+      "hire_date": "2022-09-01",
+      "office_location": "San Francisco, CA",
+      "work_location": "San Francisco, CA",
+      "state_of_residence": "CA",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 35,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 2.5,
+        "annual_accrual_hours": 60,
+        "accrued_ytd_hours": 50,
+        "used_ytd_hours": 15,
+        "available_hours": 45,
+        "carryover_limit_hours": 90,
+        "carryover_from_last_year_hours": 10
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2022-10-01",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Silver",
+        "dental": true,
+        "vision": true,
+        "401k_contribution_percent": 5,
+        "hsa_enrolled": false,
+        "fsa_enrolled": true,
+        "fsa_type": "Dependent Care FSA",
+        "life_insurance": true,
+        "short_term_disability": false,
+        "long_term_disability": true,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 0,
+        "medical_plan_id": "PPO_SILVER",
+        "coverage_tier": "employee_spouse",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 500,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Pre-Tax",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_FREEDOM_2035",
+            "percent": 100
+          }
+        ],
+        "401k_beneficiary_designated": true
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-116",
+          "type": "Laptop",
+          "model": "Dell XPS 13",
+          "issued_date": "2022-09-01"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 1,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "117",
+      "full_name": "Quentin Adams",
+      "email": "quentin.adams@innovatech.example.com",
+      "role": "IT Support Specialist",
+      "department": "IT",
+      "manager_id": "207",
+      "manager_name": "Tom Harris",
+      "employment_type": "Full-Time",
+      "hire_date": "2019-08-15",
+      "office_location": "San Francisco, CA",
+      "work_location": "San Francisco, CA",
+      "state_of_residence": "CA",
+      "remote_work_status": "On-Site",
+      "remote_work_eligibility": false,
+      "remote_work_days_used_ytd": 0,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 0,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 6.67,
+        "annual_accrual_hours": 160,
+        "accrued_ytd_hours": 133.4,
+        "used_ytd_hours": 38.4,
+        "available_hours": 155,
+        "carryover_limit_hours": 240,
+        "carryover_from_last_year_hours": 60
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2019-09-15",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Silver",
+        "dental": true,
+        "vision": true,
+        "401k_contribution_percent": 2,
+        "hsa_enrolled": false,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": false,
+        "short_term_disability": false,
+        "long_term_disability": false,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 200,
+        "medical_plan_id": "PPO_SILVER",
+        "coverage_tier": "employee_spouse",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 2,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_500_INDEX",
+            "percent": 100
+          }
+        ],
+        "401k_beneficiary_designated": false
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-117",
+          "type": "Laptop",
+          "model": "MacBook Pro 16",
+          "issued_date": "2019-08-15"
+        },
+        {
+          "asset_id": "MON-117",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 27",
+          "issued_date": "2019-08-20"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "118",
+      "full_name": "Rachel Green",
+      "email": "rachel.green@innovatech.example.com",
+      "role": "Marketing Manager",
+      "department": "Marketing",
+      "manager_id": "202",
+      "manager_name": "Ivy Lopez",
+      "employment_type": "Full-Time",
+      "hire_date": "2017-04-01",
+      "office_location": "New York, NY",
+      "work_location": "New York, NY",
+      "state_of_residence": "NY",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 52,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 8.33,
+        "annual_accrual_hours": 200,
+        "accrued_ytd_hours": 166.7,
+        "used_ytd_hours": 76.7,
+        "available_hours": 190,
+        "carryover_limit_hours": 300,
+        "carryover_from_last_year_hours": 100
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2017-05-01",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Silver",
+        "dental": true,
+        "vision": true,
+        "401k_contribution_percent": 10,
+        "hsa_enrolled": false,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": false,
+        "short_term_disability": true,
+        "long_term_disability": true,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 350,
+        "medical_plan_id": "PPO_SILVER",
+        "coverage_tier": "employee_children",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_TOTAL_MARKET",
+            "percent": 100
+          }
+        ],
+        "401k_beneficiary_designated": true
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-118",
+          "type": "Laptop",
+          "model": "MacBook Pro 16",
+          "issued_date": "2017-04-01"
+        },
+        {
+          "asset_id": "MON-118",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 32",
+          "issued_date": "2017-04-10"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "119",
+      "full_name": "Sam Wilson",
+      "email": "sam.wilson@innovatech.example.com",
+      "role": "Sales Engineer",
+      "department": "Sales",
+      "manager_id": "206",
+      "manager_name": "Sarah Davis",
+      "employment_type": "Full-Time",
+      "hire_date": "2021-01-15",
+      "office_location": "Chicago, IL",
+      "work_location": "Chicago, IL",
+      "state_of_residence": "IL",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 44,
+      "temporary_remote_days_used_ytd": 5,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 5.0,
+        "annual_accrual_hours": 120,
+        "accrued_ytd_hours": 100,
+        "used_ytd_hours": 28,
+        "available_hours": 92,
+        "carryover_limit_hours": 180,
+        "carryover_from_last_year_hours": 20
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2021-02-15",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Silver",
+        "dental": false,
+        "vision": false,
+        "401k_contribution_percent": 5,
+        "hsa_enrolled": false,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": true,
+        "short_term_disability": false,
+        "long_term_disability": true,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 100,
+        "medical_plan_id": "PPO_SILVER",
+        "coverage_tier": "employee_spouse",
+        "dental_plan": null,
+        "vision_plan": null,
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_FREEDOM_2035",
+            "percent": 100
+          }
+        ],
+        "401k_beneficiary_designated": true
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-119",
+          "type": "Laptop",
+          "model": "MacBook Pro 14",
+          "issued_date": "2021-01-15"
+        },
+        {
+          "asset_id": "MON-119",
+          "type": "Monitor",
+          "model": "LG 27UK850",
+          "issued_date": "2021-01-20"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "120",
+      "full_name": "Tina Turner",
+      "email": "tina.turner@innovatech.example.com",
+      "role": "Executive Assistant",
+      "department": "Operations",
+      "manager_id": "204",
+      "manager_name": "Karen Owens",
+      "employment_type": "Full-Time",
+      "hire_date": "2018-02-01",
+      "office_location": "San Francisco, CA",
+      "work_location": "San Francisco, CA",
+      "state_of_residence": "CA",
+      "remote_work_status": "On-Site",
+      "remote_work_eligibility": false,
+      "remote_work_days_used_ytd": 0,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 0,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 6.67,
+        "annual_accrual_hours": 160,
+        "accrued_ytd_hours": 133.4,
+        "used_ytd_hours": 23.4,
+        "available_hours": 170,
+        "carryover_limit_hours": 240,
+        "carryover_from_last_year_hours": 60
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2018-03-01",
+        "benefits_enrolled": true,
+        "medical_plan": "HMO Standard",
+        "dental": true,
+        "vision": false,
+        "401k_contribution_percent": 4,
+        "hsa_enrolled": false,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": false,
+        "short_term_disability": false,
+        "long_term_disability": true,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 200,
+        "medical_plan_id": "HMO_STANDARD",
+        "coverage_tier": "employee_children",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": null,
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_FREEDOM_2025",
+            "percent": 43
+          },
+          {
+            "fund_id": "FID_MANAGED_INCOME",
+            "percent": 57
+          }
+        ],
+        "401k_beneficiary_designated": true
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-120",
+          "type": "Laptop",
+          "model": "MacBook Pro 14",
+          "issued_date": "2018-02-01"
+        },
+        {
+          "asset_id": "MON-120",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 27",
+          "issued_date": "2018-02-10"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "201",
+      "full_name": "Henry King",
+      "email": "henry.king@innovatech.example.com",
+      "role": "Engineering Manager",
+      "department": "Engineering",
+      "manager_id": "204",
+      "manager_name": "Karen Owens",
+      "employment_type": "Full-Time",
+      "hire_date": "2018-02-15",
+      "office_location": "San Francisco, CA",
+      "work_location": "San Francisco, CA",
+      "state_of_residence": "CA",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 50,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 6.67,
+        "annual_accrual_hours": 160,
+        "accrued_ytd_hours": 133.4,
+        "used_ytd_hours": 53.4,
+        "available_hours": 200,
+        "carryover_limit_hours": 240,
+        "carryover_from_last_year_hours": 120
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2018-03-15",
+        "benefits_enrolled": true,
+        "medical_plan": "HMO Standard",
+        "dental": true,
+        "vision": true,
+        "401k_contribution_percent": 10,
+        "hsa_enrolled": false,
+        "fsa_enrolled": true,
+        "fsa_type": "Healthcare FSA",
+        "life_insurance": true,
+        "short_term_disability": true,
+        "long_term_disability": false,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 300,
+        "medical_plan_id": "HMO_STANDARD",
+        "coverage_tier": "family",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 3000,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_FREEDOM_2025",
+            "percent": 100
+          }
+        ],
+        "401k_beneficiary_designated": false
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-201",
+          "type": "Laptop",
+          "model": "MacBook Pro 16",
+          "issued_date": "2018-02-15"
+        },
+        {
+          "asset_id": "MON-201",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 32",
+          "issued_date": "2018-02-20"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "202",
+      "full_name": "Ivy Lopez",
+      "email": "ivy.lopez@innovatech.example.com",
+      "role": "Marketing Director",
+      "department": "Marketing",
+      "manager_id": "204",
+      "manager_name": "Karen Owens",
+      "employment_type": "Full-Time",
+      "hire_date": "2017-09-01",
+      "office_location": "New York, NY",
+      "work_location": "New York, NY",
+      "state_of_residence": "NY",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 55,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 8.33,
+        "annual_accrual_hours": 200,
+        "accrued_ytd_hours": 166.7,
+        "used_ytd_hours": 86.7,
+        "available_hours": 180,
+        "carryover_limit_hours": 300,
+        "carryover_from_last_year_hours": 100
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2017-10-01",
+        "benefits_enrolled": true,
+        "medical_plan": "HMO Standard",
+        "dental": true,
+        "vision": true,
+        "401k_contribution_percent": 6,
+        "hsa_enrolled": false,
+        "fsa_enrolled": true,
+        "fsa_type": "Dependent Care FSA",
+        "life_insurance": false,
+        "short_term_disability": true,
+        "long_term_disability": true,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 400,
+        "medical_plan_id": "HMO_STANDARD",
+        "coverage_tier": "employee_spouse",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 2500,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Pre-Tax",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_FREEDOM_2025",
+            "percent": 95
+          },
+          {
+            "fund_id": "FID_FREEDOM_2045",
+            "percent": 5
+          }
+        ],
+        "401k_beneficiary_designated": false
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-202",
+          "type": "Laptop",
+          "model": "MacBook Pro 16",
+          "issued_date": "2017-09-01"
+        },
+        {
+          "asset_id": "MON-202",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 32",
+          "issued_date": "2017-09-10"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "203",
+      "full_name": "Jack Nelson",
+      "email": "jack.nelson@innovatech.example.com",
+      "role": "P&C Director",
+      "department": "People & Culture",
+      "manager_id": "204",
+      "manager_name": "Karen Owens",
+      "employment_type": "Full-Time",
+      "hire_date": "2016-04-10",
+      "office_location": "Miami, FL",
+      "work_location": "Miami, FL",
+      "state_of_residence": "FL",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 40,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 8.33,
+        "annual_accrual_hours": 200,
+        "accrued_ytd_hours": 166.7,
+        "used_ytd_hours": 46.7,
+        "available_hours": 220,
+        "carryover_limit_hours": 300,
+        "carryover_from_last_year_hours": 100
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2016-05-10",
+        "benefits_enrolled": true,
+        "medical_plan": "HDHP (High Deductible Health Plan)",
+        "dental": true,
+        "vision": false,
+        "401k_contribution_percent": 5,
+        "hsa_enrolled": true,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": true,
+        "short_term_disability": false,
+        "long_term_disability": true,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 300,
+        "medical_plan_id": "HDHP",
+        "coverage_tier": "employee_spouse",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": null,
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_500_INDEX",
+            "percent": 29
+          },
+          {
+            "fund_id": "FID_FREEDOM_2055",
+            "percent": 71
+          }
+        ],
+        "401k_beneficiary_designated": true
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-203",
+          "type": "Laptop",
+          "model": "MacBook Pro 16",
+          "issued_date": "2016-04-10"
+        },
+        {
+          "asset_id": "MON-203",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 32",
+          "issued_date": "2016-04-15"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "204",
+      "full_name": "Karen Owens",
+      "email": "karen.owens@innovatech.example.com",
+      "role": "VP of Operations",
+      "department": "Operations",
+      "manager_id": "208",
+      "manager_name": "Ursula Peters",
+      "employment_type": "Full-Time",
+      "hire_date": "2015-01-20",
+      "office_location": "San Francisco, CA",
+      "work_location": "San Francisco, CA",
+      "state_of_residence": "CA",
+      "remote_work_status": "On-Site",
+      "remote_work_eligibility": false,
+      "remote_work_days_used_ytd": 0,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 0,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 8.33,
+        "annual_accrual_hours": 200,
+        "accrued_ytd_hours": 166.7,
+        "used_ytd_hours": 16.7,
+        "available_hours": 250,
+        "carryover_limit_hours": 300,
+        "carryover_from_last_year_hours": 100
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2015-02-20",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Silver",
+        "dental": true,
+        "vision": false,
+        "401k_contribution_percent": 6,
+        "hsa_enrolled": false,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": false,
+        "short_term_disability": false,
+        "long_term_disability": false,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 500,
+        "medical_plan_id": "PPO_SILVER",
+        "coverage_tier": "employee_children",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": null,
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Pre-Tax",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_FREEDOM_2045",
+            "percent": 5
+          },
+          {
+            "fund_id": "FID_500_INDEX",
+            "percent": 95
+          }
+        ],
+        "401k_beneficiary_designated": true
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-204",
+          "type": "Laptop",
+          "model": "MacBook Pro 16",
+          "issued_date": "2015-01-20"
+        },
+        {
+          "asset_id": "MON-204",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 32",
+          "issued_date": "2015-01-25"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "205",
+      "full_name": "David Brown",
+      "email": "david.brown@innovatech.example.com",
+      "role": "Finance Director",
+      "department": "Finance",
+      "manager_id": "204",
+      "manager_name": "Karen Owens",
+      "employment_type": "Full-Time",
+      "hire_date": "2016-08-01",
+      "office_location": "New York, NY",
+      "work_location": "New York, NY",
+      "state_of_residence": "NY",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 45,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 8.33,
+        "annual_accrual_hours": 200,
+        "accrued_ytd_hours": 166.7,
+        "used_ytd_hours": 56.7,
+        "available_hours": 210,
+        "carryover_limit_hours": 300,
+        "carryover_from_last_year_hours": 100
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2016-09-01",
+        "benefits_enrolled": true,
+        "medical_plan": "HDHP (High Deductible Health Plan)",
+        "dental": false,
+        "vision": true,
+        "401k_contribution_percent": 8,
+        "hsa_enrolled": false,
+        "fsa_enrolled": false,
+        "fsa_type": null,
+        "life_insurance": false,
+        "short_term_disability": true,
+        "long_term_disability": false,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 250,
+        "medical_plan_id": "HDHP",
+        "coverage_tier": "employee_only",
+        "dental_plan": null,
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 0,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Pre-Tax",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_INTL_INDEX",
+            "percent": 86
+          },
+          {
+            "fund_id": "FID_FREEDOM_2035",
+            "percent": 14
+          }
+        ],
+        "401k_beneficiary_designated": false
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-205",
+          "type": "Laptop",
+          "model": "MacBook Pro 16",
+          "issued_date": "2016-08-01"
+        },
+        {
+          "asset_id": "MON-205",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 32",
+          "issued_date": "2016-08-05"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "206",
+      "full_name": "Sarah Davis",
+      "email": "sarah.davis@innovatech.example.com",
+      "role": "Sales Director",
+      "department": "Sales",
+      "manager_id": "204",
+      "manager_name": "Karen Owens",
+      "employment_type": "Full-Time",
+      "hire_date": "2018-06-15",
+      "office_location": "Chicago, IL",
+      "work_location": "Chicago, IL",
+      "state_of_residence": "IL",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 48,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 6.67,
+        "annual_accrual_hours": 160,
+        "accrued_ytd_hours": 133.4,
+        "used_ytd_hours": 78.4,
+        "available_hours": 175,
+        "carryover_limit_hours": 240,
+        "carryover_from_last_year_hours": 120
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2018-07-15",
+        "benefits_enrolled": true,
+        "medical_plan": "HMO Standard",
+        "dental": false,
+        "vision": false,
+        "401k_contribution_percent": 5,
+        "hsa_enrolled": false,
+        "fsa_enrolled": true,
+        "fsa_type": "Dependent Care FSA",
+        "life_insurance": false,
+        "short_term_disability": true,
+        "long_term_disability": true,
+        "eap_enrolled": false,
+        "wellness_stipend_used_ytd": 200,
+        "medical_plan_id": "HMO_STANDARD",
+        "coverage_tier": "employee_children",
+        "dental_plan": null,
+        "vision_plan": null,
+        "fsa_annual_election": 3000,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_FREEDOM_2045",
+            "percent": 1
+          },
+          {
+            "fund_id": "FID_500_INDEX",
+            "percent": 70
+          },
+          {
+            "fund_id": "FID_FREEDOM_2055",
+            "percent": 29
+          }
+        ],
+        "401k_beneficiary_designated": false
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-206",
+          "type": "Laptop",
+          "model": "MacBook Pro 16",
+          "issued_date": "2018-06-15"
+        },
+        {
+          "asset_id": "MON-206",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 27",
+          "issued_date": "2018-06-20"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "207",
+      "full_name": "Tom Harris",
+      "email": "tom.harris@innovatech.example.com",
+      "role": "IT Manager",
+      "department": "IT",
+      "manager_id": "204",
+      "manager_name": "Karen Owens",
+      "employment_type": "Full-Time",
+      "hire_date": "2019-03-01",
+      "office_location": "San Francisco, CA",
+      "work_location": "San Francisco, CA",
+      "state_of_residence": "CA",
+      "remote_work_status": "Hybrid",
+      "remote_work_eligibility": true,
+      "remote_work_days_used_ytd": 42,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 20,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 6.67,
+        "annual_accrual_hours": 160,
+        "accrued_ytd_hours": 133.4,
+        "used_ytd_hours": 68.4,
+        "available_hours": 165,
+        "carryover_limit_hours": 240,
+        "carryover_from_last_year_hours": 100
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2019-04-01",
+        "benefits_enrolled": true,
+        "medical_plan": "HMO Standard",
+        "dental": false,
+        "vision": false,
+        "401k_contribution_percent": 8,
+        "hsa_enrolled": false,
+        "fsa_enrolled": true,
+        "fsa_type": "Dependent Care FSA",
+        "life_insurance": true,
+        "short_term_disability": false,
+        "long_term_disability": true,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 150,
+        "medical_plan_id": "HMO_STANDARD",
+        "coverage_tier": "employee_children",
+        "dental_plan": null,
+        "vision_plan": null,
+        "fsa_annual_election": 3000,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 4,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_TOTAL_MARKET",
+            "percent": 31
+          },
+          {
+            "fund_id": "FID_FREEDOM_2035",
+            "percent": 66
+          },
+          {
+            "fund_id": "FID_INTL_INDEX",
+            "percent": 3
+          }
+        ],
+        "401k_beneficiary_designated": false
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-207",
+          "type": "Laptop",
+          "model": "MacBook Pro 16",
+          "issued_date": "2019-03-01"
+        },
+        {
+          "asset_id": "MON-207",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 27",
+          "issued_date": "2019-03-05"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    },
+    {
+      "employee_id": "208",
+      "full_name": "Ursula Peters",
+      "email": "ursula.peters@innovatech.example.com",
+      "role": "CEO",
+      "department": "Executive",
+      "manager_id": null,
+      "manager_name": null,
+      "employment_type": "Full-Time",
+      "hire_date": "2014-01-01",
+      "office_location": "San Francisco, CA",
+      "work_location": "San Francisco, CA",
+      "state_of_residence": "CA",
+      "remote_work_status": "On-Site",
+      "remote_work_eligibility": false,
+      "remote_work_days_used_ytd": 0,
+      "temporary_remote_days_used_ytd": 0,
+      "temporary_remote_days_limit": 0,
+      "international_remote_approved": false,
+      "change_of_work_location_filed": false,
+      "pto_balance": {
+        "accrual_rate_per_pay_period_hours": 8.33,
+        "annual_accrual_hours": 200,
+        "accrued_ytd_hours": 166.7,
+        "used_ytd_hours": 26.7,
+        "available_hours": 240,
+        "carryover_limit_hours": 300,
+        "carryover_from_last_year_hours": 100
+      },
+      "benefits_elections": {
+        "benefits_eligible": true,
+        "benefits_effective_date": "2014-02-01",
+        "benefits_enrolled": true,
+        "medical_plan": "PPO Silver",
+        "dental": true,
+        "vision": true,
+        "401k_contribution_percent": 3,
+        "hsa_enrolled": false,
+        "fsa_enrolled": true,
+        "fsa_type": "Dependent Care FSA",
+        "life_insurance": true,
+        "short_term_disability": false,
+        "long_term_disability": false,
+        "eap_enrolled": true,
+        "wellness_stipend_used_ytd": 600,
+        "medical_plan_id": "PPO_SILVER",
+        "coverage_tier": "employee_only",
+        "dental_plan": "SmileCare Dental",
+        "vision_plan": "ClearSight Vision",
+        "fsa_annual_election": 2500,
+        "401k_enrolled": true,
+        "401k_contribution_type": "Roth",
+        "401k_company_match_percent": 3,
+        "401k_investment_allocation": [
+          {
+            "fund_id": "FID_INTL_INDEX",
+            "percent": 19
+          },
+          {
+            "fund_id": "FID_FREEDOM_2055",
+            "percent": 81
+          }
+        ],
+        "401k_beneficiary_designated": true
+      },
+      "equipment_issued": [
+        {
+          "asset_id": "LAP-208",
+          "type": "Laptop",
+          "model": "MacBook Pro 16",
+          "issued_date": "2014-01-01"
+        },
+        {
+          "asset_id": "MON-208",
+          "type": "Monitor",
+          "model": "Dell UltraSharp 32",
+          "issued_date": "2014-01-05"
+        }
+      ],
+      "home_office_stipend": {
+        "used": false,
+        "amount_used": 0,
+        "date_used": null
+      },
+      "prior_hr_cases": 0,
+      "disciplinary_actions": []
+    }
+  ],
+  "change_of_work_location_requests": [
+    {
+      "request_id": "CWLR-001",
+      "employee_id": "103",
+      "request_date": "2022-01-05",
+      "from_location": "Austin, TX",
+      "to_location": "Austin, TX",
+      "request_type": "Initial Remote Designation",
+      "status": "Approved",
+      "approver_id": "202",
+      "approval_date": "2022-01-08",
+      "notes": "Employee designated as Fully Remote upon hire."
+    },
+    {
+      "request_id": "CWLR-002",
+      "employee_id": "106",
+      "request_date": "2021-11-01",
+      "from_location": "Miami, FL",
+      "to_location": "Miami, FL",
+      "request_type": "Initial Remote Designation",
+      "status": "Approved",
+      "approver_id": "203",
+      "approval_date": "2021-11-03",
+      "notes": "Employee designated as Fully Remote upon hire."
+    },
+    {
+      "request_id": "CWLR-003",
+      "employee_id": "102",
+      "request_date": "2023-06-01",
+      "from_location": "New York, NY",
+      "to_location": "Boston, MA",
+      "request_type": "Temporary Domestic Remote (2 weeks)",
+      "status": "Approved",
+      "approver_id": "201",
+      "approval_date": "2023-06-03",
+      "notes": "Approved for temporary work from Boston, MA for 2 weeks. No tax nexus concerns."
+    },
+    {
+      "request_id": "CWLR-004",
+      "employee_id": "109",
+      "request_date": "2023-09-15",
+      "from_location": "San Francisco, CA",
+      "to_location": "London, UK",
+      "request_type": "International Remote Work (6 weeks)",
+      "status": "Denied",
+      "approver_id": "203",
+      "approval_date": "2023-09-20",
+      "notes": "Denied due to international tax and legal complexity. Policy 300 section 5.2 prohibits international remote work without extenuating circumstances."
+    },
+    {
+      "request_id": "CWLR-005",
+      "employee_id": "108",
+      "request_date": "2022-06-01",
+      "from_location": "New York, NY",
+      "to_location": "New York, NY",
+      "request_type": "Initial Remote Designation",
+      "status": "Approved",
+      "approver_id": "202",
+      "approval_date": "2022-06-03",
+      "notes": "Employee designated as Fully Remote upon hire."
+    }
+  ],
+  "healthcare_plans": {
+    "metadata": {
+      "company": "Innovatech Solutions",
+      "version": "1.0",
+      "last_updated": "2023-10-26",
+      "description": "Mock healthcare plan data and employee benefit elections for agentic AI system testing.",
+      "plan_year": 2024,
+      "as_of_date": "2023-10-26"
+    },
+    "source": "1200-Healthcare-Plan-Data.json",
+    "policy_document": "510",
+    "medical_plans": [
+      {
+        "plan_id": "PPO_GOLD",
+        "plan_name": "PPO Gold",
+        "plan_type": "PPO",
+        "carrier": "WellnessCorp",
+        "network": "National PPO",
+        "hsa_eligible": false,
+        "referral_required": false,
+        "out_of_network_coverage": true,
+        "premiums_monthly": {
+          "employee_only": 120,
+          "employee_spouse": 320,
+          "employee_children": 280,
+          "family": 450
+        },
+        "deductible_individual": 500,
+        "deductible_family": 1000,
+        "oop_max_individual": 3000,
+        "oop_max_family": 6000,
+        "primary_care_copay": 20,
+        "specialist_copay": 40,
+        "emergency_room_copay": 250,
+        "urgent_care_copay": 40,
+        "preventive_care_coverage": "100%",
+        "mental_health_copay": 20
+      },
+      {
+        "plan_id": "PPO_SILVER",
+        "plan_name": "PPO Silver",
+        "plan_type": "PPO",
+        "carrier": "WellnessCorp",
+        "network": "National PPO",
+        "hsa_eligible": false,
+        "referral_required": false,
+        "out_of_network_coverage": true,
+        "premiums_monthly": {
+          "employee_only": 85,
+          "employee_spouse": 240,
+          "employee_children": 210,
+          "family": 340
+        },
+        "deductible_individual": 1000,
+        "deductible_family": 2000,
+        "oop_max_individual": 4500,
+        "oop_max_family": 9000,
+        "primary_care_copay": 30,
+        "specialist_copay": 50,
+        "emergency_room_copay": 350,
+        "urgent_care_copay": 50,
+        "preventive_care_coverage": "100%",
+        "mental_health_copay": 30
+      },
+      {
+        "plan_id": "HMO_STANDARD",
+        "plan_name": "HMO Standard",
+        "plan_type": "HMO",
+        "carrier": "WellnessCorp",
+        "network": "Regional HMO",
+        "hsa_eligible": false,
+        "referral_required": true,
+        "out_of_network_coverage": false,
+        "premiums_monthly": {
+          "employee_only": 60,
+          "employee_spouse": 180,
+          "employee_children": 150,
+          "family": 260
+        },
+        "deductible_individual": 500,
+        "deductible_family": 1000,
+        "oop_max_individual": 3000,
+        "oop_max_family": 6000,
+        "primary_care_copay": 15,
+        "specialist_copay": 30,
+        "emergency_room_copay": 300,
+        "urgent_care_copay": 40,
+        "preventive_care_coverage": "100%",
+        "mental_health_copay": 15
+      },
+      {
+        "plan_id": "HDHP",
+        "plan_name": "HDHP (High Deductible Health Plan)",
+        "plan_type": "HDHP",
+        "carrier": "WellnessCorp",
+        "network": "National PPO",
+        "hsa_eligible": true,
+        "referral_required": false,
+        "out_of_network_coverage": true,
+        "premiums_monthly": {
+          "employee_only": 40,
+          "employee_spouse": 120,
+          "employee_children": 100,
+          "family": 180
+        },
+        "deductible_individual": 3000,
+        "deductible_family": 6000,
+        "oop_max_individual": 6000,
+        "oop_max_family": 12000,
+        "primary_care_copay": "Deductible, then 20%",
+        "specialist_copay": "Deductible, then 20%",
+        "emergency_room_copay": "Deductible, then 20%",
+        "urgent_care_copay": "Deductible, then 20%",
+        "preventive_care_coverage": "100%",
+        "mental_health_copay": "Deductible, then 20%"
+      }
+    ],
+    "dental_plan": {
+      "plan_id": "DENTAL_STANDARD",
+      "plan_name": "SmileCare Dental",
+      "carrier": "SmileCare Dental",
+      "premiums_monthly": {
+        "employee_only": 15,
+        "employee_spouse": 35,
+        "employee_children": 30,
+        "family": 50
+      },
+      "annual_maximum": 2000,
+      "deductible_individual": 50,
+      "deductible_family": 150,
+      "preventive_coverage": "100% (2 cleanings/year)",
+      "basic_coverage": "80% after deductible",
+      "major_coverage": "50% after deductible",
+      "orthodontia_coverage": "50% up to $2,000 lifetime max (children under 18)",
+      "waiting_period_major": "6 months if no prior coverage"
+    },
+    "vision_plan": {
+      "plan_id": "VISION_STANDARD",
+      "plan_name": "ClearSight Vision",
+      "carrier": "ClearSight Vision",
+      "premiums_monthly": {
+        "employee_only": 8,
+        "employee_spouse": 18,
+        "employee_children": 15,
+        "family": 25
+      },
+      "exam_copay": 10,
+      "frame_allowance": 150,
+      "lens_coverage": "100% (standard)",
+      "contact_lens_allowance": 150,
+      "frequency": "12 months"
+    },
+    "prescription_drug_tiers": {
+      "tier_1_generic": {
+        "ppo_gold_copay": 10,
+        "ppo_silver_copay": 15,
+        "hmo_standard_copay": 10,
+        "hdhp_copay": "Deductible, then $10"
+      },
+      "tier_2_preferred_brand": {
+        "ppo_gold_copay": 30,
+        "ppo_silver_copay": 40,
+        "hmo_standard_copay": 30,
+        "hdhp_copay": "Deductible, then $30"
+      },
+      "tier_3_non_preferred_brand": {
+        "ppo_gold_copay": 60,
+        "ppo_silver_copay": 75,
+        "hmo_standard_copay": 60,
+        "hdhp_copay": "Deductible, then $60"
+      },
+      "tier_4_specialty": {
+        "ppo_gold_coinsurance": "20% (max $200)",
+        "ppo_silver_coinsurance": "30% (max $250)",
+        "hmo_standard_coinsurance": "20% (max $200)",
+        "hdhp_coinsurance": "Deductible, then 20% (max $200)"
+      }
+    },
+    "qualifying_life_events": [
+      {
+        "event_type": "Marriage",
+        "allowed_changes": [
+          "Add spouse to medical/dental/vision",
+          "Change plan",
+          "Add/change FSA"
+        ],
+        "documentation_required": "Marriage certificate",
+        "deadline_days": 30
+      },
+      {
+        "event_type": "Divorce",
+        "allowed_changes": [
+          "Remove spouse from coverage",
+          "Change plan"
+        ],
+        "documentation_required": "Divorce decree",
+        "deadline_days": 30
+      },
+      {
+        "event_type": "Birth",
+        "allowed_changes": [
+          "Add child to medical/dental/vision",
+          "Change plan",
+          "Add/change FSA"
+        ],
+        "documentation_required": "Birth certificate or hospital record",
+        "deadline_days": 30
+      },
+      {
+        "event_type": "Adoption",
+        "allowed_changes": [
+          "Add child to medical/dental/vision",
+          "Change plan",
+          "Add/change FSA"
+        ],
+        "documentation_required": "Adoption decree or placement agreement",
+        "deadline_days": 30
+      },
+      {
+        "event_type": "Loss of Other Coverage",
+        "allowed_changes": [
+          "Enroll in Innovatech plans",
+          "Change plan"
+        ],
+        "documentation_required": "Letter from previous carrier confirming termination",
+        "deadline_days": 30
+      },
+      {
+        "event_type": "Change in Employment Status",
+        "allowed_changes": [
+          "Change plan",
+          "Add/remove dependents"
+        ],
+        "documentation_required": "Letter from employer or pay stub",
+        "deadline_days": 30
+      },
+      {
+        "event_type": "Change in Residence",
+        "allowed_changes": [
+          "Change plan if HMO no longer available"
+        ],
+        "documentation_required": "New lease or utility bill",
+        "deadline_days": 30
+      },
+      {
+        "event_type": "Medicare Eligibility",
+        "allowed_changes": [
+          "Change plan",
+          "Remove dependents"
+        ],
+        "documentation_required": "Medicare card",
+        "deadline_days": 30
+      }
+    ]
+  },
+  "retirement_plan": {
+    "metadata": {
+      "company": "Innovatech Solutions",
+      "version": "1.0",
+      "last_updated": "2023-10-26",
+      "description": "Mock 401(k) plan data and employee retirement elections for agentic AI system testing.",
+      "plan_year": 2024,
+      "as_of_date": "2023-10-26",
+      "plan_id": "INNO-401K-2024",
+      "plan_administrator": "Fidelity Investments"
+    },
+    "source": "1300-401k-Data.json",
+    "policy_document": "520",
+    "plan_parameters": {
+      "eligibility_age": 18,
+      "eligibility_service_days": 30,
+      "entry_dates": "1st of the month following eligibility",
+      "automatic_enrollment": true,
+      "automatic_enrollment_rate_percent": 3,
+      "automatic_escalation": true,
+      "automatic_escalation_rate_percent": 1,
+      "automatic_escalation_max_percent": 10,
+      "match_formula": "100% of first 4% of eligible compensation",
+      "match_vesting": "Immediate (100%)",
+      "employee_vesting": "Immediate (100%)",
+      "true_up_match": true,
+      "contribution_limits_2024": {
+        "employee_elective_deferral": 23000,
+        "catch_up_age_50_plus": 7500,
+        "total_annual_additions": 69000,
+        "total_with_catch_up": 76500
+      },
+      "loan_parameters": {
+        "minimum_loan": 1000,
+        "maximum_loan_percent": 50,
+        "maximum_loan_amount": 50000,
+        "maximum_outstanding_loans": 2,
+        "general_purpose_term_years": 5,
+        "primary_residence_term_years": 15,
+        "interest_rate": "Prime + 1%",
+        "origination_fee": 50,
+        "annual_maintenance_fee": 25,
+        "default_fee": 100,
+        "repayment_after_termination_days": 60
+      },
+      "hardship_withdrawal_rules": {
+        "allowed": true,
+        "contribution_suspension_months": 6,
+        "fee": 75,
+        "qualifying_events": [
+          "Medical expenses",
+          "Purchase of primary residence",
+          "Tuition and educational fees",
+          "Prevention of foreclosure or eviction",
+          "Funeral expenses",
+          "Repair of damage to primary residence",
+          "Federally declared disaster expenses"
+        ]
+      },
+      "small_balance_force_out_threshold": 7000,
+      "default_investment": "Fidelity Freedom Fund (target-date based on birth year)",
+      "administrative_fees": {
+        "recordkeeping_fee_quarterly": 25,
+        "loan_origination_fee": 50,
+        "loan_maintenance_fee_annual": 25,
+        "hardship_withdrawal_fee": 75
+      }
+    },
+    "investment_options": [
+      {
+        "fund_id": "FID_FREEDOM_2025",
+        "fund_name": "Fidelity Freedom Fund 2025",
+        "category": "Target Date Fund",
+        "expense_ratio": 0.63,
+        "risk_level": "Conservative"
+      },
+      {
+        "fund_id": "FID_FREEDOM_2035",
+        "fund_name": "Fidelity Freedom Fund 2035",
+        "category": "Target Date Fund",
+        "expense_ratio": 0.68,
+        "risk_level": "Moderate"
+      },
+      {
+        "fund_id": "FID_FREEDOM_2045",
+        "fund_name": "Fidelity Freedom Fund 2045",
+        "category": "Target Date Fund",
+        "expense_ratio": 0.72,
+        "risk_level": "Moderate-Aggressive"
+      },
+      {
+        "fund_id": "FID_FREEDOM_2055",
+        "fund_name": "Fidelity Freedom Fund 2055",
+        "category": "Target Date Fund",
+        "expense_ratio": 0.75,
+        "risk_level": "Aggressive"
+      },
+      {
+        "fund_id": "FID_500_INDEX",
+        "fund_name": "Fidelity 500 Index Fund",
+        "category": "Large Cap Index",
+        "expense_ratio": 0.015,
+        "risk_level": "Aggressive"
+      },
+      {
+        "fund_id": "FID_TOTAL_MARKET",
+        "fund_name": "Fidelity Total Market Index Fund",
+        "category": "Total Market Index",
+        "expense_ratio": 0.015,
+        "risk_level": "Aggressive"
+      },
+      {
+        "fund_id": "FID_INTL_INDEX",
+        "fund_name": "Fidelity International Index Fund",
+        "category": "International Index",
+        "expense_ratio": 0.035,
+        "risk_level": "Moderate-Aggressive"
+      },
+      {
+        "fund_id": "FID_BOND_INDEX",
+        "fund_name": "Fidelity U.S. Bond Index Fund",
+        "category": "Bond Index",
+        "expense_ratio": 0.025,
+        "risk_level": "Conservative"
+      },
+      {
+        "fund_id": "FID_MANAGED_INCOME",
+        "fund_name": "Fidelity Managed Income Portfolio",
+        "category": "Stable Value",
+        "expense_ratio": 0.32,
+        "risk_level": "Very Conservative"
+      }
+    ],
+    "loan_records": [
+      {
+        "loan_id": "LOAN-102-01",
+        "employee_id": "102",
+        "loan_type": "General Purpose",
+        "loan_amount": 10000,
+        "outstanding_balance": 6500,
+        "interest_rate": 9.5,
+        "origination_date": "2023-03-15",
+        "expected_payoff_date": "2028-03-15",
+        "monthly_payment": 210,
+        "status": "Active",
+        "repayment_method": "Payroll deduction"
+      },
+      {
+        "loan_id": "LOAN-113-01",
+        "employee_id": "113",
+        "loan_type": "Primary Residence",
+        "loan_amount": 25000,
+        "outstanding_balance": 18200,
+        "interest_rate": 8.5,
+        "origination_date": "2022-06-01",
+        "expected_payoff_date": "2032-06-01",
+        "monthly_payment": 310,
+        "status": "Active",
+        "repayment_method": "Payroll deduction"
+      }
+    ],
+    "hardship_withdrawal_records": [
+      {
+        "withdrawal_id": "HW-001",
+        "employee_id": "107",
+        "withdrawal_date": "2023-09-15",
+        "amount": 3000,
+        "reason": "Medical expenses",
+        "status": "Approved",
+        "taxable": true,
+        "penalty_applied": false,
+        "contribution_suspension_end_date": "2024-03-15"
+      }
+    ],
+    "rollover_records": [
+      {
+        "rollover_id": "ROLL-001",
+        "employee_id": "109",
+        "rollover_date": "2020-04-01",
+        "source": "Prior Employer 401(k)",
+        "amount": 45000,
+        "status": "Completed"
+      },
+      {
+        "rollover_id": "ROLL-002",
+        "employee_id": "112",
+        "rollover_date": "2019-02-01",
+        "source": "Traditional IRA",
+        "amount": 22000,
+        "status": "Completed"
+      }
+    ]
+  }
+}

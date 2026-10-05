@@ -1,0 +1,33 @@
+Innovatech HR Assistant — employee login details
+Synthetic demo accounts. Not real credentials.
+
+ID    Name                    Password
+--------------------------------------------------
+101   Alice Johnson           Alice-101-9577e7
+102   Bob Williams            Bob-102-4bc628
+103   Charlie Brown           Charlie-103-b07366
+104   Diana Garcia            Diana-104-61b182
+105   Ethan Jones             Ethan-105-0f50f3
+106   Fiona Miller            Fiona-106-196436
+107   George Harris           George-107-b87f09
+108   Hannah Lee              Hannah-108-dc7900
+109   Ian Chen                Ian-109-0e5310
+110   Julia Kim               Julia-110-fa2549
+111   Kevin Patel             Kevin-111-975062
+112   Laura Martinez          Laura-112-499e48
+113   Marcus Thompson         Marcus-113-a6989c
+114   Nina Rodriguez          Nina-114-9c7db0
+115   Oliver Scott            Oliver-115-3d45e2
+116   Priya Sharma            Priya-116-1db2ec
+117   Quentin Adams           Quentin-117-efcd10
+118   Rachel Green            Rachel-118-04070b
+119   Sam Wilson              Sam-119-f2d481
+120   Tina Turner             Tina-120-f43c8d
+201   Henry King              Henry-201-88c173
+202   Ivy Lopez               Ivy-202-1423d2
+203   Jack Nelson             Jack-203-c4b58a
+204   Karen Owens             Karen-204-c3763e
+205   David Brown             David-205-b0952f
+206   Sarah Davis             Sarah-206-ebf66e
+207   Tom Harris              Tom-207-5da084
+208   Ursula Peters           Ursula-208-f0af75

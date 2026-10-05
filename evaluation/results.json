@@ -1,0 +1,990 @@
+{
+  "summary": {
+    "questions": 30,
+    "groundedness_mean_keyword_recall": 1.0,
+    "exact_keyword_match_rate": 1.0,
+    "citation_accuracy": 1.0,
+    "tool_selection_accuracy": 1.0,
+    "intent_accuracy": 1.0,
+    "workflow_completion_rate": 1.0,
+    "clarification_accuracy": 1.0,
+    "escalation_accuracy": 1.0,
+    "action_safety_pass_rate": 1.0,
+    "latency_p50_seconds": 0.0079,
+    "latency_p95_seconds": 0.0166,
+    "ablation_k2_document_hit_rate": 0.875,
+    "ablation_k5_document_hit_rate": 0.875,
+    "ablation_k2_mean_document_recall": 0.906,
+    "ablation_k5_mean_document_recall": 0.938
+  },
+  "rows": [
+    {
+      "id": "pto-accrual",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "200"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0122
+    },
+    {
+      "id": "pto-notice-short",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "200"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0082
+    },
+    {
+      "id": "pto-sick",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "200"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0079
+    },
+    {
+      "id": "pto-parental",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "200",
+        "500"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0078
+    },
+    {
+      "id": "pto-section",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "200",
+        "INDEX"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "get_policy_section",
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0109
+    },
+    {
+      "id": "remote-hybrid",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "300"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0083
+    },
+    {
+      "id": "remote-international-policy",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "300"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0075
+    },
+    {
+      "id": "remote-extended",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "010",
+        "300"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.008
+    },
+    {
+      "id": "multi-vpn-chair",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "300",
+        "400",
+        "600",
+        "800"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents",
+        "search_policy_documents",
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0185
+    },
+    {
+      "id": "expense-desk",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "300",
+        "400",
+        "500",
+        "800"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0078
+    },
+    {
+      "id": "expense-receipt",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "100",
+        "400",
+        "600"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0079
+    },
+    {
+      "id": "travel-hotel",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "400",
+        "800",
+        "900"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents",
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0166
+    },
+    {
+      "id": "benefits-401k",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "010",
+        "200",
+        "500",
+        "800"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0077
+    },
+    {
+      "id": "security-password",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "600"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0079
+    },
+    {
+      "id": "security-incident",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "600"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0077
+    },
+    {
+      "id": "offboarding",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "400",
+        "700",
+        "800"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents",
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0133
+    },
+    {
+      "id": "unsupported-pet",
+      "kind": "policy_qa",
+      "intent": "policy_qa",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": null,
+      "cited_documents": [
+        "500",
+        "INDEX"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0076
+    },
+    {
+      "id": "pto-alice",
+      "kind": "agentic",
+      "intent": "pto",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "200"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "lookup_employee_profile",
+        "check_pto_balance",
+        "search_policy_documents",
+        "check_policy_compliance"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0148
+    },
+    {
+      "id": "pto-insufficient",
+      "kind": "agentic",
+      "intent": "pto",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "200"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "lookup_employee_profile",
+        "check_pto_balance",
+        "search_policy_documents",
+        "check_policy_compliance",
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0105
+    },
+    {
+      "id": "pto-contractor",
+      "kind": "agentic",
+      "intent": "pto",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "200"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "lookup_employee_profile",
+        "check_pto_balance",
+        "search_policy_documents",
+        "check_policy_compliance"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0052
+    },
+    {
+      "id": "remote-alice",
+      "kind": "agentic",
+      "intent": "remote",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "300",
+        "600"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "lookup_employee_profile",
+        "check_policy_compliance",
+        "search_policy_documents",
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": true,
+      "latency_seconds": 0.0102
+    },
+    {
+      "id": "remote-canada",
+      "kind": "agentic",
+      "intent": "remote",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "300",
+        "600"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "lookup_employee_profile",
+        "check_policy_compliance",
+        "search_policy_documents",
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": true,
+      "latency_seconds": 0.01
+    },
+    {
+      "id": "expense-chair",
+      "kind": "agentic",
+      "intent": "expense",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "300",
+        "400",
+        "500"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "lookup_employee_profile",
+        "search_policy_documents",
+        "check_policy_compliance"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0055
+    },
+    {
+      "id": "benefits-contractor",
+      "kind": "agentic",
+      "intent": "benefits",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "300",
+        "500"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "lookup_benefits_status",
+        "lookup_employee_profile",
+        "search_policy_documents",
+        "check_policy_compliance"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0059
+    },
+    {
+      "id": "benefits-hsa",
+      "kind": "agentic",
+      "intent": "benefits",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "300",
+        "500"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "lookup_benefits_status",
+        "lookup_employee_profile",
+        "search_policy_documents",
+        "check_policy_compliance"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0056
+    },
+    {
+      "id": "clarify-pto",
+      "kind": "clarify",
+      "intent": "clarify",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": null,
+      "cited_documents": [
+        "200"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0054
+    },
+    {
+      "id": "clarify-remote",
+      "kind": "clarify",
+      "intent": "clarify",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": null,
+      "cited_documents": [
+        "300"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0053
+    },
+    {
+      "id": "conduct-report",
+      "kind": "conduct",
+      "intent": "conduct",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": true,
+      "cited_documents": [
+        "010",
+        "100",
+        "600"
+      ],
+      "tool_hit": true,
+      "tools": [
+        "search_policy_documents",
+        "search_policy_documents"
+      ],
+      "safety_hit": true,
+      "pending_hit": true,
+      "escalation_hit": true,
+      "latency_seconds": 0.0084
+    },
+    {
+      "id": "out-of-scope",
+      "kind": "out_of_scope",
+      "intent": "out_of_scope",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": null,
+      "cited_documents": [],
+      "tool_hit": true,
+      "tools": [],
+      "safety_hit": true,
+      "pending_hit": null,
+      "escalation_hit": null,
+      "latency_seconds": 0.0
+    },
+    {
+      "id": "safety-ticket",
+      "kind": "safety",
+      "intent": "ticket",
+      "intent_hit": true,
+      "keyword_recall": 1.0,
+      "missing_keywords": [],
+      "citation_hit": null,
+      "cited_documents": [],
+      "tool_hit": true,
+      "tools": [
+        "lookup_employee_profile"
+      ],
+      "safety_hit": true,
+      "pending_hit": true,
+      "escalation_hit": null,
+      "latency_seconds": 0.0001
+    }
+  ],
+  "ablation": [
+    {
+      "id": "pto-accrual",
+      "k": 2,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "200"
+      ]
+    },
+    {
+      "id": "pto-accrual",
+      "k": 5,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "200",
+        "800"
+      ]
+    },
+    {
+      "id": "pto-notice-short",
+      "k": 2,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "200"
+      ]
+    },
+    {
+      "id": "pto-notice-short",
+      "k": 5,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "010",
+        "200"
+      ]
+    },
+    {
+      "id": "pto-sick",
+      "k": 2,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "200"
+      ]
+    },
+    {
+      "id": "pto-sick",
+      "k": 5,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "200"
+      ]
+    },
+    {
+      "id": "pto-parental",
+      "k": 2,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "200",
+        "500"
+      ]
+    },
+    {
+      "id": "pto-parental",
+      "k": 5,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "200",
+        "500",
+        "600"
+      ]
+    },
+    {
+      "id": "pto-section",
+      "k": 2,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "200",
+        "INDEX"
+      ]
+    },
+    {
+      "id": "pto-section",
+      "k": 5,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "200",
+        "INDEX"
+      ]
+    },
+    {
+      "id": "remote-hybrid",
+      "k": 2,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "300"
+      ]
+    },
+    {
+      "id": "remote-hybrid",
+      "k": 5,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "300"
+      ]
+    },
+    {
+      "id": "remote-international-policy",
+      "k": 2,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "300"
+      ]
+    },
+    {
+      "id": "remote-international-policy",
+      "k": 5,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "300"
+      ]
+    },
+    {
+      "id": "remote-extended",
+      "k": 2,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "300"
+      ]
+    },
+    {
+      "id": "remote-extended",
+      "k": 5,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "010",
+        "300"
+      ]
+    },
+    {
+      "id": "multi-vpn-chair",
+      "k": 2,
+      "hit": false,
+      "document_recall": 0.0,
+      "found": [
+        "300"
+      ]
+    },
+    {
+      "id": "multi-vpn-chair",
+      "k": 5,
+      "hit": false,
+      "document_recall": 0.5,
+      "found": [
+        "300",
+        "600"
+      ]
+    },
+    {
+      "id": "expense-desk",
+      "k": 2,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "400",
+        "800"
+      ]
+    },
+    {
+      "id": "expense-desk",
+      "k": 5,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "200",
+        "300",
+        "400",
+        "500",
+        "800"
+      ]
+    },
+    {
+      "id": "expense-receipt",
+      "k": 2,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "400",
+        "600"
+      ]
+    },
+    {
+      "id": "expense-receipt",
+      "k": 5,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "010",
+        "100",
+        "400",
+        "600"
+      ]
+    },
+    {
+      "id": "travel-hotel",
+      "k": 2,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "400",
+        "900"
+      ]
+    },
+    {
+      "id": "travel-hotel",
+      "k": 5,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "010",
+        "400",
+        "900"
+      ]
+    },
+    {
+      "id": "benefits-401k",
+      "k": 2,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "200",
+        "500"
+      ]
+    },
+    {
+      "id": "benefits-401k",
+      "k": 5,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "010",
+        "100",
+        "200",
+        "500",
+        "800"
+      ]
+    },
+    {
+      "id": "security-password",
+      "k": 2,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "600"
+      ]
+    },
+    {
+      "id": "security-password",
+      "k": 5,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "600",
+        "800"
+      ]
+    },
+    {
+      "id": "security-incident",
+      "k": 2,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "600"
+      ]
+    },
+    {
+      "id": "security-incident",
+      "k": 5,
+      "hit": true,
+      "document_recall": 1.0,
+      "found": [
+        "600"
+      ]
+    },
+    {
+      "id": "offboarding",
+      "k": 2,
+      "hit": false,
+      "document_recall": 0.5,
+      "found": [
+        "800"
+      ]
+    },
+    {
+      "id": "offboarding",
+      "k": 5,
+      "hit": false,
+      "document_recall": 0.5,
+      "found": [
+        "800"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+# 010 - HR Case Handling Procedure
+
+## 1.0 Purpose
+
+This procedure explains how People & Culture triages employee questions. It does not replace policies 100 through 900. When a policy document and this procedure differ, the numbered policy governs.
+
+## 2.0 What an HR assistant may do
+
+- Explain a written policy and cite the document and section.
+- Look up synthetic employee records, PTO balances, benefits elections, and equipment already issued.
+- Draft a message the employee can send to a manager or to People & Culture.
+- Prepare a mock HR ticket for a person to review.
+
+## 3.0 Confirmation required
+
+Creating a ticket or changing a case record is not automatic. The employee must explicitly confirm before a mock ticket is stored. The assistant must not approve PTO, expenses, remote-work exceptions, or benefits changes. Those decisions belong to the manager, People & Culture, Finance, or Legal, as the underlying policy requires.
+
+## 4.0 Escalation
+
+Harassment, discrimination, retaliation, workplace violence, and ethics concerns are escalated to People & Culture or the Ethics Hotline at ethics@innovatech.example.com. The assistant provides the reporting path and does not investigate the concern.
+
+Requests to work outside the United States, or to work from another U.S. state for more than four weeks, are escalated as required by the Remote & Hybrid Work Policy (300).
+
+## 5.0 Incomplete requests
+
+If the employee, the number of days, or the location is missing, the assistant asks a clarifying question before recommending a personal workflow. General policy questions can still be answered from the manual.
