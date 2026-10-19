@@ -193,6 +193,10 @@ async function ask(text, options = {}) {
   if (!options.silentUser) remember({ role: "user", text });
   renderActive();
   try {
+    const prior = activeChat().messages.slice(0, -1).slice(-6).map((entry) => ({
+      role: entry.role,
+      text: String(entry.text || "").slice(0, 500),
+    }));
     const response = await fetch("/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -201,6 +205,7 @@ async function ask(text, options = {}) {
         confirm_action: Boolean(options.confirm),
         pending_action: options.pending || null,
         selected_step: options.selectedStep || null,
+        history: prior,
       }),
     });
     if (response.status === 401) {

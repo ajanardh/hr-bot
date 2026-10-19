@@ -100,6 +100,55 @@ def test_two_week_domestic_remote_uses_temporary_section(client):
     assert not any(item["section"].startswith("5.3") for item in follow["citations"])
 
 
+def test_remote_application_states_current_authorization(client):
+    sign_in(client, "101")
+    body = client.post(
+        "/chat",
+        json={"message": "What is the procedure to apply for remote work from a different location?"},
+    ).json()
+    answer = body["answer"]
+    assert "San Francisco, CA" in answer
+    assert "authorized as Hybrid" in answer
+    assert "without a new approval" in answer
+    assert "on-site" in answer
+    assert "fully remote" in answer.lower()
+    assert "Change of Work Location" in answer
+
+
+def test_pto_application_states_days_left(client):
+    sign_in(client, "101")
+    request = client.post("/chat", json={"message": "Can I take three days of PTO next week?"}).json()
+    assert "10 days and 5 hours of PTO left" in request["answer"]
+    assert "85" in request["answer"]
+    procedure = client.post("/chat", json={"message": "What is the procedure to request PTO?"}).json()
+    assert "10 days and 5 hours of PTO left" in procedure["answer"]
+    assert "85" in procedure["answer"]
+    assert "WorkDay" in procedure["answer"]
+
+
+def test_domestic_location_procedure_includes_steps_and_violation(client):
+    sign_in(client, "101")
+    body = client.post(
+        "/chat",
+        json={"message": "What is the procedure to apply for remote work from a different location?"},
+    ).json()
+    answer = body["answer"]
+    assert "Change of Work Location" in answer
+    assert "WorkDay" in answer
+    assert "tax review" in answer
+    assert "violation of policy" in answer
+    assert "disciplinary action" in answer
+    assert "(Reference 300 / 5.3)" in answer
+    assert "(Reference 300 / 5.1)" in answer
+    violation = client.post(
+        "/chat",
+        json={"message": "What are the policy violations for working from another state without approval?"},
+    ).json()
+    assert "violation of policy" in violation["answer"]
+    assert "disciplinary action" in violation["answer"]
+    assert "(Reference 300 / 5.3)" in violation["answer"]
+
+
 def test_new_healthcare_and_retirement_questions_are_answered(client):
     sign_in(client, "101")
     deductible = client.post("/chat", json={"message": "What is the deductible for PPO Gold?"}).json()
@@ -113,6 +162,33 @@ def test_new_healthcare_and_retirement_questions_are_answered(client):
     assert "$500" in mine["answer"]
     assert "401" not in mine["answer"]
     assert "401" not in deductible["answer"]
+
+
+def test_follow_up_keeps_the_earlier_question(client):
+    sign_in(client, "101")
+    silver = client.post(
+        "/chat",
+        json={
+            "message": "What about PPO Silver?",
+            "history": [
+                {"role": "user", "text": "What is the deductible for PPO Gold?"},
+                {"role": "assistant", "text": "PPO Gold has an individual deductible of $500."},
+            ],
+        },
+    ).json()
+    assert "$1,000" in silver["answer"]
+    assert "$500" not in silver["answer"]
+    fresh = client.post(
+        "/chat",
+        json={
+            "message": "What is the company 401k match?",
+            "history": [
+                {"role": "user", "text": "What is the deductible for PPO Gold?"},
+            ],
+        },
+    ).json()
+    assert "100%" in fresh["answer"]
+    assert "$500" not in fresh["answer"]
 
 
 def test_out_of_scope_and_clarification(client):

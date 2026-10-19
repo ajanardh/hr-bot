@@ -45,20 +45,36 @@ def _money(value) -> str:
     return str(value)
 
 
+_PLAN_ALIASES = (
+    ("PPO_GOLD", ("ppo gold", "gold")),
+    ("PPO_SILVER", ("ppo silver", "silver")),
+    ("HMO_STANDARD", ("hmo standard", "hmo")),
+    ("HDHP", ("high deductible health", "hdhp")),
+)
+
+
+def _latest_named_plan(text: str, plans: list[dict]) -> dict | None:
+    """The plan named latest in the text, so a follow-up can switch plans."""
+    by_id = {plan.get("plan_id"): plan for plan in plans}
+    selected = None
+    selected_at = -1
+    for plan_id, aliases in _PLAN_ALIASES:
+        plan = by_id.get(plan_id)
+        if not plan:
+            continue
+        for alias in aliases:
+            for match in re.finditer(rf"\b{re.escape(alias)}\b", text):
+                if match.start() >= selected_at:
+                    selected_at = match.start()
+                    selected = plan
+    return selected
+
+
 def plan_fact(message: str, benefits: dict | None = None) -> str:
     """A direct fact from the healthcare or 401k plan data when the question asks for one."""
     text = (message or "").lower().replace("401(k)", "401k").replace("401 (k)", "401k")
     plans = healthcare_plans().get("medical_plans") or []
-    selected = None
-    for plan in plans:
-        name = str(plan.get("plan_name") or "").lower()
-        if name and name in text:
-            selected = plan
-            break
-    if selected is None and ("hdhp" in text or "high deductible" in text):
-        selected = next((plan for plan in plans if plan.get("plan_id") == "HDHP"), None)
-    if selected is None and re.search(r"\bhmo\b", text):
-        selected = next((plan for plan in plans if plan.get("plan_id") == "HMO_STANDARD"), None)
+    selected = _latest_named_plan(text, plans)
     asks_cost = re.search(r"\b(deductible\w*|copay\w*|premium\w*|how much|cost)\b", text)
     if selected is None and benefits and asks_cost and re.search(r"\b(my|i|me)\b", text):
         plan_id = benefits.get("medical_plan_id")

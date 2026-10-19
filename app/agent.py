@@ -85,6 +85,7 @@ class Agent:
         pending_action: dict | None = None,
         actor_employee_id: str | None = None,
         selected_step: dict | None = None,
+        history: list[dict] | None = None,
     ) -> dict:
         message = (message or "").strip()
         if actor_employee_id:
@@ -119,6 +120,10 @@ class Agent:
                 None,
             )
 
+        message = _with_history(message, history)
+        if actor_employee_id and other_employee_requested(message, actor_employee_id):
+            return self._private_refusal()
+
         employee_id = employee_id or self._explicit_id(message)
         intent = self._classify(message)
         trace: list[dict] = []
@@ -136,9 +141,15 @@ class Agent:
                 None,
             )
 
+        if _wants_location_rules(message):
+            return self._location_rules(message, employee_id, trace)
+
         if intent == "clarify_pto":
             citations = self._search(trace, message)
-            answer = "Tell me how many days you need. I can then check your balance. Nothing has been requested."
+            answer = "Tell me how many days you need. Nothing has been requested."
+            left = self._pto_left_for(employee_id, trace)
+            if left:
+                answer = f"{left} {answer}"
             return self._finish(message, "clarify", answer, trace, citations, None, None)
 
         if intent == "clarify_remote":
@@ -147,6 +158,9 @@ class Agent:
                 "Tell me where you want to work and how long you want to be there. "
                 "I can then check the location rules. Nothing has been requested."
             )
+            status = self._authorization_for(employee_id, trace)
+            if status:
+                answer = f"{status} {answer}"
             return self._finish(message, "clarify", answer, trace, citations, None, None)
 
         if intent == "ticket":
@@ -173,7 +187,7 @@ class Agent:
             }[intent]
             return handler(message, employee_id, trace)
 
-        return self._policy_qa(message, trace, intent)
+        return self._policy_qa(message, trace, intent, employee_id)
 
     def _private_refusal(self) -> dict:
         return self._finish(
@@ -290,7 +304,7 @@ class Agent:
                 "unless a contract says otherwise."
             )
         elif hours is None:
-            verdict = f"You have {self._number(available)} hours of PTO. Tell me how many days you need."
+            verdict = f"{self._pto_left_sentence(available)} Tell me how many days you need."
         elif decision_name == "insufficient_balance":
             shortfall = max(0, float(hours) - float(available or 0))
             unpaid = self._search(trace, "5.6 unpaid time off when the PTO balance is not enough")
@@ -302,7 +316,7 @@ class Agent:
             if matching:
                 citations = matching[:1]
             verdict = (
-                f"You have {self._number(available)} hours of PTO. This request is {hours:.0f} hours, "
+                f"{self._pto_left_sentence(available)} This request is {hours:.0f} hours, "
                 "which exceeds that balance, so you do not have enough paid time saved. "
                 f"You can use the {self._number(available)} hours you have and request the remaining "
                 f"{self._number(shortfall)} hours as unpaid time off. "
@@ -311,7 +325,7 @@ class Agent:
             )
         else:
             verdict = (
-                f"You have {self._number(available)} hours of PTO. This request is {hours:.0f} hours, so you have enough time."
+                f"{self._pto_left_sentence(available)} This request is {hours:.0f} hours, so you have enough time."
             )
         if notice and decision_name != "not_eligible":
             verdict += (
@@ -438,7 +452,7 @@ class Agent:
         ]
         return self._finish(message, "benefits", answer, trace, citations, None, None, steps)
 
-    def _policy_qa(self, message: str, trace: list[dict], intent: str) -> dict:
+    def _policy_qa(self, message: str, trace: list[dict], intent: str, employee_id: str | None = None) -> dict:
         named = re.search(r"\b(?:policy|document)\s+(\d{3})\b", message, re.I)
         citations: list[dict] = []
         if named:
@@ -477,6 +491,10 @@ class Agent:
             answer = "The policies do not mention " + ", ".join(absent) + ". " + answer
         if not answer.strip():
             answer = "I could not find a sentence that answers that."
+        if employee_id and _applying_for_pto(message):
+            left = self._pto_left_for(employee_id, trace)
+            if left:
+                answer = f"{left} {answer}"
         steps = [self._policy_step(message, "Show the full policy text")]
         return self._finish(message, "policy_qa" if intent == "policy_qa" else intent, answer, trace, citations, None, None, steps)
 
@@ -555,6 +573,8 @@ class Agent:
         if re.search(r"international|abroad|canada|outside the united", lowered):
             return "5.2"
         weeks = parse_duration(question or "").get("weeks")
+        if weeks is None and _wants_location_rules(question or ""):
+            return None
         longer_than_cap = weeks is not None and weeks >= 4 and re.search(
             r"\b(more than|longer than|over|extended)\b", lowered
         )
@@ -665,11 +685,15 @@ class Agent:
             add(citation)
         return chosen
 
-    def _fact_lines(self, text: str) -> list[str]:
+    def _fact_lines(self, text: str) -> list[tuple[str, bool, bool]]:
         lines = []
         for raw in re.split(r"\n+", text or ""):
-            line = raw.strip().replace("**", "")
-            line = re.sub(r"^[-*]\s*", "", line)
+            original = raw.strip().replace("**", "")
+            if re.fullmatch(r"procedure:?", original, re.I):
+                continue
+            is_step = bool(re.match(r"^\d+\.\s+\S", original))
+            is_violation = bool(re.search(r"\bviolat", original, re.I))
+            line = re.sub(r"^[-*]\s*", "", original)
             line = re.sub(r"^\d+\.\s*", "", line)
             if not line or set(line) <= set("|:- "):
                 continue
@@ -679,18 +703,45 @@ class Agent:
                 if len(cells) < 2:
                     continue
                 line = " — ".join(cells)
+                is_step = False
             if len(line) < 12:
                 continue
-            lines.append(line)
+            lines.append((line, is_step, is_violation))
         return lines
+
+    def _location_rules(self, message: str, employee_id: str | None, trace: list[dict]) -> dict:
+        """Procedure and violation text for working from another location."""
+        international = bool(re.search(r"international|abroad|outside the united|canada", message, re.I)) and not re.search(
+            r"\bdomestic\b", message, re.I
+        )
+        if international:
+            citations = self._search(trace, "5.2 international remote work unapproved serious policy violation")
+        else:
+            citations = self._search(trace, "5.1 Temporary Remote Work Domestic different location within the United States")
+            citations += self._search(
+                trace,
+                "5.3 Change of Work Location procedure WorkDay tax review violation another state",
+            )
+        answer = _location_rule_answer(message)
+        status = self._authorization_for(employee_id, trace)
+        if status:
+            answer = f"{status} {answer}"
+        steps = [self._policy_step(message, "Show the matching remote-work policy")]
+        return self._finish(message, "policy_qa", answer, trace, citations, None, None, steps)
 
     def _direct_policy(self, citations: list[dict], question: str) -> str:
         """The sentences that answer the question, without the rest of the section."""
         terms = self._content_terms(question)
         picked: list[str] = []
         seen: set[str] = set()
-        for citation in self._choose_citations(citations, question, include_related=False)[:3]:
-            lines = self._fact_lines(citation.get("snippet") or citation.get("text") or "")
+        wants_procedure = bool(_PROCEDURE.search(question))
+        wants_violation = bool(_VIOLATION.search(question)) or wants_procedure
+        best_steps: list[str] = []
+        best_violations: list[str] = []
+        best_step_score = -1
+        for citation in self._choose_citations(citations, question, include_related=wants_procedure or wants_violation)[:4]:
+            marked = self._fact_lines(citation.get("snippet") or citation.get("text") or "")
+            lines = [line for line, _step, _violation in marked]
             remaining = set(terms)
             pool = list(lines)
             chosen_lines: list[str] = []
@@ -720,6 +771,32 @@ class Agent:
                     continue
                 seen.add(key)
                 picked.append(line)
+            if wants_procedure or wants_violation:
+                steps = [line for line, is_step, _violation in marked if is_step]
+                violations = [line for line, _step, is_violation in marked if is_violation]
+                overlap = len(terms & self._content_terms(" ".join(steps + violations)))
+                if steps and overlap > best_step_score:
+                    best_step_score = overlap
+                    best_steps = steps
+                    best_violations = violations
+                elif violations and overlap > best_step_score:
+                    best_step_score = overlap
+                    best_violations = violations
+        if wants_procedure and best_steps:
+            step_keys = {line.lower() for line in best_steps}
+            picked = [line for line in picked if line.lower() not in step_keys]
+            numbered = []
+            for index, line in enumerate(best_steps, start=1):
+                seen.add(line.lower())
+                numbered.append(f"{index}. {line}")
+            picked = numbered + picked
+        if wants_violation:
+            for line in best_violations:
+                key = line.lower()
+                if key in seen:
+                    continue
+                seen.add(key)
+                picked.append(line)
         if re.search(r"\b(reimburse\w*|stipend|match|limit|hotel|cost|how much)\b", question, re.I):
             present = set(re.findall(r"\$\s?\d+", " ".join(picked)))
             best_line = ""
@@ -727,7 +804,7 @@ class Agent:
             for citation in citations:
                 if str(citation.get("document_id") or "") == "010":
                     continue
-                for line in self._fact_lines(citation.get("snippet") or citation.get("text") or ""):
+                for line, _step, _violation in self._fact_lines(citation.get("snippet") or citation.get("text") or ""):
                     if line.lower() in seen or not (set(re.findall(r"\$\s?\d+", line)) - present):
                         continue
                     overlap = len(terms & self._content_terms(line))
@@ -866,29 +943,76 @@ class Agent:
         number = float(value)
         return str(int(number)) if number.is_integer() else f"{number:g}"
 
-    def _work_status_sentence(self, status: str) -> str:
-        label = (status or "employee").strip()
-        lowered = label.lower()
-        if lowered == "hybrid":
-            return "You are currently listed as a Hybrid employee with 3 remote days per week."
-        if lowered == "fully remote":
-            return "You are currently listed as a fully remote employee."
-        if lowered == "on-site":
-            return "You are currently listed as an on-site employee."
-        return f"You are currently listed as a {label} employee."
+    def _pto_left_sentence(self, hours) -> str:
+        total = float(hours or 0)
+        whole = int(total // 8)
+        extra = total - whole * 8
+        if extra == 0:
+            amount = "1 day" if whole == 1 else f"{whole} days"
+        elif whole == 0:
+            amount = f"{self._number(extra)} hours"
+        else:
+            hour_label = "hour" if extra == 1 else "hours"
+            amount = f"{whole} days and {self._number(extra)} {hour_label}"
+        return f"You have {amount} of PTO left ({self._number(total)} hours)."
+
+    def _pto_left_for(self, employee_id: str | None, trace: list[dict]) -> str:
+        if not employee_id:
+            return ""
+        balance = self._call(trace, "check_pto_balance", {"employee_id": employee_id})
+        if balance.get("error") or not balance.get("pto_eligible", True):
+            return ""
+        if balance.get("available_hours") is None:
+            return ""
+        return self._pto_left_sentence(balance["available_hours"])
+
+    def _authorization_sentence(self, employee: dict) -> str:
+        status = (employee.get("remote_work_status") or "On-Site").strip()
+        location = (employee.get("work_location") or "your assigned office").strip()
+        eligible = bool(employee.get("remote_work_eligibility"))
+        lowered = status.lower()
+        current = f"Your current work location is {location}, and you are authorized as {status}."
+        if lowered == "hybrid" and eligible:
+            return (
+                f"{current} You can work hybrid, up to 3 remote days per week, without a new approval. "
+                f"You can work on-site at {location} without a remote approval. "
+                "You cannot work fully remote without approval."
+            )
+        if lowered == "fully remote" and eligible:
+            return (
+                f"{current} You can work fully remote without a new approval. "
+                f"You can work on-site at {location} without a remote approval. "
+                "You cannot change to a hybrid schedule without approval."
+            )
+        return (
+            f"{current} You can work on-site at {location} without a remote approval. "
+            "You cannot work remote or hybrid without approval from your manager and department head."
+        )
+
+    def _authorization_for(self, employee_id: str | None, trace: list[dict]) -> str:
+        if not employee_id:
+            return ""
+        profile = self._call(trace, "lookup_employee_profile", {"employee_id": employee_id})
+        employee = profile.get("employee") or {}
+        if profile.get("error") or not employee:
+            return ""
+        return self._authorization_sentence(employee)
 
     def _remote_answer(self, decision: dict) -> str:
-        opening = self._work_status_sentence(decision.get("remote_work_status") or "")
+        opening = self._authorization_sentence(decision)
         name = decision.get("decision")
         if name == "requires_change_of_work_location":
             follow = (
                 "Working from another U.S. state for more than 4 weeks needs a Change of Work Location request in WorkDay. "
-                "Your manager, People & Culture, and Finance have to approve it."
+                + _CHANGE_OF_LOCATION_STEPS
+                + " "
+                + _UNAPPROVED_LOCATION_VIOLATION
             )
         elif name == "escalate_international":
             follow = (
                 "Working outside the United States is generally not permitted. "
-                "People & Culture and Legal have to review it, and approval is rare."
+                "People & Culture and Legal have to review it, and approval is rare. "
+                "Unapproved international work is a serious policy violation."
             )
         elif name == "not_remote_eligible":
             follow = "Your role is not set up for remote work. Your manager and department head have to approve it first."
@@ -1082,6 +1206,73 @@ class Agent:
         return "policy_qa"
 
 
+_PROCEDURE = re.compile(r"\b(procedure|steps|process|how (?:do i|to)|apply for)\b", re.I)
+_VIOLATION = re.compile(r"\b(violation|without approval|unapproved|not reported|disciplinary)\b", re.I)
+_CHANGE_OF_LOCATION_STEPS = (
+    "1. You submit a Change of Work Location request in WorkDay. "
+    "2. Your manager approves the request. "
+    "3. People & Culture and Finance conduct a tax review. "
+    "4. People & Culture gives the final approval."
+)
+_UNAPPROVED_LOCATION_VIOLATION = (
+    "Working from another state that is not reported and approved is a violation of policy "
+    "and may lead to disciplinary action."
+)
+
+
+def _applying_for_pto(message: str) -> bool:
+    if not re.search(r"\b(pto|vacation|time off)\b", message or "", re.I):
+        return False
+    return bool(_PROCEDURE.search(message or "") or re.search(r"\b(apply|request(?:ing)?)\b", message or "", re.I))
+
+
+def _wants_location_rules(message: str) -> bool:
+    """A question about the steps or the violation for working somewhere else."""
+    if not re.search(r"\b(remote\w*|work(?:ing)? from|different location|another location|another state|other state)\b", message or "", re.I):
+        return False
+    if not (_PROCEDURE.search(message or "") or _VIOLATION.search(message or "")):
+        return False
+    return bool(
+        re.search(
+            r"\b(different location|another location|another (?:u\.?s\.? )?state|other state|work location|domestic|international|abroad|location)\b",
+            message or "",
+            re.I,
+        )
+    )
+
+
+def _location_rule_answer(message: str) -> str:
+    international = bool(re.search(r"international|abroad|outside the united|canada", message, re.I)) and not re.search(
+        r"\bdomestic\b", message, re.I
+    )
+    if international:
+        return (
+            "Working outside the United States is generally not permitted. "
+            "Any request has to go to People & Culture and Legal, and approval is rare. "
+            "Unapproved international work is a serious policy violation. "
+            "This is not an approval. (Reference 300 / 5.2)"
+        )
+    weeks = parse_duration(message).get("weeks")
+    parts = []
+    refs = []
+    if weeks is None or weeks <= 4:
+        parts.append(
+            "For up to 4 weeks inside the United States, your manager has to approve working from the different location. "
+            "The request is also subject to business needs and a tax and legal review."
+        )
+        refs.append("(Reference 300 / 5.1)")
+    if weeks is None or weeks > 4 or _PROCEDURE.search(message):
+        parts.append(
+            "For more than 4 weeks in another U.S. state, file a Change of Work Location. "
+            + _CHANGE_OF_LOCATION_STEPS
+        )
+        refs.append("(Reference 300 / 5.3)")
+    parts.append(_UNAPPROVED_LOCATION_VIOLATION)
+    if "(Reference 300 / 5.3)" not in refs:
+        refs.append("(Reference 300 / 5.3)")
+    return " ".join(parts) + " This is not an approval. " + " ".join(refs)
+
+
 def parse_duration(text: str) -> dict:
     lowered = text.lower()
     weeks = _number_before(lowered, "week")
@@ -1096,11 +1287,62 @@ def parse_duration(text: str) -> dict:
 
 
 def _number_before(text: str, unit: str) -> float | None:
-    match = re.search(rf"\b(\d+(?:\.\d+)?|{'|'.join(NUMBERS)})\s+{unit}s?\b", text)
-    if not match:
+    matches = list(re.finditer(rf"\b(\d+(?:\.\d+)?|{'|'.join(NUMBERS)})\s+{unit}s?\b", text))
+    if not matches:
         return None
-    raw = match.group(1)
+    raw = matches[-1].group(1)
     return float(raw) if raw[:1].isdigit() else float(NUMBERS[raw])
+
+
+_FOLLOW_UP = re.compile(
+    r"^\s*(and|also|same|instead|rather|what about|how about)\b|\b(what|how) about\b",
+    re.I,
+)
+
+
+def _is_follow_up(message: str) -> bool:
+    if _FOLLOW_UP.search(message or ""):
+        return True
+    return len((message or "").split()) <= 4
+
+
+def _has_own_topic(message: str) -> bool:
+    if OUT_OF_SCOPE.search(message or ""):
+        return True
+    return any(pattern.search(message or "") for _, pattern in CATEGORIES)
+
+
+def _clean_history(history: list[dict] | None) -> list[dict]:
+    cleaned = []
+    for item in history or []:
+        if not isinstance(item, dict):
+            continue
+        role = str(item.get("role") or "")
+        text = str(item.get("text") or "").strip()
+        if role not in {"user", "assistant"} or not text:
+            continue
+        cleaned.append({"role": role, "text": text[:500]})
+    return cleaned[-6:]
+
+
+def _with_history(message: str, history: list[dict] | None) -> str:
+    """Keep the previous question when this turn only adds a detail."""
+    if not message or not _is_follow_up(message):
+        return message
+    users = [turn["text"] for turn in _clean_history(history) if turn["role"] == "user"]
+    if not users:
+        return message
+    start = len(users) - 1
+    for index in range(len(users) - 1, -1, -1):
+        if _has_own_topic(users[index]) and not _is_follow_up(users[index]):
+            start = index
+            break
+    parts = users[start:] + [message]
+    combined = []
+    for part in parts:
+        if not combined or combined[-1] != part:
+            combined.append(part)
+    return " ".join(combined)
 
 
 _TOPIC_FILLER = {

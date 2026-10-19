@@ -39,12 +39,18 @@ DEMO_TASKS = [
 ]
 
 
+class HistoryTurn(BaseModel):
+    role: str = ""
+    text: str = ""
+
+
 class ChatRequest(BaseModel):
     message: str = ""
     employee_id: str | None = None
     confirm_action: bool = False
     pending_action: dict | None = None
     selected_step: dict | None = None
+    history: list[HistoryTurn] = []
 
 
 class LoginRequest(BaseModel):
@@ -179,4 +185,5 @@ def chat(body: ChatRequest, request: Request):
         pending_action=body.pending_action,
         actor_employee_id=actor,
         selected_step=body.selected_step,
+        history=[{"role": turn.role, "text": turn.text} for turn in body.history],
     )
