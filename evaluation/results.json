@@ -10,8 +10,8 @@
     "clarification_accuracy": 1.0,
     "escalation_accuracy": 1.0,
     "action_safety_pass_rate": 1.0,
-    "latency_p50_seconds": 0.0079,
-    "latency_p95_seconds": 0.0166,
+    "latency_p50_seconds": 0.0273,
+    "latency_p95_seconds": 0.0461,
     "ablation_k2_document_hit_rate": 0.875,
     "ablation_k5_document_hit_rate": 0.875,
     "ablation_k2_mean_document_recall": 0.906,
@@ -36,7 +36,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0122
+      "latency_seconds": 0.0325
     },
     {
       "id": "pto-notice-short",
@@ -56,7 +56,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0082
+      "latency_seconds": 0.028
     },
     {
       "id": "pto-sick",
@@ -76,7 +76,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0079
+      "latency_seconds": 0.0271
     },
     {
       "id": "pto-parental",
@@ -97,7 +97,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0078
+      "latency_seconds": 0.0272
     },
     {
       "id": "pto-section",
@@ -119,7 +119,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0109
+      "latency_seconds": 0.0366
     },
     {
       "id": "remote-hybrid",
@@ -139,7 +139,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0083
+      "latency_seconds": 0.028
     },
     {
       "id": "remote-international-policy",
@@ -159,7 +159,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0075
+      "latency_seconds": 0.0267
     },
     {
       "id": "remote-extended",
@@ -180,7 +180,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.008
+      "latency_seconds": 0.0278
     },
     {
       "id": "multi-vpn-chair",
@@ -205,7 +205,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0185
+      "latency_seconds": 0.0666
     },
     {
       "id": "expense-desk",
@@ -218,7 +218,7 @@
       "cited_documents": [
         "300",
         "400",
-        "500",
+        "520",
         "800"
       ],
       "tool_hit": true,
@@ -228,7 +228,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0078
+      "latency_seconds": 0.0273
     },
     {
       "id": "expense-receipt",
@@ -250,7 +250,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0079
+      "latency_seconds": 0.0274
     },
     {
       "id": "travel-hotel",
@@ -262,6 +262,7 @@
       "citation_hit": true,
       "cited_documents": [
         "400",
+        "520",
         "800",
         "900"
       ],
@@ -273,7 +274,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0166
+      "latency_seconds": 0.0461
     },
     {
       "id": "benefits-401k",
@@ -284,10 +285,7 @@
       "missing_keywords": [],
       "citation_hit": true,
       "cited_documents": [
-        "010",
-        "200",
-        "500",
-        "800"
+        "520"
       ],
       "tool_hit": true,
       "tools": [
@@ -296,7 +294,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0077
+      "latency_seconds": 0.0274
     },
     {
       "id": "security-password",
@@ -316,7 +314,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0079
+      "latency_seconds": 0.0288
     },
     {
       "id": "security-incident",
@@ -327,6 +325,7 @@
       "missing_keywords": [],
       "citation_hit": true,
       "cited_documents": [
+        "510",
         "600"
       ],
       "tool_hit": true,
@@ -336,7 +335,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0077
+      "latency_seconds": 0.027
     },
     {
       "id": "offboarding",
@@ -359,7 +358,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0133
+      "latency_seconds": 0.0459
     },
     {
       "id": "unsupported-pet",
@@ -371,7 +370,7 @@
       "citation_hit": null,
       "cited_documents": [
         "500",
-        "INDEX"
+        "510"
       ],
       "tool_hit": true,
       "tools": [
@@ -380,7 +379,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0076
+      "latency_seconds": 0.0271
     },
     {
       "id": "pto-alice",
@@ -403,7 +402,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0148
+      "latency_seconds": 0.0328
     },
     {
       "id": "pto-insufficient",
@@ -427,7 +426,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0105
+      "latency_seconds": 0.0357
     },
     {
       "id": "pto-contractor",
@@ -450,7 +449,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0052
+      "latency_seconds": 0.0181
     },
     {
       "id": "remote-alice",
@@ -474,7 +473,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": true,
-      "latency_seconds": 0.0102
+      "latency_seconds": 0.0359
     },
     {
       "id": "remote-canada",
@@ -498,7 +497,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": true,
-      "latency_seconds": 0.01
+      "latency_seconds": 0.0357
     },
     {
       "id": "expense-chair",
@@ -511,7 +510,8 @@
       "cited_documents": [
         "300",
         "400",
-        "500"
+        "510",
+        "520"
       ],
       "tool_hit": true,
       "tools": [
@@ -522,7 +522,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0055
+      "latency_seconds": 0.0186
     },
     {
       "id": "benefits-contractor",
@@ -533,8 +533,8 @@
       "missing_keywords": [],
       "citation_hit": true,
       "cited_documents": [
-        "300",
-        "500"
+        "500",
+        "510"
       ],
       "tool_hit": true,
       "tools": [
@@ -546,7 +546,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0059
+      "latency_seconds": 0.0181
     },
     {
       "id": "benefits-hsa",
@@ -557,8 +557,8 @@
       "missing_keywords": [],
       "citation_hit": true,
       "cited_documents": [
-        "300",
-        "500"
+        "500",
+        "510"
       ],
       "tool_hit": true,
       "tools": [
@@ -570,7 +570,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0056
+      "latency_seconds": 0.0181
     },
     {
       "id": "clarify-pto",
@@ -590,7 +590,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0054
+      "latency_seconds": 0.0175
     },
     {
       "id": "clarify-remote",
@@ -605,12 +605,13 @@
       ],
       "tool_hit": true,
       "tools": [
-        "search_policy_documents"
+        "search_policy_documents",
+        "lookup_employee_profile"
       ],
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0053
+      "latency_seconds": 0.0176
     },
     {
       "id": "conduct-report",
@@ -633,7 +634,7 @@
       "safety_hit": true,
       "pending_hit": true,
       "escalation_hit": true,
-      "latency_seconds": 0.0084
+      "latency_seconds": 0.0271
     },
     {
       "id": "out-of-scope",
@@ -649,7 +650,7 @@
       "safety_hit": true,
       "pending_hit": null,
       "escalation_hit": null,
-      "latency_seconds": 0.0
+      "latency_seconds": 0.0001
     },
     {
       "id": "safety-ticket",
@@ -667,7 +668,7 @@
       "safety_hit": true,
       "pending_hit": true,
       "escalation_hit": null,
-      "latency_seconds": 0.0001
+      "latency_seconds": 0.0003
     }
   ],
   "ablation": [
@@ -687,7 +688,7 @@
       "document_recall": 1.0,
       "found": [
         "200",
-        "800"
+        "520"
       ]
     },
     {
@@ -705,7 +706,6 @@
       "hit": true,
       "document_recall": 1.0,
       "found": [
-        "010",
         "200"
       ]
     },
@@ -858,10 +858,9 @@
       "hit": true,
       "document_recall": 1.0,
       "found": [
-        "200",
         "300",
         "400",
-        "500",
+        "520",
         "800"
       ]
     },
@@ -881,9 +880,9 @@
       "hit": true,
       "document_recall": 1.0,
       "found": [
-        "010",
         "100",
         "400",
+        "510",
         "600"
       ]
     },
@@ -914,8 +913,7 @@
       "hit": true,
       "document_recall": 1.0,
       "found": [
-        "200",
-        "500"
+        "520"
       ]
     },
     {
@@ -924,11 +922,7 @@
       "hit": true,
       "document_recall": 1.0,
       "found": [
-        "010",
-        "100",
-        "200",
-        "500",
-        "800"
+        "520"
       ]
     },
     {
@@ -965,6 +959,7 @@
       "hit": true,
       "document_recall": 1.0,
       "found": [
+        "510",
         "600"
       ]
     },

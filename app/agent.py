@@ -9,6 +9,7 @@ from app.config import retrieval_k
 from app.data_store import plan_fact
 from app.llm import rewrite
 from app.mcp_client import McpClient, McpError
+from app.places import mentions_international
 from app.rag.store import STOP, missing_terms, tokenize
 
 NUMBERS = {
@@ -119,6 +120,10 @@ class Agent:
                 None,
                 None,
             )
+
+        action = _conversation_action(message)
+        if action and _prior_topic(history):
+            return self._continue_conversation(message, employee_id, history, action)
 
         message = _with_history(message, history)
         if actor_employee_id and other_employee_requested(message, actor_employee_id):
@@ -358,7 +363,14 @@ class Agent:
         profile = self._call(trace, "lookup_employee_profile", {"employee_id": employee_id})
         if profile.get("error"):
             return self._missing_employee(message, trace, profile)
-        scenario = "remote_eligibility" if duration.get("weeks") is None and "another" not in message.lower() and "international" not in message.lower() and "abroad" not in message.lower() and "domestic" not in message.lower() else "remote_location"
+        lowered = message.lower()
+        located = (
+            duration.get("weeks") is not None
+            or "another" in lowered
+            or "domestic" in lowered
+            or mentions_international(message)
+        )
+        scenario = "remote_location" if located else "remote_eligibility"
         decision = self._call(
             trace,
             "check_policy_compliance",
@@ -374,8 +386,13 @@ class Agent:
         policy_query, section = self._remote_source(decision)
         citations = self._search(trace, policy_query)
         citations += self._search(trace, "VPN GlobalProtect company devices remote work data security")
+        if re.search(r"\b(training|course|conference|seminar)\b", message, re.I):
+            citations += self._search(
+                trace,
+                "business travel CorporateTravel manager pre-approval international GSA per diem",
+            )
         citations = self._keep_remote_citations(citations, section)
-        answer = self._remote_answer(decision)
+        answer = self._remote_answer(decision, message)
         if self._snippets_contain(citations, "GlobalProtect"):
             answer += " You also need to use the company VPN, GlobalProtect, on a company device."
         answer += " This is not an approval."
@@ -472,7 +489,7 @@ class Agent:
             "needs", "each", "per", "week", "weeks", "days", "day", "soon", "quickly", "worked",
             "give", "resigning", "written", "notice", "returned", "reported", "submitted",
             "itemized", "must", "should", "company", "have", "been", "your", "our",
-            "tell", "work", "about",
+            "tell", "work", "about", "steps", "step", "applying", "apply", "procedure", "process",
         }
         absent = [term for term in missing_terms(message) if term not in filler and len(term) >= 3]
         if not citations:
@@ -570,7 +587,7 @@ class Agent:
         lowered = (question or "").lower()
         if not re.search(r"remote|domestic|hybrid|another state|work from", lowered):
             return None
-        if re.search(r"international|abroad|canada|outside the united", lowered):
+        if mentions_international(question or "") and not re.search(r"\bdomestic\b", lowered):
             return "5.2"
         weeks = parse_duration(question or "").get("weeks")
         if weeks is None and _wants_location_rules(question or ""):
@@ -616,6 +633,8 @@ class Agent:
             if document_id == "300" and heading.startswith(prefix):
                 key = (document_id, heading)
             elif document_id == "600" and heading.startswith("3.3"):
+                key = (document_id, heading)
+            elif document_id == "900":
                 key = (document_id, heading)
             else:
                 continue
@@ -711,9 +730,7 @@ class Agent:
 
     def _location_rules(self, message: str, employee_id: str | None, trace: list[dict]) -> dict:
         """Procedure and violation text for working from another location."""
-        international = bool(re.search(r"international|abroad|outside the united|canada", message, re.I)) and not re.search(
-            r"\bdomestic\b", message, re.I
-        )
+        international = mentions_international(message) and not re.search(r"\bdomestic\b", message, re.I)
         if international:
             citations = self._search(trace, "5.2 international remote work unapproved serious policy violation")
         else:
@@ -906,6 +923,99 @@ class Agent:
             return self._finish(message, "ticket", answer, trace, [], None, pending)
         return self._finish(message, "clarify", "I don't have that follow-up. Nothing was changed.", trace, [], None, None)
 
+    def _continue_conversation(self, message: str, employee_id: str | None, history: list[dict] | None, action: str) -> dict:
+        """Draft, show policy, or prepare a ticket for the topic already in this chat."""
+        trace: list[dict] = []
+        topic = _prior_topic(history)
+        discussed = _last_assistant_text(history)
+        if topic and employee_id and other_employee_requested(topic, employee_id):
+            return self._private_refusal()
+        if action == "email":
+            return self._draft_about_topic(message, employee_id, topic, discussed, trace)
+        if action == "policy":
+            query = topic or message
+            citations = self._search(trace, query)
+            answer = "Here is the policy text:\n\n" + self._policy_blocks(citations, query)
+            return self._finish(message, "show_policy", answer, trace, citations, None, None)
+        if not employee_id:
+            return self._finish(message, "clarify", "Sign in before I prepare a ticket. Nothing was stored.", trace, [], None, None)
+        if not topic:
+            return self._finish(
+                message,
+                "clarify",
+                "Tell me what the ticket should be about. Nothing was stored.",
+                trace,
+                [],
+                None,
+                None,
+            )
+        return self._run_step(
+            message,
+            employee_id,
+            self._ticket_step(employee_id, _purpose_from_text(topic), topic),
+        )
+
+    def _draft_about_topic(
+        self,
+        message: str,
+        employee_id: str | None,
+        topic: str,
+        discussed: str,
+        trace: list[dict],
+    ) -> dict:
+        if not employee_id:
+            return self._finish(message, "clarify", "Sign in before I draft a message. Nothing was sent.", trace, [], None, None)
+        if not topic:
+            return self._finish(
+                message,
+                "clarify",
+                "Tell me what the email should be about. Nothing was sent.",
+                trace,
+                [],
+                None,
+                None,
+            )
+        named = _purpose_from_text(message)
+        purpose = named if named != "general" else _purpose_from_text(topic)
+        subject = message if named != "general" else topic
+        if re.search(r"\b(hr|people & culture|people and culture)\b", message, re.I):
+            recipient = "hr"
+        elif re.search(r"\bmanager\b", message, re.I):
+            recipient = "manager"
+        elif purpose == "remote" and (
+            mentions_international(f"{topic} {discussed}")
+            or re.search(
+                r"\b(extended|another state|different state|more than 4)\b",
+                f"{topic} {discussed}",
+                re.I,
+            )
+        ):
+            recipient = "hr"
+        else:
+            recipient = "manager"
+        details = subject
+        if discussed and named == "general":
+            details = f"{subject}\n\n{discussed}"
+        draft = self._call(
+            trace,
+            "draft_hr_email",
+            {
+                "employee_id": employee_id,
+                "recipient": recipient,
+                "purpose": purpose,
+                "details": details[:1200],
+            },
+        )
+        return self._finish(
+            message,
+            "draft_email",
+            self._format_draft(draft) + "\n\nThis draft has not been sent.",
+            trace,
+            [],
+            None,
+            None,
+        )
+
     def _policy_step(
         self,
         policy_query: str,
@@ -998,21 +1108,17 @@ class Agent:
             return ""
         return self._authorization_sentence(employee)
 
-    def _remote_answer(self, decision: dict) -> str:
-        opening = self._authorization_sentence(decision)
+    def _remote_answer(self, decision: dict, message: str = "") -> str:
         name = decision.get("decision")
+        if name == "escalate_international":
+            return self._international_options(decision, message)
+        opening = self._authorization_sentence(decision)
         if name == "requires_change_of_work_location":
             follow = (
                 "Working from another U.S. state for more than 4 weeks needs a Change of Work Location request in WorkDay. "
                 + _CHANGE_OF_LOCATION_STEPS
                 + " "
                 + _UNAPPROVED_LOCATION_VIOLATION
-            )
-        elif name == "escalate_international":
-            follow = (
-                "Working outside the United States is generally not permitted. "
-                "People & Culture and Legal have to review it, and approval is rare. "
-                "Unapproved international work is a serious policy violation."
             )
         elif name == "not_remote_eligible":
             follow = "Your role is not set up for remote work. Your manager and department head have to approve it first."
@@ -1027,6 +1133,42 @@ class Agent:
         else:
             follow = "If you need to work fully remote, you need to request approval."
         return f"{opening} {follow}"
+
+    def _international_options(self, decision: dict, message: str) -> str:
+        location = decision.get("work_location") or "your assigned office"
+        status = decision.get("remote_work_status") or "your current status"
+        parts = [
+            f"Your current work location is {location}, and you are authorized as {status}. "
+            "That authorization does not cover work outside the United States.",
+            "You have two options, and neither one approves the trip by itself.",
+            "Option 1: ask People & Culture and Legal to review an exception. "
+            "Working outside the United States is generally not permitted. "
+            "Approval is rare and only for extenuating circumstances.",
+        ]
+        if re.search(r"\b(training|course|conference|seminar)\b", message or "", re.I):
+            parts.append(
+                "A training course is not listed as an extenuating circumstance, so do not assume it will be approved."
+            )
+            parts.append(
+                "Option 2: travel to the training and then return, without moving your work location. "
+                "That is business travel. Your manager has to pre-approve it before you book. "
+                "Book the trip through CorporateTravel at least 14 days ahead. "
+                "Flights are economy class. Meals outside the United States use the GSA per diem for that location."
+            )
+        else:
+            parts.append(
+                "There is no separate approval for simply working from another country."
+            )
+        weeks = decision.get("duration_weeks")
+        if weeks is not None:
+            parts.append(
+                f"Asking for {self._number(weeks)} weeks does not use the domestic location rule. "
+                "The 4-week limit applies only inside the United States."
+            )
+        if not decision.get("international_remote_approved"):
+            parts.append("Your employee record does not show international remote work as approved.")
+        parts.append("Working outside the United States without approval is a serious policy violation.")
+        return " ".join(parts)
 
     def _expense_answer(self, decision: dict, message: str) -> str:
         name = decision.get("decision")
@@ -1193,8 +1335,8 @@ class Agent:
             return "pto"
         if primary == "remote" and personal:
             if parse_duration(message).get("weeks") is None and not re.search(
-                r"another state|other state|international|abroad|canada|work from", message, re.I
-            ):
+                r"another state|other state|different state|work from|domestic", message, re.I
+            ) and not mentions_international(message):
                 return "clarify_remote"
             return "remote"
         if primary == "expense" and personal:
@@ -1228,13 +1370,14 @@ def _applying_for_pto(message: str) -> bool:
 
 def _wants_location_rules(message: str) -> bool:
     """A question about the steps or the violation for working somewhere else."""
-    if not re.search(r"\b(remote\w*|work(?:ing)? from|different location|another location|another state|other state)\b", message or "", re.I):
+    if not re.search(r"\b(remote\w*|work(?:ing)? from|different location|another location|another state|other state|different state)\b", message or "", re.I) and not mentions_international(message or ""):
         return False
     if not (_PROCEDURE.search(message or "") or _VIOLATION.search(message or "")):
         return False
     return bool(
-        re.search(
-            r"\b(different location|another location|another (?:u\.?s\.? )?state|other state|work location|domestic|international|abroad|location)\b",
+        mentions_international(message or "")
+        or re.search(
+            r"\b(different location|another location|different state|another (?:u\.?s\.? )?state|other state|work location|domestic|international|abroad|location)\b",
             message or "",
             re.I,
         )
@@ -1242,26 +1385,27 @@ def _wants_location_rules(message: str) -> bool:
 
 
 def _location_rule_answer(message: str) -> str:
-    international = bool(re.search(r"international|abroad|outside the united|canada", message, re.I)) and not re.search(
-        r"\bdomestic\b", message, re.I
-    )
+    international = mentions_international(message) and not re.search(r"\bdomestic\b", message, re.I)
     if international:
         return (
             "Working outside the United States is generally not permitted. "
             "Any request has to go to People & Culture and Legal, and approval is rare. "
             "Unapproved international work is a serious policy violation. "
+            "You can ask People & Culture and Legal to review an exception. "
+            "Approval is rare and only for extenuating circumstances. "
             "This is not an approval. (Reference 300 / 5.2)"
         )
     weeks = parse_duration(message).get("weeks")
+    extended = bool(re.search(r"\bextended\b", message, re.I))
     parts = []
     refs = []
-    if weeks is None or weeks <= 4:
+    if not extended and (weeks is None or weeks <= 4):
         parts.append(
             "For up to 4 weeks inside the United States, your manager has to approve working from the different location. "
             "The request is also subject to business needs and a tax and legal review."
         )
         refs.append("(Reference 300 / 5.1)")
-    if weeks is None or weeks > 4 or _PROCEDURE.search(message):
+    if extended or weeks is None or weeks > 4 or _PROCEDURE.search(message):
         parts.append(
             "For more than 4 weeks in another U.S. state, file a Change of Work Location. "
             + _CHANGE_OF_LOCATION_STEPS
@@ -1298,6 +1442,60 @@ _FOLLOW_UP = re.compile(
     r"^\s*(and|also|same|instead|rather|what about|how about)\b|\b(what|how) about\b",
     re.I,
 )
+_EMAIL_REQUEST = re.compile(
+    r"\b(draft|write|compose|prepare)\b.{0,40}\b(an? )?(email|e-mail|message)\b"
+    r"|\b(email|e-mail)\b.{0,30}\b(manager|hr)\b",
+    re.I,
+)
+_POLICY_REQUEST = re.compile(
+    r"\b(show|see|read|display)\b.{0,30}\b(policy|policies|section)\b|\b(full policy|policy text)\b",
+    re.I,
+)
+_TICKET_REQUEST = re.compile(
+    r"\b(prepare|create|open|file|submit)\b.{0,40}\b(mock )?(hr )?(ticket|case)\b",
+    re.I,
+)
+
+
+def _conversation_action(message: str) -> str | None:
+    """A request to act on the current chat, rather than a new policy question."""
+    if _EMAIL_REQUEST.search(message or ""):
+        return "email"
+    if _POLICY_REQUEST.search(message or ""):
+        return "policy"
+    if _TICKET_REQUEST.search(message or ""):
+        return "ticket"
+    return None
+
+
+def _purpose_from_text(text: str) -> str:
+    matched = [name for name, pattern in CATEGORIES if pattern.search(text or "")]
+    if not matched:
+        return "general"
+    primary = matched[0]
+    if primary == "travel":
+        return "expense"
+    if primary in {"pto", "remote", "expense", "benefits", "conduct"}:
+        return primary
+    return "general"
+
+
+def _prior_topic(history: list[dict] | None) -> str:
+    users = [turn["text"] for turn in _clean_history(history) if turn["role"] == "user"]
+    for text in reversed(users):
+        if _conversation_action(text):
+            continue
+        return text
+    return ""
+
+
+def _last_assistant_text(history: list[dict] | None) -> str:
+    for turn in reversed(_clean_history(history)):
+        if turn["role"] != "assistant":
+            continue
+        text = re.sub(r"\n+What would you like to do next\?\s*$", "", turn["text"]).strip()
+        return text
+    return ""
 
 
 def _is_follow_up(message: str) -> bool:

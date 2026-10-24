@@ -6,28 +6,8 @@ from datetime import datetime
 
 from app.config import retrieval_k
 from app.data_store import add_ticket, as_of, find_employee, public_employee, selected_benefit_details
+from app.places import mentions_international
 from app.rag.store import get_section, search
-
-INTERNATIONAL_MARKERS = (
-    "international",
-    "abroad",
-    "overseas",
-    "another country",
-    "other country",
-    "outside the united states",
-    "outside the us",
-    "canada",
-    "mexico",
-    "india",
-    "united kingdom",
-    "france",
-    "germany",
-    "spain",
-    "japan",
-    "australia",
-    "brazil",
-    "ireland",
-)
 
 
 def _employee_or_error(employee_id: str | None = None, name: str | None = None):
@@ -112,9 +92,9 @@ def lookup_benefits_status(employee_id: str) -> dict:
 
 
 def _location_kind(text: str) -> str:
-    lowered = text.lower()
-    if any(marker in lowered for marker in INTERNATIONAL_MARKERS):
+    if mentions_international(text):
         return "international"
+    lowered = text.lower()
     domestic = (
         "another state",
         "other state",

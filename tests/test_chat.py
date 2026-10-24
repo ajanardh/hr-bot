@@ -126,6 +126,99 @@ def test_pto_application_states_days_left(client):
     assert "WorkDay" in procedure["answer"]
 
 
+def test_extended_remote_steps_are_not_called_missing(client):
+    sign_in(client, "101")
+    body = client.post(
+        "/chat",
+        json={"message": "What are the steps for applying for extended remote work from a different state?"},
+    ).json()
+    answer = body["answer"]
+    assert "do not mention" not in answer
+    assert "Change of Work Location" in answer
+    assert "1. You submit a Change of Work Location request in WorkDay." in answer
+    assert "violation of policy" in answer
+    assert "(Reference 300 / 5.3)" in answer
+    assert "(Reference 300 / 5.1)" not in answer
+
+
+def test_draft_email_stays_on_the_remote_topic(client):
+    sign_in(client, "101")
+    body = client.post(
+        "/chat",
+        json={
+            "message": "Can you draft an email to my manager about this?",
+            "history": [
+                {
+                    "role": "user",
+                    "text": "What are the steps for applying for extended remote work from a different state?",
+                },
+                {
+                    "role": "assistant",
+                    "text": "For more than 4 weeks in another U.S. state, file a Change of Work Location.",
+                },
+            ],
+        },
+    ).json()
+    answer = body["answer"]
+    assert body["intent"] == "draft_email"
+    assert "not been sent" in answer
+    assert "Remote location request" in answer
+    assert "different state" in answer
+    assert "Change of Work Location" in answer
+    assert "Tell me where you want to work" not in answer
+
+
+def test_a_country_outside_the_us_is_international(client):
+    sign_in(client, "101")
+    france = client.post(
+        "/chat",
+        json={"message": "Can I work remotely from France for two weeks?"},
+    ).json()
+    assert "generally not permitted" in france["answer"]
+    assert "Legal" in france["answer"]
+    assert "serious policy violation" in france["answer"]
+    assert "(Reference 300 / 5.2)" in france["answer"]
+    assert "temporary remote work" not in france["answer"].lower()
+    japan = client.post("/chat", json={"message": "Can I work remotely from Japan?"}).json()
+    assert japan["intent"] == "remote"
+    assert "(Reference 300 / 5.2)" in japan["answer"]
+    assert "Tell me where you want to work" not in japan["answer"]
+    domestic = client.post(
+        "/chat",
+        json={"message": "Can I work remotely from New Mexico for two weeks?"},
+    ).json()
+    assert "(Reference 300 / 5.1)" in domestic["answer"]
+    assert "5.2" not in domestic["answer"]
+    indiana = client.post(
+        "/chat",
+        json={"message": "Can I work remotely from Indiana for two weeks?"},
+    ).json()
+    assert "(Reference 300 / 5.1)" in indiana["answer"]
+    assert "5.2" not in indiana["answer"]
+
+
+def test_international_training_lists_both_options(client):
+    sign_in(client, "103")
+    body = client.post(
+        "/chat",
+        json={
+            "message": "I'd like to work from internationally for 4 weeks so that I can attend a training course. What are my options?",
+        },
+    ).json()
+    answer = body["answer"]
+    assert "Austin, TX" in answer
+    assert "generally not permitted" in answer
+    assert "People & Culture and Legal" in answer
+    assert "extenuating circumstances" in answer
+    assert "CorporateTravel" in answer
+    assert "GSA" in answer
+    assert "serious policy violation" in answer
+    assert "(Reference 300 / 5.2)" in answer
+    assert "(Reference 900 /" in answer
+    assert "Change of Work Location" not in answer
+    assert "temporary remote work" not in answer.lower()
+
+
 def test_domestic_location_procedure_includes_steps_and_violation(client):
     sign_in(client, "101")
     body = client.post(
