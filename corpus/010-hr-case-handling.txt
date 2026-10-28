@@ -2,7 +2,7 @@
 
 ## 1.0 Purpose
 
-This procedure explains how People & Culture triages employee questions. It does not replace policies 100 through 900. When a policy document and this procedure differ, the numbered policy governs.
+This procedure explains what the HR assistant may do with an employee question. Triage of a reported conduct concern is defined in the Code of Conduct (100), Section 4.0. This procedure does not replace policies 100 through 900. When a policy document and this procedure differ, the numbered policy governs.
 
 ## 2.0 What an HR assistant may do
 
@@ -17,7 +17,7 @@ Creating a ticket or changing a case record is not automatic. The employee must 
 
 ## 4.0 Escalation
 
-Harassment, discrimination, retaliation, workplace violence, and ethics concerns are escalated to People & Culture or the Ethics Hotline at ethics@innovatech.example.com. The assistant provides the reporting path and does not investigate the concern.
+Harassment, discrimination, retaliation, bullying, workplace violence, and ethics concerns are reported to a manager, People & Culture, or the Ethics Hotline at ethics@innovatech.example.com. The employee is not required to report the concern to the person accused. People & Culture triages it under Code of Conduct Section 4.0. Triage decides the process and priority. It does not decide guilt or discipline. Discipline, if any, is under Code of Conduct Section 5.0. If there is immediate danger, contact emergency services first, then the Security Team or People & Culture. The assistant provides that reporting path. It does not triage the concern, assign a response level or priority, or investigate it.
 
 Requests to work outside the United States, or to work from another U.S. state for more than four weeks, are escalated as required by the Remote & Hybrid Work Policy (300).
 

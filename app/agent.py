@@ -9,7 +9,7 @@ from app.config import retrieval_k
 from app.data_store import plan_fact
 from app.llm import rewrite
 from app.mcp_client import McpClient, McpError
-from app.places import mentions_international
+from app.places import mentioned_us_state, mentions_international, same_us_state
 from app.rag.store import STOP, missing_terms, tokenize
 
 NUMBERS = {
@@ -32,7 +32,29 @@ OUT_OF_SCOPE = re.compile(
     r"who won|tell me a joke|translate this)\b",
     re.I,
 )
-SENSITIVE = re.compile(r"harass|discriminat|bully|retaliat|workplace violence|ethic|hostile work", re.I)
+_SEXUAL_HARASSMENT = re.compile(
+    r"sexual remark|sexual comment|sexually|sexist|unwanted sexual|sexual advance",
+    re.I,
+)
+_PHYSICAL_HARASSMENT = re.compile(
+    r"\b(?:touch(?:ed|es|ing)?|grop(?:e|ed|es|ing)|fondl(?:e|ed|es|ing)|grab(?:bed|s|bing)?|kiss(?:ed|es|ing)?)\b"
+    r".{0,50}\b(?:inappropriat\w*|without (?:my )?consent|unwanted|unwelcome)\b"
+    r"|\b(?:inappropriat\w*|unwanted|unwelcome)\b.{0,50}\b(?:touch(?:ed|es|ing)?|grop(?:e|ed|es|ing)|fondl(?:e|ed|es|ing)|contact)\b"
+    r"|\b(?:sexual assault|sexually assault\w*|molested|molesting)\b",
+    re.I,
+)
+SENSITIVE = re.compile(
+    r"harass|discriminat|bull(?:y|ied|ying|ies)|retaliat|workplace violence|ethic|hostile work|"
+    + _SEXUAL_HARASSMENT.pattern
+    + "|"
+    + _PHYSICAL_HARASSMENT.pattern,
+    re.I,
+)
+_NEXT_STEP = re.compile(
+    r"\b(what happens now|what happens next|what happens after|what now|what next|"
+    r"what(?:'s| is) next|next steps|what do i do now|what should i do now)\b",
+    re.I,
+)
 TICKET = re.compile(r"\b(create|file|open|submit)\b.{0,40}\b(ticket|hr case|case)\b", re.I)
 PERSONAL = re.compile(
     r"\b(can i|could i|am i|do i|my |i want|i need|i'd like|i would|for me|employee\s+\d+|can employee)\b",
@@ -41,8 +63,8 @@ PERSONAL = re.compile(
 EMPLOYEE_ID = re.compile(r"\bemployee\s*#?\s*(\d{3})\b", re.I)
 
 CATEGORIES = [
-    ("pto", re.compile(r"\b(pto|vacation|time off|sick|parental|bereavement|jury|holidays?|leave)\b", re.I)),
-    ("remote", re.compile(r"\b(remote\w*|hybrid|another (?:u\.?s\.? )?state|other state|abroad|international\w*|work from)\b", re.I)),
+    ("pto", re.compile(r"\b(pto|vacation|time off|days? off|sick|parental|bereavement|jury|holidays?|leave)\b", re.I)),
+    ("remote", re.compile(r"\b(remote\w*|hybrid|another (?:u\.?s\.? )?state|other state|out[- ]of[- ]state|abroad|international\w*|work from)\b", re.I)),
     ("travel", re.compile(r"\b(travel|flight|hotel|lodging|per diem|airfare|mileage)\b", re.I)),
     ("expense", re.compile(r"\b(expense|reimburse\w*|stipend|concur|receipt|chair|desk)\b", re.I)),
     (
@@ -58,7 +80,7 @@ CATEGORIES = [
     ("security", re.compile(r"\b(password|mfa|vpn|phishing|encrypt\w*|confidential|security|incident|globalprotect)\b", re.I)),
     ("onboarding", re.compile(r"\b(onboard\w*|offboard\w*|resign\w*|new hire|day 1)\b", re.I)),
     ("equipment", re.compile(r"\b(equipment|laptop|monitor|badge)\b", re.I)),
-    ("conduct", re.compile(r"\b(code of conduct|harassment|discrimination|ethics)\b", re.I)),
+    ("conduct", re.compile(r"\b(code of conduct|harassment|discrimination|ethics|bull(?:y|ied|ying|ies))\b", re.I)),
 ]
 
 CATEGORY_QUERY = {
@@ -102,7 +124,12 @@ class Agent:
             step_employee = (selected_step or {}).get("employee_id")
             if step_employee and str(step_employee) != actor_employee_id:
                 return self._private_refusal()
-            if not selected_step and other_employee_requested(message, actor_employee_id):
+            if (
+                not selected_step
+                and other_employee_requested(message, actor_employee_id)
+                and not _reporting_conduct_details(message, history)
+                and not _naming_coworker_in_conduct_report(message)
+            ):
                 return self._private_refusal()
         if selected_step:
             return self._run_step(message, employee_id, selected_step)
@@ -120,13 +147,23 @@ class Agent:
                 None,
                 None,
             )
+        if _awaiting_conduct_details(history) and not _leaving_conduct_details(message):
+            if re.match(r"\s*(cancel|never mind|nevermind|stop|discard)\b", message, re.I):
+                return self._finish(message, "ticket", "No ticket was stored. The draft was discarded.", [], [], None, None)
+            return self._accept_conduct_details(message, employee_id, history)
+        if _NEXT_STEP.search(message) and _conduct_in_history(history):
+            return self._conduct_next_steps(message, history)
 
         action = _conversation_action(message)
         if action and _prior_topic(history):
             return self._continue_conversation(message, employee_id, history, action)
 
         message = _with_history(message, history)
-        if actor_employee_id and other_employee_requested(message, actor_employee_id):
+        if (
+            actor_employee_id
+            and other_employee_requested(message, actor_employee_id)
+            and not _naming_coworker_in_conduct_report(message)
+        ):
             return self._private_refusal()
 
         employee_id = employee_id or self._explicit_id(message)
@@ -227,6 +264,18 @@ class Agent:
                 f"Mock ticket {ticket.get('ticket_id')} is stored with status {ticket.get('status')}. "
                 "This does not approve the underlying request. People & Culture still has to review it."
             )
+            summary = str(arguments.get("summary") or "")
+            if _is_conduct_subject(summary, str(arguments.get("category") or "")):
+                answer += "\n\n" + _conduct_next_steps_body(summary)
+                return self._finish(
+                    message,
+                    "conduct",
+                    answer,
+                    trace,
+                    self._conduct_next_citations(trace),
+                    self._conduct_escalation(),
+                    None,
+                )
         else:
             answer = "The ticket was not stored. " + str(output.get("message") or output.get("error") or "")
         return self._finish(message, "ticket", answer, trace, [], None, None)
@@ -244,46 +293,65 @@ class Agent:
                 None,
                 None,
             )
-        profile = self._call(trace, "lookup_employee_profile", {"employee_id": employee_id})
-        if profile.get("error"):
-            return self._finish(message, "clarify", profile.get("message", "Employee not found."), trace, [], None, None)
-        pending = {
-            "tool": "create_mock_hr_ticket",
-            "arguments": {
-                "employee_id": employee_id,
-                "category": "general",
-                "summary": message[:800],
-                "confirm": False,
-            },
-        }
-        name = profile["employee"]["full_name"]
-        answer = (
-            f"I can open a mock HR ticket for {name} ({employee_id}). "
-            "Nothing is stored until you confirm.\n\n"
-            f"Draft summary: {message}\n\n"
-            "Recommendation: confirm only if you want this mock case on file. Confirmation does not approve PTO, expenses, or remote work."
-        )
-        return self._finish(message, "ticket", answer, trace, [], None, pending)
+        if _is_conduct_report(message) and not _incident_ready(message):
+            return self._finish(message, "ticket", _conduct_detail_prompt("", None), trace, [], None, None)
+        return self._open_ticket_draft(message, employee_id, trace, "general", message[:800], recommend=True)
 
     def _conduct(self, message: str, employee_id: str | None, trace: list[dict]) -> dict:
+        bullying = bool(re.search(r"bull(?:y|ied|ying|ies)", message or "", re.I))
+        unwanted_contact = bool(_PHYSICAL_HARASSMENT.search(message or ""))
+        violence = bool(re.search(r"workplace violence|violen\w*|threats? of violence|immediate danger", message or "", re.I))
         citations = []
-        citations += self._search(trace, "harassment discrimination reporting ethics hotline retaliation")
-        citations += self._search(trace, "HR case handling escalation confirmation ethics", document_id="010")
+        citations += self._search(
+            trace,
+            ("unwanted physical contact " if unwanted_contact else "")
+            + ("bullying " if bullying else "")
+            + "harassment discrimination reporting ethics hotline retaliation not required accused",
+            document_id="100",
+        )
+        citations += self._search(
+            trace,
+            "triage Section 4.0 response level priority does not decide guilt discipline",
+            document_id="100",
+        )
+        citations += self._search(trace, "HR case handling escalation conduct triage ethics", document_id="010")
         escalation = {
             "recommended": True,
             "team": "People & Culture and the Ethics Hotline",
-            "reason": "Conduct concerns are reported to a manager, People & Culture, or ethics@innovatech.example.com. The assistant does not investigate.",
+            "reason": (
+                "Conduct concerns are reported to a manager, People & Culture, or ethics@innovatech.example.com. "
+                "People & Culture triages them under Code of Conduct Section 4.0. The assistant does not triage or investigate."
+            ),
         }
+        if unwanted_contact:
+            lead = "Unwanted physical contact is harassment and is not tolerated. "
+        elif bullying:
+            lead = "Bullying is not tolerated. "
+        else:
+            lead = ""
+        safety = (
+            "If there is immediate danger, contact emergency services first, then the Security Team or People & Culture. "
+            if violence
+            else ""
+        )
         answer = (
-            "Report this to your manager, People & Culture at hr@innovatech.example.com, "
+            f"{lead}{safety}Report this to your manager, People & Culture at hr@innovatech.example.com, "
             "or the Ethics Hotline at ethics@innovatech.example.com. "
+            "You are not required to report it to the person accused. "
+            "People & Culture triages the report under Code of Conduct Section 4.0. "
+            "Triage decides the process and priority. It does not decide guilt or discipline. "
             "The company prohibits retaliation for a good-faith report. "
-            "I have not investigated this, and I have not stored a ticket."
+            "I have not triaged this, I have not investigated this, and I have not stored a ticket."
         )
         steps = []
         if employee_id:
             steps.append(self._ticket_step(employee_id, "workplace_conduct", message))
-            steps.append(self._policy_step("harassment discrimination reporting ethics hotline", "Show the conduct policy"))
+            steps.append(
+                self._policy_step(
+                    "harassment reporting ethics hotline triage Section 4.0",
+                    "Show the conduct policy",
+                )
+            )
         return self._finish(message, "conduct", answer, trace, citations, escalation, None, steps)
 
     def _pto(self, message: str, employee_id: str, trace: list[dict]) -> dict:
@@ -303,7 +371,15 @@ class Agent:
         available = balance.get("available_hours")
         notice = decision.get("notice_business_days_required")
         decision_name = decision.get("decision")
-        if decision_name == "not_eligible":
+        if _APPROVAL_QUESTION.search(message) and decision_name != "not_eligible":
+            procedure = self._search(trace, "3.2 PTO manager approval notice WorkDay 3.3 request procedure")
+            citations = [
+                item
+                for item in procedure
+                if str(item.get("document_id")) == "200" and str(item.get("section") or "").startswith(("3.2", "3.3"))
+            ] or citations
+            verdict = self._pto_approval_verdict(employee, available, hours, notice, decision_name)
+        elif decision_name == "not_eligible":
             verdict = (
                 "You are not eligible for PTO. Temporary employees and contractors are not covered "
                 "unless a contract says otherwise."
@@ -311,44 +387,81 @@ class Agent:
         elif hours is None:
             verdict = f"{self._pto_left_sentence(available)} Tell me how many days you need."
         elif decision_name == "insufficient_balance":
-            shortfall = max(0, float(hours) - float(available or 0))
-            unpaid = self._search(trace, "5.6 unpaid time off when the PTO balance is not enough")
-            matching = [
-                item
-                for item in unpaid
-                if str(item.get("document_id")) == "200" and str(item.get("section") or "").startswith("5.6")
-            ]
-            if matching:
-                citations = matching[:1]
-            verdict = (
-                f"{self._pto_left_sentence(available)} This request is {hours:.0f} hours, "
-                "which exceeds that balance, so you do not have enough paid time saved. "
-                f"You can use the {self._number(available)} hours you have and request the remaining "
-                f"{self._number(shortfall)} hours as unpaid time off. "
-                "If the absence is longer than 4 weeks, or it is for a medical or family reason, "
-                "contact People & Culture about a leave of absence."
-            )
+            available_hours = float(available or 0)
+            shortfall = max(0, float(hours) - available_hours)
+            requested_days = float(hours) / 8
+            if requested_days > 20:
+                loa = self._search(trace, "5.5 Leave of Absence longer than 4 weeks contact People and Culture")
+                loa += self._search(trace, "5.6 longer than 4 weeks not ordinary unpaid time off")
+                citations = [
+                    item
+                    for item in loa
+                    if str(item.get("document_id")) == "200"
+                    and str(item.get("section") or "").startswith(("5.5", "5.6"))
+                ] or citations
+                verdict = (
+                    f"{self._pto_left_sentence(available)} "
+                    f"You asked for {self._number(requested_days)} days ({self._number(hours)} hours). "
+                    f"That exceeds your balance by {self._hours_as_days(shortfall)} ({self._number(shortfall)} hours). "
+                    f"Your options are: 1. Take only the {self._hours_as_days(available_hours)} of PTO you have. "
+                    f"2. Take all {self._number(requested_days)} days: {self._hours_as_days(available_hours)} paid and "
+                    f"{self._hours_as_days(shortfall)} unpaid. "
+                    "Use your PTO first. "
+                    f"Because {self._number(requested_days)} days is longer than 4 weeks, the unpaid days are a Leave of Absence "
+                    "under section 5.5, not ordinary unpaid time off. Contact People & Culture. "
+                    f"The PTO-only option needs at least {notice} business days' notice and approval from "
+                    f"{employee['manager_name']} in WorkDay."
+                )
+            else:
+                unpaid = self._search(trace, "5.6 unpaid time off when the PTO balance is not enough")
+                matching = [
+                    item
+                    for item in unpaid
+                    if str(item.get("document_id")) == "200" and str(item.get("section") or "").startswith("5.6")
+                ]
+                if matching:
+                    citations = matching[:1]
+                verdict = (
+                    f"{self._pto_left_sentence(available)} This request is {hours:.0f} hours, "
+                    "which exceeds that balance, so you do not have enough paid time saved. "
+                    f"You can use the {self._number(available)} hours you have and request the remaining "
+                    f"{self._number(shortfall)} hours as unpaid time off. "
+                    "If the absence is longer than 4 weeks, or it is for a medical or family reason, "
+                    "contact People & Culture about a leave of absence."
+                )
         else:
             verdict = (
                 f"{self._pto_left_sentence(available)} This request is {hours:.0f} hours, so you have enough time."
             )
-        if notice and decision_name != "not_eligible":
+        approval_answer = _APPROVAL_QUESTION.search(message) and decision_name != "not_eligible"
+        if notice and decision_name != "not_eligible" and not approval_answer and not (hours is not None and float(hours) / 8 > 20):
             verdict += (
                 f" You still need to give at least {notice} business days' notice and get approval "
                 f"from {employee['manager_name']} in WorkDay."
             )
         verdict += " This is not an approval."
+        if approval_answer:
+            verdict += " (Reference 200 / 3.2) (Reference 200 / 3.3)"
+        if decision_name == "insufficient_balance" and hours is not None and float(hours) / 8 > 20:
+            verdict += " (Reference 200 / 5.5) (Reference 200 / 5.6)"
         details = (
             f"I would like to request PTO"
             + (f" for {duration['days']} days ({hours:.0f} hours)." if hours is not None else ".")
             + f" My available balance is {available} hours. "
             "I understand this still needs manager approval in WorkDay."
         )
-        policy_label = "Show the unpaid time off policy" if decision_name == "insufficient_balance" else "Show the PTO policy"
-        policy_section = "5.6 Unpaid Time Off" if decision_name == "insufficient_balance" else None
+        longer_absence = decision_name == "insufficient_balance" and hours is not None and float(hours) / 8 > 20
+        policy_label = "Show the leave of absence policy" if longer_absence else (
+            "Show the unpaid time off policy" if decision_name == "insufficient_balance" else "Show the PTO policy"
+        )
+        policy_section = "5.5 Leave of Absence" if longer_absence else (
+            "5.6 Unpaid Time Off" if decision_name == "insufficient_balance" else None
+        )
         steps = [
             self._policy_step(
-                "5.6 unpaid time off" if policy_section else message + " PTO approval notice WorkDay",
+                "5.5 Leave of Absence" if longer_absence else (
+                    "5.6 unpaid time off" if policy_section else message + " PTO approval notice WorkDay"
+                ),
                 policy_label,
                 section=policy_section,
                 document_id="200" if policy_section else None,
@@ -364,9 +477,15 @@ class Agent:
         if profile.get("error"):
             return self._missing_employee(message, trace, profile)
         lowered = message.lower()
+        if (
+            _mentions_other_state(message)
+            and duration.get("weeks") is None
+            and not mentions_international(message)
+        ):
+            return self._location_rules(message, employee_id, trace)
         located = (
             duration.get("weeks") is not None
-            or "another" in lowered
+            or _mentions_other_state(message)
             or "domestic" in lowered
             or mentions_international(message)
         )
@@ -490,6 +609,7 @@ class Agent:
             "give", "resigning", "written", "notice", "returned", "reported", "submitted",
             "itemized", "must", "should", "company", "have", "been", "your", "our",
             "tell", "work", "about", "steps", "step", "applying", "apply", "procedure", "process",
+            "now", "happens", "next",
         }
         absent = [term for term in missing_terms(message) if term not in filler and len(term) >= 3]
         if not citations:
@@ -499,7 +619,10 @@ class Agent:
             )
             return self._finish(message, "out_of_scope", answer, trace, [], None, None)
         fact = plan_fact(message)
-        prose = self._to_plain_english(self._direct_policy(citations, message)).strip()
+        listed = ""
+        if re.search(r"\b(related policies|policies are related|policies related|related to)\b", message, re.I):
+            listed = self._related_policy_list(citations)
+        prose = listed or self._to_plain_english(self._direct_policy(citations, message)).strip()
         if fact:
             answer = fact
         else:
@@ -746,6 +869,19 @@ class Agent:
         steps = [self._policy_step(message, "Show the matching remote-work policy")]
         return self._finish(message, "policy_qa", answer, trace, citations, None, None, steps)
 
+    def _related_policy_list(self, citations: list[dict]) -> str:
+        """Every related-policy line, not only the one line that shares the most question words."""
+        lines: list[str] = []
+        for citation in citations:
+            if str(citation.get("document_id") or "") != "100":
+                continue
+            if not str(citation.get("section") or "").startswith("6."):
+                continue
+            for line, _step, _violation in self._fact_lines(citation.get("snippet") or citation.get("text") or ""):
+                if line not in lines:
+                    lines.append(line)
+        return " ".join(lines)
+
     def _direct_policy(self, citations: list[dict], question: str) -> str:
         """The sentences that answer the question, without the rest of the section."""
         terms = self._content_terms(question)
@@ -903,24 +1039,14 @@ class Agent:
         if step_id == "prepare_ticket":
             if not employee_id:
                 return self._finish(message, "clarify", "Sign in before I prepare a ticket. Nothing was stored.", trace, [], None, None)
-            profile = self._call(trace, "lookup_employee_profile", {"employee_id": employee_id})
-            if profile.get("error"):
-                return self._missing_employee(message, trace, profile)
-            pending = {
-                "tool": "create_mock_hr_ticket",
-                "arguments": {
-                    "employee_id": employee_id,
-                    "category": step.get("category") or "general",
-                    "summary": (step.get("summary") or message)[:800],
-                    "confirm": False,
-                },
-            }
-            name = profile["employee"]["full_name"]
-            answer = (
-                f"I can open a mock HR ticket for {name}. Nothing is stored until you confirm.\n\n"
-                f"Draft summary: {pending['arguments']['summary']}"
-            )
-            return self._finish(message, "ticket", answer, trace, [], None, pending)
+            category = step.get("category") or "general"
+            summary = (step.get("summary") or message)[:800]
+            if category in {"conduct", "workplace_conduct"} or _is_conduct_report(summary):
+                if _incident_ready(message) and message.strip() not in summary:
+                    summary = f"{summary}\n\nReported details: {message.strip()}"[:800]
+                elif not _incident_ready(summary):
+                    return self._finish(message, "ticket", _conduct_detail_prompt("", None), trace, [], None, None)
+            return self._open_ticket_draft(message, employee_id, trace, category, summary)
         return self._finish(message, "clarify", "I don't have that follow-up. Nothing was changed.", trace, [], None, None)
 
     def _continue_conversation(self, message: str, employee_id: str | None, history: list[dict] | None, action: str) -> dict:
@@ -928,7 +1054,7 @@ class Agent:
         trace: list[dict] = []
         topic = _prior_topic(history)
         discussed = _last_assistant_text(history)
-        if topic and employee_id and other_employee_requested(topic, employee_id):
+        if topic and employee_id and other_employee_requested(topic, employee_id) and not _is_conduct_report(topic):
             return self._private_refusal()
         if action == "email":
             return self._draft_about_topic(message, employee_id, topic, discussed, trace)
@@ -1016,6 +1142,100 @@ class Agent:
             None,
         )
 
+    def _conduct_next_steps(self, message: str, history: list[dict] | None) -> dict:
+        trace: list[dict] = []
+        subject = _history_text(history)
+        return self._finish(
+            message,
+            "conduct",
+            _conduct_next_steps_body(subject),
+            trace,
+            self._conduct_next_citations(trace),
+            self._conduct_escalation(),
+            None,
+        )
+
+    def _conduct_next_citations(self, trace: list[dict]) -> list[dict]:
+        citations: list[dict] = []
+        for section in (
+            "4.2 Decision Owner and Timing",
+            "4.5 Assign the Response Level",
+            "4.7 Define Immediate Next Actions",
+            "3.3 Anti-Harassment and Non-Discrimination",
+        ):
+            found = self._call(trace, "get_policy_section", {"document_id": "100", "section": section})
+            citations.extend(found.get("citations") or [])
+        return citations
+
+    def _conduct_escalation(self) -> dict:
+        return {
+            "recommended": True,
+            "team": "People & Culture and the Ethics Hotline",
+            "reason": (
+                "After a conduct report, People & Culture triages it under Code of Conduct Section 4.0. "
+                "The assistant explains those steps and does not investigate."
+            ),
+        }
+
+    def _accept_conduct_details(self, message: str, employee_id: str | None, history: list[dict] | None) -> dict:
+        trace: list[dict] = []
+        if not employee_id:
+            return self._finish(message, "clarify", "Sign in before I prepare a ticket. Nothing was stored.", trace, [], None, None)
+        gathered = _gathered_incident(history, message)
+        if not _incident_ready(gathered):
+            return self._finish(
+                message,
+                "ticket",
+                _conduct_detail_prompt(gathered, _person_name(gathered)),
+                trace,
+                [],
+                None,
+                None,
+            )
+        origin = _conduct_origin(history) or "Workplace conduct report."
+        summary = origin if gathered in origin else f"{origin}\n\nReported details: {gathered}"
+        return self._open_ticket_draft(
+            message,
+            employee_id,
+            trace,
+            "workplace_conduct",
+            summary[:800],
+        )
+
+    def _open_ticket_draft(
+        self,
+        message: str,
+        employee_id: str,
+        trace: list[dict],
+        category: str,
+        summary: str,
+        recommend: bool = False,
+    ) -> dict:
+        profile = self._call(trace, "lookup_employee_profile", {"employee_id": employee_id})
+        if profile.get("error"):
+            return self._finish(message, "clarify", profile.get("message", "Employee not found."), trace, [], None, None)
+        pending = {
+            "tool": "create_mock_hr_ticket",
+            "arguments": {
+                "employee_id": employee_id,
+                "category": category or "general",
+                "summary": summary[:800],
+                "confirm": False,
+            },
+        }
+        name = profile["employee"]["full_name"]
+        who = f"{name} ({employee_id})" if recommend else name
+        answer = (
+            f"I can open a mock HR ticket for {who}. Nothing is stored until you confirm.\n\n"
+            f"Draft summary: {pending['arguments']['summary']}"
+        )
+        if recommend:
+            answer += (
+                "\n\nRecommendation: confirm only if you want this mock case on file. "
+                "Confirmation does not approve PTO, expenses, or remote work."
+            )
+        return self._finish(message, "ticket", answer, trace, [], None, pending)
+
     def _policy_step(
         self,
         policy_query: str,
@@ -1053,18 +1273,47 @@ class Agent:
         number = float(value)
         return str(int(number)) if number.is_integer() else f"{number:g}"
 
-    def _pto_left_sentence(self, hours) -> str:
+    def _pto_approval_verdict(self, employee: dict, available, hours, notice, decision_name: str) -> str:
+        available_hours = float(available or 0)
+        parts = [
+            self._pto_left_sentence(available),
+            "All PTO requests need manager approval based on business needs.",
+            "Submit the request in WorkDay. Your manager gets a notification to review it, and WorkDay tells you when it is approved or denied.",
+            "A request of 1-3 days needs at least 5 business days' notice. A request of 4 or more days needs at least 10 business days' notice.",
+        ]
+        if hours is not None and decision_name == "insufficient_balance" and float(hours) / 8 > 20:
+            requested_days = float(hours) / 8
+            shortfall = max(0, float(hours) - available_hours)
+            parts.append(
+                f"You asked for {self._number(requested_days)} days. "
+                f"Option 1, the {self._hours_as_days(available_hours)} of PTO you have, needs at least {notice} business days' notice "
+                f"and approval from {employee['manager_name']} in WorkDay. "
+                f"Option 2 is {self._hours_as_days(available_hours)} paid and {self._hours_as_days(shortfall)} unpaid. "
+                f"Because {self._number(requested_days)} days is longer than 4 weeks, the unpaid days are a Leave of Absence under section 5.5, "
+                "so People & Culture handles that request."
+            )
+        elif hours is not None and notice:
+            parts.append(
+                f"This request needs at least {notice} business days' notice and approval from {employee['manager_name']} in WorkDay."
+            )
+        else:
+            parts.append(f"Your manager is {employee['manager_name']}.")
+        return " ".join(parts)
+
+    def _hours_as_days(self, hours) -> str:
         total = float(hours or 0)
         whole = int(total // 8)
         extra = total - whole * 8
         if extra == 0:
-            amount = "1 day" if whole == 1 else f"{whole} days"
-        elif whole == 0:
-            amount = f"{self._number(extra)} hours"
-        else:
-            hour_label = "hour" if extra == 1 else "hours"
-            amount = f"{whole} days and {self._number(extra)} {hour_label}"
-        return f"You have {amount} of PTO left ({self._number(total)} hours)."
+            return "1 day" if whole == 1 else f"{whole} days"
+        if whole == 0:
+            return f"{self._number(extra)} hours"
+        hour_label = "hour" if extra == 1 else "hours"
+        return f"{whole} days and {self._number(extra)} {hour_label}"
+
+    def _pto_left_sentence(self, hours) -> str:
+        total = float(hours or 0)
+        return f"You have {self._hours_as_days(total)} of PTO left ({self._number(total)} hours)."
 
     def _pto_left_for(self, employee_id: str | None, trace: list[dict]) -> str:
         if not employee_id:
@@ -1113,26 +1362,62 @@ class Agent:
         if name == "escalate_international":
             return self._international_options(decision, message)
         opening = self._authorization_sentence(decision)
+        place = _unauthorized_place(decision, message)
+        if place:
+            opening += f" That authorization does not cover {place}."
         if name == "requires_change_of_work_location":
-            follow = (
-                "Working from another U.S. state for more than 4 weeks needs a Change of Work Location request in WorkDay. "
-                + _CHANGE_OF_LOCATION_STEPS
-                + " "
-                + _UNAPPROVED_LOCATION_VIOLATION
-            )
+            weeks = decision.get("duration_weeks")
+            if weeks is not None and weeks <= 4:
+                follow = (
+                    f"Working from {place or 'another state'} for {self._number(weeks)} weeks stays under a single 4-week stay, "
+                    "but it is more temporary remote time than you have left this year. "
+                    "It needs a Change of Work Location request in WorkDay. "
+                    + _CHANGE_OF_LOCATION_STEPS
+                    + " "
+                    + _UNAPPROVED_LOCATION_VIOLATION
+                )
+            else:
+                follow = (
+                    "Working from another U.S. state for more than 4 weeks needs a Change of Work Location request in WorkDay. "
+                    + _CHANGE_OF_LOCATION_STEPS
+                    + " "
+                    + _UNAPPROVED_LOCATION_VIOLATION
+                )
         elif name == "not_remote_eligible":
             follow = "Your role is not set up for remote work. Your manager and department head have to approve it first."
         elif name == "manager_approval_for_temporary_remote":
             weeks = decision.get("duration_weeks")
             length = f" for {self._number(weeks)} weeks" if weeks else ""
+            where = f" from {place}" if place else ""
+            manager = decision.get("manager_name") or "your manager"
             follow = (
-                f"This is temporary remote work{length}, inside the United States. "
+                f"Working{where}{length} is temporary remote work, inside the United States. "
                 "It stays within the 4 week limit, so you do not need an extended remote request. "
-                "Your manager has to approve it."
+                f"The approval requirements are: {manager} has to approve it, based on business needs and a tax and legal review, "
+                "and it must be documented."
+                + self._temporary_allowance_sentence(decision, weeks)
             )
         else:
             follow = "If you need to work fully remote, you need to request approval."
         return f"{opening} {follow}"
+
+    def _temporary_allowance_sentence(self, decision: dict, weeks) -> str:
+        limit = decision.get("temporary_remote_days_limit")
+        used = decision.get("temporary_remote_days_used_ytd")
+        requested = decision.get("requested_business_days")
+        if limit is None or used is None or requested is None or weeks is None:
+            return ""
+        remaining = int(limit) - int(used)
+        requested_label = self._number(requested)
+        sentence = (
+            f" You have {remaining} temporary remote days left this year ({int(used)} of {int(limit)} used). "
+            f"{self._number(weeks)} weeks is {requested_label} business days."
+        )
+        if float(requested) == float(remaining):
+            sentence += " This request uses that full allowance."
+        elif float(requested) < float(remaining):
+            sentence += f" This request uses {requested_label} of those days."
+        return sentence
 
     def _international_options(self, decision: dict, message: str) -> str:
         location = decision.get("work_location") or "your assigned office"
@@ -1334,8 +1619,8 @@ class Agent:
                 return "clarify_pto"
             return "pto"
         if primary == "remote" and personal:
-            if parse_duration(message).get("weeks") is None and not re.search(
-                r"another state|other state|different state|work from|domestic", message, re.I
+            if parse_duration(message).get("weeks") is None and not _mentions_other_state(message) and not re.search(
+                r"work from|domestic", message, re.I
             ) and not mentions_international(message):
                 return "clarify_remote"
             return "remote"
@@ -1348,6 +1633,7 @@ class Agent:
         return "policy_qa"
 
 
+_APPROVAL_QUESTION = re.compile(r"\b(approval|approve\w*|requirements?|notice)\b", re.I)
 _PROCEDURE = re.compile(r"\b(procedure|steps|process|how (?:do i|to)|apply for)\b", re.I)
 _VIOLATION = re.compile(r"\b(violation|without approval|unapproved|not reported|disciplinary)\b", re.I)
 _CHANGE_OF_LOCATION_STEPS = (
@@ -1368,19 +1654,58 @@ def _applying_for_pto(message: str) -> bool:
     return bool(_PROCEDURE.search(message or "") or re.search(r"\b(apply|request(?:ing)?)\b", message or "", re.I))
 
 
-def _wants_location_rules(message: str) -> bool:
-    """A question about the steps or the violation for working somewhere else."""
-    if not re.search(r"\b(remote\w*|work(?:ing)? from|different location|another location|another state|other state|different state)\b", message or "", re.I) and not mentions_international(message or ""):
-        return False
-    if not (_PROCEDURE.search(message or "") or _VIOLATION.search(message or "")):
-        return False
+def _unauthorized_place(decision: dict, message: str) -> str | None:
+    """A named state, or another state, when the current record does not already cover it."""
+    state = mentioned_us_state(message)
+    if state:
+        if same_us_state(state, decision.get("state_of_residence") or ""):
+            return None
+        if same_us_state(state, decision.get("work_location") or ""):
+            return None
+        return state
+    if _mentions_other_state(message):
+        return "another state"
+    return None
+
+
+def _mentions_other_state(message: str) -> bool:
     return bool(
-        mentions_international(message or "")
-        or re.search(
-            r"\b(different location|another location|different state|another (?:u\.?s\.? )?state|other state|work location|domestic|international|abroad|location)\b",
+        re.search(
+            r"\b(out[- ]of[- ]state|another (?:u\.?s\.? )?state|other state|different state|"
+            r"different location|another location)\b",
             message or "",
             re.I,
         )
+    )
+
+
+def _wants_location_rules(message: str) -> bool:
+    """A question about the steps, the approval requirements, or the violation for working somewhere else."""
+    weeks = parse_duration(message or "").get("weeks")
+    if (
+        weeks is not None
+        and weeks <= 4
+        and not re.search(r"\bextended\b", message or "", re.I)
+        and not _VIOLATION.search(message or "")
+        and mentioned_us_state(message or "")
+    ):
+        return False
+    located = _mentions_other_state(message) or bool(
+        re.search(r"\b(remote\w*|work(?:ing)? from|work location)\b", message or "", re.I)
+    ) or mentions_international(message or "")
+    if not located:
+        return False
+    if not (
+        _PROCEDURE.search(message or "")
+        or _VIOLATION.search(message or "")
+        or _APPROVAL_QUESTION.search(message or "")
+        or re.search(r"\brequest\b", message or "", re.I)
+    ):
+        return False
+    return bool(
+        mentions_international(message or "")
+        or _mentions_other_state(message)
+        or re.search(r"\b(work location|domestic|international|abroad|location)\b", message or "", re.I)
     )
 
 
@@ -1402,12 +1727,14 @@ def _location_rule_answer(message: str) -> str:
     if not extended and (weeks is None or weeks <= 4):
         parts.append(
             "For up to 4 weeks inside the United States, your manager has to approve working from the different location. "
-            "The request is also subject to business needs and a tax and legal review."
+            "The approval requirements are manager approval, business needs, and a tax and legal review. "
+            "The arrangement must be documented and approved by your manager."
         )
         refs.append("(Reference 300 / 5.1)")
     if extended or weeks is None or weeks > 4 or _PROCEDURE.search(message):
         parts.append(
             "For more than 4 weeks in another U.S. state, file a Change of Work Location. "
+            "The approval requirements are: "
             + _CHANGE_OF_LOCATION_STEPS
         )
         refs.append("(Reference 300 / 5.3)")
@@ -1468,6 +1795,181 @@ def _conversation_action(message: str) -> str | None:
     return None
 
 
+_CONDUCT_DETAIL_ASK = re.compile(r"incident details, including the name of the co-worker", re.I)
+_RECORD_LOOKUP = re.compile(
+    r"\b(pto|balance|salary|benefits|deductible|compensation|pay rate|their record|his record|her record)\b",
+    re.I,
+)
+_INCIDENT_WORD = re.compile(
+    r"\b(yell\w*|shout\w*|mock\w*|insult\w*|threat\w*|hit|push\w*|meeting|standup|monday|tuesday|"
+    r"wednesday|thursday|friday|saturday|sunday|yesterday|today|week|office|slack|called|said|told|"
+    r"laugh\w*|exclud\w*|humiliat\w*|happen\w*|during|kitchen|rude|hostile|comment\w*|email\w*|"
+    r"message\w*|incident)\b",
+    re.I,
+)
+_LABELED_NAME = re.compile(
+    r"\b(?:named|name is|name's|co-?worker(?: is| named|:)|colleague(?: is| named|:))\s+"
+    r"([A-Za-z][a-z]+(?:\s+[A-Za-z][a-z]+)?)",
+    re.I,
+)
+_CAP_NAME = re.compile(r"\b([A-Z][a-z]{2,}(?:\s+[A-Z][a-z]{2,})?)\b")
+_NOT_A_NAME = {
+    "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
+    "january", "february", "march", "april", "may", "june", "july", "august",
+    "september", "october", "november", "december", "today", "yesterday", "tomorrow",
+    "people", "culture", "ethics", "hotline", "innovatech", "workday", "prepare",
+    "mock", "ticket", "bullying", "report", "please", "incident", "details",
+    "what", "when", "where", "who", "united", "states", "before", "nothing",
+    "stored", "draft", "tell", "the", "this", "that", "and", "but", "for",
+    "you", "your", "she", "her", "his", "they", "them", "him", "our", "was",
+    "were", "been", "have", "has", "had", "not", "from", "with", "into",
+    "during", "after", "before", "about", "worker", "coworker", "colleague",
+    "assistant", "reference", "reported", "happened", "yesterday", "today",
+}
+
+
+def _is_conduct_report(text: str) -> bool:
+    return bool(SENSITIVE.search(text or ""))
+
+
+def _naming_coworker_in_conduct_report(message: str) -> bool:
+    """Naming the coworker in a conduct report is not a request for that person's record."""
+    return _is_conduct_report(message) and not _RECORD_LOOKUP.search(message or "")
+
+
+def _is_conduct_subject(text: str, category: str = "") -> bool:
+    if category in {"conduct", "workplace_conduct"}:
+        return True
+    return _is_conduct_report(text)
+
+
+def _history_text(history: list[dict] | None) -> str:
+    return "\n".join(turn["text"] for turn in _clean_history(history))
+
+
+def _conduct_in_history(history: list[dict] | None) -> bool:
+    return _is_conduct_report(_history_text(history))
+
+
+def _conduct_next_steps_body(subject: str) -> str:
+    harassment = bool(
+        re.search(r"harass", subject or "", re.I)
+        or _SEXUAL_HARASSMENT.search(subject or "")
+        or _PHYSICAL_HARASSMENT.search(subject or "")
+    )
+    if harassment:
+        level = (
+            "This report describes harassment. Harassment has a legal floor, so it cannot be resolved through coaching alone. "
+            "A Level 3 formal internal investigation, with a plan, interviews, and findings, is the minimum required response, "
+            "unless the facts require an outside investigator (Level 4) or counsel and immediate protective steps (Level 5). "
+        )
+    else:
+        level = (
+            "Triage classifies the domain, including bullying or abusive behavior. "
+            "If the facts are harassment, discrimination, retaliation, or a safety issue, coaching alone is not enough, "
+            "and a Level 3 formal internal investigation is the minimum required response. "
+        )
+    return (
+        "What happens next is triage under Code of Conduct Section 4.0. "
+        "A People & Culture or Employee Relations specialist should make that decision within 24 to 48 hours. "
+        "The specialist cannot be the person accused. "
+        "Triage decides the process and priority. It does not decide guilt or discipline. "
+        + level
+        + "The immediate steps are to document the complaint in your words, preserve relevant email and chat, "
+        "assess interim protective steps such as a schedule or reporting-line change without putting that burden on you, "
+        "assign an investigator, and avoid an informal conversation with the accused before an investigation plan exists. "
+        "You are not required to report this to the person accused. "
+        "Keep any messages or notes, and do not delete them. "
+        "The company prohibits retaliation for a good-faith report. "
+        "I have not triaged this, and I have not investigated it. "
+        "(Reference 100 / 4.2) (Reference 100 / 4.5) (Reference 100 / 4.7)"
+    )
+
+
+def _awaiting_conduct_details(history: list[dict] | None) -> bool:
+    return bool(_CONDUCT_DETAIL_ASK.search(_last_assistant_text(history)))
+
+
+def _reporting_conduct_details(message: str, history: list[dict] | None) -> bool:
+    """A co-worker's name in an incident report is not a request for their record."""
+    if not _awaiting_conduct_details(history):
+        return False
+    if _RECORD_LOOKUP.search(message or ""):
+        return False
+    return not _leaving_conduct_details(message)
+
+
+def _leaving_conduct_details(message: str) -> bool:
+    if _person_name(message) or _is_conduct_report(message):
+        return False
+    if re.match(r"\s*(cancel|never mind|nevermind|stop|discard)\b", message or "", re.I):
+        return False
+    matched = [name for name, pattern in CATEGORIES if pattern.search(message or "")]
+    if any(name != "conduct" for name in matched):
+        return True
+    return bool(OUT_OF_SCOPE.search(message or ""))
+
+
+def _person_name(text: str) -> str | None:
+    labeled = _LABELED_NAME.search(text or "")
+    if labeled and _usable_name(labeled.group(1)):
+        return _usable_name(labeled.group(1))
+    for match in _CAP_NAME.finditer(text or ""):
+        usable = _usable_name(match.group(1))
+        if usable:
+            return usable
+    return None
+
+
+def _usable_name(candidate: str) -> str | None:
+    parts = candidate.split()
+    if not parts or any(part.lower() in _NOT_A_NAME for part in parts):
+        return None
+    return " ".join(part[:1].upper() + part[1:] for part in parts)
+
+
+def _incident_ready(text: str) -> bool:
+    if not _person_name(text):
+        return False
+    if _INCIDENT_WORD.search(text or ""):
+        return True
+    name = _person_name(text) or ""
+    remainder = re.sub(re.escape(name), " ", text or "", count=1)
+    return len(re.findall(r"[A-Za-z']{2,}", remainder)) >= 4
+
+
+def _conduct_detail_prompt(gathered: str, name: str | None) -> str:
+    gathered = (gathered or "").strip()
+    if gathered and name:
+        follow = "What happened, and when?"
+    elif gathered:
+        follow = "What is the co-worker's name?"
+    else:
+        follow = "Tell me who was involved, what happened, and when."
+    so_far = f"So far: {gathered}\n\n" if gathered else ""
+    return (
+        f"{so_far}Before I draft the mock HR ticket, I need the incident details, including the name of the co-worker. "
+        f"{follow} Nothing is stored yet."
+    )
+
+
+def _gathered_incident(history: list[dict] | None, message: str) -> str:
+    last = _last_assistant_text(history)
+    match = re.search(r"(?m)^So far: (.+)$", last or "")
+    prior = match.group(1).strip() if match else ""
+    current = (message or "").strip()
+    if prior and prior not in current:
+        return f"{prior} {current}".strip()
+    return current
+
+
+def _conduct_origin(history: list[dict] | None) -> str:
+    for text in [turn["text"] for turn in _clean_history(history) if turn["role"] == "user"]:
+        if _is_conduct_report(text):
+            return text
+    return _prior_topic(history)
+
+
 def _purpose_from_text(text: str) -> str:
     matched = [name for name, pattern in CATEGORIES if pattern.search(text or "")]
     if not matched:
@@ -1523,9 +2025,21 @@ def _clean_history(history: list[dict] | None) -> list[dict]:
     return cleaned[-6:]
 
 
+def _topic_anchor(history: list[dict] | None) -> str:
+    """The earlier user question this turn should stay attached to."""
+    users = [turn["text"] for turn in _clean_history(history) if turn["role"] == "user"]
+    for text in reversed(users):
+        if _has_own_topic(text) and not _is_follow_up(text):
+            return text
+    return ""
+
+
 def _with_history(message: str, history: list[dict] | None) -> str:
-    """Keep the previous question when this turn only adds a detail."""
-    if not message or not _is_follow_up(message):
+    """Keep the previous question when this turn only adds a detail or asks about that same topic."""
+    if not message:
+        return message
+    contextual = (not _has_own_topic(message)) and bool(_topic_anchor(history))
+    if not _is_follow_up(message) and not contextual:
         return message
     users = [turn["text"] for turn in _clean_history(history) if turn["role"] == "user"]
     if not users:

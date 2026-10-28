@@ -242,6 +242,89 @@ _COUNTRY_PATTERN = re.compile(
 )
 
 
+# Full names only. Two-letter abbreviations are too easy to match inside a sentence.
+_US_STATES = (
+    ("alabama", "Alabama", "AL"),
+    ("alaska", "Alaska", "AK"),
+    ("arizona", "Arizona", "AZ"),
+    ("arkansas", "Arkansas", "AR"),
+    ("california", "California", "CA"),
+    ("colorado", "Colorado", "CO"),
+    ("connecticut", "Connecticut", "CT"),
+    ("delaware", "Delaware", "DE"),
+    ("district of columbia", "District of Columbia", "DC"),
+    ("florida", "Florida", "FL"),
+    ("georgia", "Georgia", "GA"),
+    ("hawaii", "Hawaii", "HI"),
+    ("idaho", "Idaho", "ID"),
+    ("illinois", "Illinois", "IL"),
+    ("indiana", "Indiana", "IN"),
+    ("iowa", "Iowa", "IA"),
+    ("kansas", "Kansas", "KS"),
+    ("kentucky", "Kentucky", "KY"),
+    ("louisiana", "Louisiana", "LA"),
+    ("maine", "Maine", "ME"),
+    ("maryland", "Maryland", "MD"),
+    ("massachusetts", "Massachusetts", "MA"),
+    ("michigan", "Michigan", "MI"),
+    ("minnesota", "Minnesota", "MN"),
+    ("mississippi", "Mississippi", "MS"),
+    ("missouri", "Missouri", "MO"),
+    ("montana", "Montana", "MT"),
+    ("nebraska", "Nebraska", "NE"),
+    ("nevada", "Nevada", "NV"),
+    ("new hampshire", "New Hampshire", "NH"),
+    ("new jersey", "New Jersey", "NJ"),
+    ("new mexico", "New Mexico", "NM"),
+    ("new york", "New York", "NY"),
+    ("north carolina", "North Carolina", "NC"),
+    ("north dakota", "North Dakota", "ND"),
+    ("ohio", "Ohio", "OH"),
+    ("oklahoma", "Oklahoma", "OK"),
+    ("oregon", "Oregon", "OR"),
+    ("pennsylvania", "Pennsylvania", "PA"),
+    ("rhode island", "Rhode Island", "RI"),
+    ("south carolina", "South Carolina", "SC"),
+    ("south dakota", "South Dakota", "SD"),
+    ("tennessee", "Tennessee", "TN"),
+    ("texas", "Texas", "TX"),
+    ("utah", "Utah", "UT"),
+    ("vermont", "Vermont", "VT"),
+    ("virginia", "Virginia", "VA"),
+    ("washington", "Washington", "WA"),
+    ("west virginia", "West Virginia", "WV"),
+    ("wisconsin", "Wisconsin", "WI"),
+    ("wyoming", "Wyoming", "WY"),
+)
+_STATE_BY_NAME = {name: (canonical, abbr) for name, canonical, abbr in _US_STATES}
+_STATE_PATTERN = re.compile(
+    r"\b(?:" + "|".join(re.escape(name) for name, _, _ in sorted(_US_STATES, key=lambda item: len(item[0]), reverse=True)) + r")\b",
+    re.I,
+)
+_DC_PLACE = re.compile(r"\bwashington,?\s*d\.?c\.?\b", re.I)
+
+
+def mentioned_us_state(text: str) -> str | None:
+    """The U.S. state named in the text, if any."""
+    if not text:
+        return None
+    masked = _DC_PLACE.sub(" ", text)
+    match = _STATE_PATTERN.search(masked)
+    if not match:
+        return None
+    return _STATE_BY_NAME[match.group(0).lower()][0]
+
+
+def same_us_state(state: str, other: str) -> bool:
+    """True when a place string is the same state, including a city plus abbreviation."""
+    if not state or not other:
+        return False
+    canonical, abbr = _STATE_BY_NAME.get(state.lower(), (state, ""))
+    if canonical.lower() in other.lower():
+        return True
+    return bool(abbr and re.search(rf"\b{abbr}\b", other))
+
+
 def mentions_international(text: str) -> bool:
     """True when the text names a place outside the United States."""
     if not text:

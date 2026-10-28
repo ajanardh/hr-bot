@@ -6,7 +6,7 @@ from datetime import datetime
 
 from app.config import retrieval_k
 from app.data_store import add_ticket, as_of, find_employee, public_employee, selected_benefit_details
-from app.places import mentions_international
+from app.places import mentioned_us_state, mentions_international
 from app.rag.store import get_section, search
 
 
@@ -100,6 +100,8 @@ def _location_kind(text: str) -> str:
         "other state",
         "different state",
         "out of state",
+        "out-of-state",
+        "work location",
         "u.s. state",
         "us state",
         "another u.s. state",
@@ -110,7 +112,7 @@ def _location_kind(text: str) -> str:
         "within the u.s.",
         "within the us",
     )
-    if any(marker in lowered for marker in domestic):
+    if any(marker in lowered for marker in domestic) or mentioned_us_state(text):
         return "domestic_other_state"
     return "unspecified"
 
@@ -178,12 +180,31 @@ def _pto_decision(row: dict, requested_hours: float | None) -> dict:
     }
 
 
+def _business_days(weeks: float | None, days: float | None) -> float | None:
+    """Four policy weeks are 20 business days, matching the employee record's day limit."""
+    if weeks is not None:
+        return float(weeks) * 5
+    if days is not None:
+        return float(days)
+    return None
+
+
 def _remote_decision(row: dict, scenario: str, weeks: float | None, days: float | None, location_text: str) -> dict:
     kind = _location_kind(location_text)
+    requested_business_days = _business_days(weeks, days)
     if weeks is None and days is not None:
         weeks = float(days) / 7.0
     reasons = []
     escalate = []
+    over_four_weeks = (weeks or 0) > 4
+    limit = row.get("temporary_remote_days_limit") or 0
+    remaining = limit - (row.get("temporary_remote_days_used_ytd") or 0)
+    over_allowance = (
+        kind == "domestic_other_state"
+        and requested_business_days is not None
+        and bool(limit)
+        and requested_business_days > remaining
+    )
     if kind == "international":
         decision = "escalate_international"
         escalate = ["People & Culture", "Legal"]
@@ -195,17 +216,23 @@ def _remote_decision(row: dict, scenario: str, weeks: float | None, days: float 
     elif not row["remote_work_eligibility"]:
         decision = "not_remote_eligible"
         reasons.append("The employee record marks this role as not remote-eligible. Policy 300 limits remote work to roles designated remote-eligible, with manager and department-head approval.")
-    elif (weeks or 0) > 4:
+    elif over_four_weeks or over_allowance:
         decision = "requires_change_of_work_location"
         escalate = ["People & Culture", "Finance"]
         reasons.append("Policy 300 section 5.1 limits temporary domestic remote work to 4 weeks per calendar year.")
         reasons.append("Policy 300 section 5.3 requires a Change of Work Location request in WorkDay when work from another U.S. state exceeds 4 weeks, followed by manager approval and a People & Culture and Finance tax review.")
         used = row["temporary_remote_days_used_ytd"]
         limit = row["temporary_remote_days_limit"]
-        reasons.append(
-            f"The employee record shows {used} of {limit} temporary remote days used. "
-            f"The requested duration exceeds that counter as well as the 4-week policy cap."
-        )
+        if over_four_weeks:
+            reasons.append(
+                f"The employee record shows {used} of {limit} temporary remote days used. "
+                "The requested duration exceeds the 4-week policy cap."
+            )
+        else:
+            reasons.append(
+                f"The employee record shows {used} of {limit} temporary remote days used. "
+                "The requested duration fits under 4 weeks, but it exceeds the temporary days left this year."
+            )
         if not row["change_of_work_location_filed"]:
             reasons.append("No Change of Work Location is on file for this employee.")
     elif kind == "domestic_other_state" or (weeks is not None and weeks <= 4):
@@ -225,6 +252,7 @@ def _remote_decision(row: dict, scenario: str, weeks: float | None, days: float 
         "policy_refs": ["300", "600"],
         "location_kind": kind,
         "duration_weeks": weeks,
+        "requested_business_days": requested_business_days,
         "remote_work_status": row["remote_work_status"],
         "remote_work_eligibility": row["remote_work_eligibility"],
         "work_location": row["work_location"],

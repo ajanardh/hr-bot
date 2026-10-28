@@ -103,6 +103,7 @@ An optional rewrite calls an OpenAI-compatible chat endpoint when `LLM_API_KEY`,
 - `create_mock_hr_ticket` stores a row only when `confirm` is true, and only after the user confirms the pending action.
 - An unknown employee stops the personal workflow. Nothing is written.
 - If the MCP process is down, `/health` reports `degraded` and `/chat` returns an error instead of inventing a policy answer.
+- A conduct report is sent to a manager, People & Culture, or the Ethics Hotline. Policy 100 Section 4.0 is the triage process. After the report, the assistant explains that process, including the 24-to-48-hour triage and the Level 3 minimum for harassment. It does not itself triage, assign the level, decide guilt, or decide discipline. Immediate danger goes to emergency services first.
 - Passwords and employee records are synthetic. No production HR system is connected.
 
 ## Deployment choices
